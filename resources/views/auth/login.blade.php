@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <!-- Required meta tags -->
-  <title>Uleadswell</title>
+  <title>d{everybody}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Bootstrap CSS -->

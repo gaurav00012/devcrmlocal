@@ -3,7 +3,7 @@
 
 <head>
   <!-- Required meta tags -->
-  <title>Uleadswell</title>
+  <title>d{everybody}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -28,7 +28,7 @@
           <div class="col-lg-5 col-md-10 col-sm-12">
             <div class="regibox">
               <div class="text-center"><img src="images/em-crm-logo.png" alt="dev-crm" style="width:70%"/></div>
-              <h3>Ultimate <span>Leadswell</span></h3>  
+             
          
           
             <form  class="registerbox" method="POST" action="{{ route('register') }}">

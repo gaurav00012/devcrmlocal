@@ -9,7 +9,18 @@
 .gapb40 { margin-bottom:40px;}
 .gapb50 { margin-bottom:50px;}
 
-body { overflow-x: hidden; font-family: "Open Sans", sans-serif;}
+body { overflow-x: hidden; }
+/*-----------------------Header -----------------------*/
+.logo { width:220px;}
+.navbar .navbar-brand { width: 200px !important;}
+.navbar-brand.brand-logo-mini img {max-width:100% !important;}
+.dropdown-menu.navbar-dropdown .dropdown-item i {
+  margin-right: 15px;
+}
+
+.roundbox{padding:10px; border-radius:9px; background-color:#fff ;
+  box-shadow: inset 0 -1em 1em rgba(0,0,0,0.1),  0 0  0 2px rgb(255,255,255), 0.3em 0.3em 1em rgba(0,0,0,0.3);}
+
 /*-----------------Login and register page------------------------*/
 .logbg {background: rgb(169,240,127); background: linear-gradient(90deg, rgba(169,240,127,1) 0%, rgba(92,191,226,1) 41%, rgba(170,57,218,1) 100%);}
 .logbg .overlay {position: absolute; background-image: url(../images/trbg.png); top: 0; left: 0; right: 0; bottom: 0; content: ''; opacity: .99;  } 
@@ -30,96 +41,77 @@ body { overflow-x: hidden; font-family: "Open Sans", sans-serif;}
   background: linear-gradient(90deg, rgba(169,240,127,1) 0%, rgba(92,191,226,1) 41%, rgba(170,57,218,1) 100%);
   -webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.6); 
   -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.6); 
-       box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.6); 
- }
+       box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.6);  }
 .btn-login:hover { color: #fff; background-color: #39b24a; border-color: #39b24a;}
 .btn-login:focus, .btn-login.focus {box-shadow: 0 0 0 0.2rem rgba(38, 34,98, 0.5);}
 .llogo {width:250px;}
 
-/*-----------------Login and register page End------------------------*/
-
-.logo { width:220px;}
-.navbar .navbar-brand {
-  width: 200px !important;
-}
-.navbar-brand.brand-logo-mini img {max-width:100% !important;}
-.content-wrapper {
-  background:#ddd;
-  padding: 2.75rem 1.5rem 0;
-  width: 100%;
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-}
-
-.roundbox{padding:10px; border-radius:9px; background-color:#fff ;
-  box-shadow: inset 0 -1em 1em rgba(0,0,0,0.1),  0 0  0 2px rgb(255,255,255), 0.3em 0.3em 1em rgba(0,0,0,0.3);}
+/*-----------------Content Middle ------------------------*/
+.content-wrapper { background:#ddd; padding: 2.75rem 1.5rem 1.5rem 1.5rem;}
+.common-box { background: #fff; padding:0px 15px; border-radius:0px; }
 /*----------------- Chatting box---------------------------------*/
- .chatbox {font-family: 'Lato', sans-serif;}   
- .chatbox ::-webkit-scrollbar { width: 5px; }  
- .chatbox ::-webkit-scrollbar-track { width: 5px; background: #f5f5f5; }  
- .chatbox ::-webkit-scrollbar-thumb { width: 1em; background-color: #ddd; outline: 1px solid slategrey; border-radius: 1rem;  }
- .chatbox .text-small {font-size: 0.9rem; }  
- .chatbox .messages-box,  .chat-box {height:460px; overflow-y: scroll; }  
- .chatbox .rounded-lg {border-radius: 0.5rem; }  
- .chatbox input::placeholder {font-size: 0.9rem;color: #999;  }
- .chatbox .bg-dark-blue {background-color:#262262; color: #fff;}
- .chatbox .bg-dark-green {background-color:#39b24a; color: #fff;}
- .chatbox .list-group-item.active {color: #fff; background-color:  #39b24a; border-color:#39b24a;}
- .chatbox .bg-primary {background-color: #262262 !important;}
+.chatbox ::-webkit-scrollbar { width: 5px; }  
+.chatbox ::-webkit-scrollbar-track { width: 5px; background: #f5f5f5; }  
+.chatbox ::-webkit-scrollbar-thumb { width: 1em; background-color: #a7a7a7; outline: 1px solid slategrey; border-radius: 1rem;  }
+.agentbox ::-webkit-scrollbar { width: 5px; }  
+.agentbox ::-webkit-scrollbar-track { width: 5px; background: #f5f5f5; }  
+.agentbox ::-webkit-scrollbar-thumb { width: 1em; background-color: #a7a7a7; outline: 1px solid slategrey; border-radius: 1rem;  }
 
- .chatbox .form-control {border-radius:0px;}
- .chatbox .btn {border-radius:0px;}
+.chatbox {}  
+.chatbox .text-small {font-size: 0.9rem; }  
+.chatbox .messages-box,  .chat-box {height:460px; overflow-y: scroll; }  
+.chatbox .rounded-lg {border-radius: 0.5rem; }  
+.chatbox input::placeholder {font-size: 0.9rem;color: #999;  }
+.chatbox .bg-dark-blue {background-color:#262262; color: #fff;}
+.chatbox .bg-dark-green {background-color:#39b24a; color: #fff;}
+.chatbox .list-group-item.active {color: #fff; background-color:  #39b24a; border-color:#39b24a;}
+.chatbox .bg-primary {background-color: #262262 !important;}
+
+.chatbox .form-control {border-radius:0px;}
+.chatbox .btn {border-radius:0px;}
 
 .chatbox .media span.busy {background: #e74c3c;}
 .chatbox .media span.online { background:  #2ecc71;}
 .chatbox .media span.away { background:  #f1c40f;}
 .chatbox .media span {position: absolute;  left:25px;  margin: -2px 0 0 -2px;  width: 10px;  height: 10px;
-  border-radius: 50%;  border:1px solid  #fff; background: #95a5a6;}
-.send {width:60px; padding: 0px;}
-.send i {font-size:1.2rem;}
-  .chatbox .attachment {
-    position: absolute;
-    right: 60px;
-    z-index: 4;
-    margin-top: 10px;
-    font-size: 1.1em;
-    color: 
-    #435f7a;
-    opacity: .5;
-    cursor: pointer;
-}
-
-.chatbox .content { position: relative;}
-.chatbox .content .contact-profile {width: 100%; height: 65px; line-height: 65px; background: #f5f5f5;}
-.chatbox .content .contact-profile img { width: 40px; border-radius: 50%; float: left; margin:12px 12px 0 9px;}
-.chatbox .content .contact-profile p {float: left; vertical-align: middle; padding-top:1.2rem;}
-
+  border-radius: 50%;  border:1px solid  #fff; background: #95a5a6;} 
 /*------------ resources Tab Navigation custom css ----------------*/
 .custab { font-family: "Open Sans", sans-serif; }
 .custab nav{background-color: #262262;}
 .custab .nav-tabs {border-bottom: 1px solid; border-color: rgba(35, 31, 32, 0.3)}
 .custab .nav-tabs .nav-link.active {
   color:#fff;font-weight:400; background: none; 
-  border-color:#fbb017; border-width:3px;
-  border-top: 0px;  border-left: 0px;  border-right: 0px;
-}
-.custab .nav-tabs .nav-link:hover {
-  border-color:#fbb017; border-width:3px;
-  border-top: 0px;  border-left: 0px;  border-right: 0px;
-}
-.custab .nav-tabs .nav-link {
-  border-bottom: 0px solid transparent;
-  border-top: 0px solid transparent;
-  border-left: 0px solid transparent;
-  border-right: 0px solid transparent;
-  color:#fff;
-}
-.custab .nav-link {display: block;  margin:2px 11px; background-color: #262262; font-size:14px;}
-
-.searchinput{ height: 2rem;  padding: 0.5rem 1rem;}
+  border-color:#fbb017; border-width:3px; border-top: 0px;  border-left: 0px;  border-right: 0px;}
+.custab .nav-tabs .nav-link:hover {border-color:#fbb017; border-width:3px; border-top: 0px;
+  border-left: 0px; border-right: 0px;}
+.custab .nav-tabs .nav-link { border-bottom: 0px solid transparent; border-top: 0px solid transparent;
+  border-left: 0px solid transparent;  border-right: 0px solid transparent;  color:#fff;}
+.custab .nav-link {display: block;  margin:4px 3px; background-color: #262262; font-size:14px;}  
+.searchinput{ height:2.6rem;  padding: 0.5rem 1rem;}
 .btn-sm {padding: 0.3rem 0.81rem;}
-.tab-content {padding: 7px 0px;}
+/*.custab .tab-content {padding: 7px 0px;}*/
+
+.chatbox .content { position: relative;}
+.chatbox .content .contact-profile {width: 100%; height: 65px; line-height: 65px; background: #f5f5f5;}
+.chatbox .content .contact-profile img { width: 40px; border-radius: 50%; float: left; margin:12px 12px 0 9px;}
+.chatbox .content .contact-profile p {float: left; vertical-align: middle; padding-top:1.2rem;}
+
+.chatbox .content .w-50 {width:80% !important;}
+
+.send {width:80px; padding: 0px;}
+.send i {font-size:1.2rem;}
+
+.agentbox { padding-left:.5rem; padding-right:.8rem;}
+.agentbox .card { border-radius:0px;}
+.agentbox .card-body {padding:0px 0px;}
+.agentbox .card-title {padding:10px 10px; background-color:#f5f5f5; color:#343a40; margin-bottom:0px; height:60px;
+  line-height: 40px;}
+.agentbox .card-body .agents-all { height:512px; overflow-y: auto;}
+.agentbox .media span.busy {background: #e74c3c;}
+.agentbox .media span.online { background:  #2ecc71;}
+.agentbox .media span.away { background:  #f1c40f;}
+.agentbox .media span {position: absolute;  left:25px;  margin: -2px 0 0 -2px;  width: 10px;  height: 10px;
+  border-radius: 50%;  border:1px solid  #fff; background: #95a5a6;}
 
 /* --------------------------------------- Responsive Design ------------------------------------------- */
 @media only screen and (min-width:1291px) and (max-width:1342px) { }
@@ -137,8 +129,13 @@ body { overflow-x: hidden; font-family: "Open Sans", sans-serif;}
 
 
 @media (min-width: 991.98px) { 
-.sidebar {position: relative; z-index: 0;}
+.sidebar {position: relative; z-index:999;}
 .sidebar .overlay {position: absolute; background-image: url(../images/trbg.png); z-index:-1;
     top: 0; left: 0; right: 0; bottom: 0; content: ''; opacity: .99;  }
  }
 
+ @media (max-width: 991px) {
+      .probox .navbar-dropdown {
+      
+        right: 20px; width: 260px !important; }
+  }
