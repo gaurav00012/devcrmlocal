@@ -4,9 +4,9 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\MasterTask;
 
-class TeamController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,6 @@ class TeamController extends Controller
     public function index()
     {
         //
-        $allUser = User::where('user_role','=',2)->get();
-        
-        return view('admin/team/index',['allUser'=> $allUser]);
     }
 
     /**
@@ -29,7 +26,6 @@ class TeamController extends Controller
     public function create()
     {
         //
-        return view('admin/team/addteam');
     }
 
     /**
@@ -41,20 +37,6 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         //
-        $this->validate($request,[
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-         ]);
-         $input = $request->post();
-         $user['name'] = $input['name'];
-         $user['user_role'] = 2;
-         $user['email'] = $input['email'];
-         $user['password'] = bcrypt($input['password']);
-         $user['text_password'] = $input['password'];
-         $user = User::create($user);
-
-         return redirect('/admin/manage-team');
     }
 
     /**
@@ -66,6 +48,7 @@ class TeamController extends Controller
     public function show($id)
     {
         //
+
     }
 
     /**
@@ -77,8 +60,6 @@ class TeamController extends Controller
     public function edit($id)
     {
         //
-        $user = User::find($id);
-        return view('admin/team/editteam',['user'=>$user]);
     }
 
     /**
@@ -91,14 +72,6 @@ class TeamController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::find($id);
-       
-        $user->name = $request->post('name');
-       // $user->email = $request->post('email');
-        $user->password = bcrypt($request->post('password'));
-        $user->text_password = $request->post('password');
-        $user->save();
-        return redirect('/admin/manage-team');
     }
 
     /**
@@ -110,8 +83,11 @@ class TeamController extends Controller
     public function destroy($id)
     {
         //
-        $user = User::find($id);
-        $user->delete();
-        return redirect('/admin/manage-team');
+    }
+
+    public function getTaskList($id)
+    {
+        $projectTask = MasterTask::where('project_id','=',$id)->get();
+        return view('admin/tasks/get-task-list',['projectTask'=>$projectTask]);
     }
 }

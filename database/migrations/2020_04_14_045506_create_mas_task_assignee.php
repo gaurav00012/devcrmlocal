@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterUserTabletextpassword extends Migration
+class CreateMasTaskAssignee extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,17 @@ class AlterUserTabletextpassword extends Migration
      */
     public function up()
     {
-        //
-        DB::statement("
-        ALTER TABLE `{d}crm`.`users`   
-        ADD COLUMN `text_password` VARCHAR(255) NULL AFTER `password`;
+          DB::statement("
+        CREATE TABLE `{d}crm`.`mas_task_assignee`(  
+  `id` INT(11),
+  `task_id` INT(25),
+  `assignee` BIGINT(25),
+  `created_at` DATETIME,
+  `created_by` BIGINT(20),
+  `updated_at` DATETIME,
+  `updated_by` BIGINT(20)
+);
+
         ");
     }
 
@@ -27,6 +34,6 @@ class AlterUserTabletextpassword extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('mas_task_assignee');
     }
 }

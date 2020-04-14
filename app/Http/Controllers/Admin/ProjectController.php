@@ -4,6 +4,8 @@ namespace App\Http\Controllers\admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\MasterProject;
+use App\MasterCompany;
 
 class ProjectController extends Controller
 {
@@ -14,7 +16,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        // 
+        return view('admin/projects/index');
+        
     }
 
     /**
@@ -81,5 +85,39 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getCompanyProject($companyId)
+    {
+       $companyprojects = MasterProject::where('company_id',$companyId)->get();
+       
+       return view('admin.projects.manage-company-project',['companyprojects'=>$companyprojects,'companyId'=>$companyId]);
+    }
+
+    public function addProject($id)
+    {
+      $company = MasterCompany::find($id);
+      $clientData = array();
+      $clientData['clientId'] = $company->id;
+      $clientData['clientName'] = $company->company_name;
+      return view('admin.projects.add-client-project',['clientData'=>$clientData]);
+    }
+
+    public function addClientProject(Request $request, $id)
+    {
+        $this->validate($request,[
+            'project_name' => 'required',
+            'project_description' => 'required',
+            
+         ]);
+
+         $input = $request->post();
+         $project['project_name'] = $input['project_name'];
+         $project['description'] = $input['project_description'];
+         $project['company_id'] = $id;
+        
+         $projectSave = MasterProject::create($project);
+
+         return redirect("/admin/manage-projects/$id");
     }
 }

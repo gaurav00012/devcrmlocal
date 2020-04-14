@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterUserTabletextpassword extends Migration
+class ChangeUpdatedMasprojects extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class AlterUserTabletextpassword extends Migration
      */
     public function up()
     {
-        //
-        DB::statement("
-        ALTER TABLE `{d}crm`.`users`   
-        ADD COLUMN `text_password` VARCHAR(255) NULL AFTER `password`;
+         DB::statement("
+        ALTER TABLE `mas_projects` CHANGE `created` `created_at` DATETIME NULL DEFAULT NULL;
         ");
     }
 

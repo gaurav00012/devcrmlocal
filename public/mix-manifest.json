@@ -1,5 +1,7 @@
 {
+    "/js/admin/tasks/tasks.js": "/js/admin/tasks/tasks.js",
     "/js/admin/user.js": "/js/admin/user.js",
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/js/projects/project.js": "/js/projects/project.js"
 }

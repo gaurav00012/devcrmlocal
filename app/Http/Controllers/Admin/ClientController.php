@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\MasterProject;
+use App\MasterCompany;
 
 class ClientController extends Controller
 {
@@ -16,9 +18,13 @@ class ClientController extends Controller
     public function index()
     {
         //
-        $allUser = User::where('user_role','=',3)->get();
+       // $allUser = User::where('user_role','=',3)->get();
+       // dd(MasterProject::all());
         //return view('admin.user.user-listing',['allUser'=> $allUser]);
-        return view('admin/clients/index',['allUser'=> $allUser]);
+        $allClient = MasterCompany::all();
+        $clientProject = new MasterCompany;
+       
+        return view('admin/clients/index',['allClient'=> $allClient]);
     }
 
     /**
@@ -42,17 +48,15 @@ class ClientController extends Controller
     {
         //
         $this->validate($request,[
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
+            'company_name' => 'required',
+            'company_description' => 'required',
+            
          ]);
          $input = $request->post();
-         $user['name'] = $input['name'];
-         $user['user_role'] = 3;
-         $user['email'] = $input['email'];
-         $user['password'] = bcrypt($input['password']);
-         $user['text_password'] = $input['password'];
-         $user = User::create($user);
+         $client['company_name'] = $input['company_name'];
+         $client['description'] = $input['company_description'];
+        
+         $client = MasterCompany::create($client);
 
          return redirect('/admin/manage-client');
     }
@@ -77,8 +81,8 @@ class ClientController extends Controller
     public function edit($id)
     {
         //
-        $user = User::find($id);
-        return view('admin/clients/editclient',['user'=>$user]);
+        $client = MasterCompany::find($id);
+        return view('admin/clients/editclient',['client'=>$client]);
     }
 
     /**
@@ -91,13 +95,12 @@ class ClientController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::find($id);
+        $client = MasterCompany::find($id);
        
-        $user->name = $request->post('name');
-       // $user->email = $request->post('email');
-        $user->password = bcrypt($request->post('password'));
-        $user->text_password = $request->post('password');
-        $user->save();
+        $client->company_name = $request->post('company_name');
+        $client->description = $request->post('company_description');
+        
+        $client->save();
         return redirect('/admin/manage-client');
     }
 

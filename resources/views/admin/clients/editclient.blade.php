@@ -7,28 +7,22 @@ Edit Client
 <div class="col-xs-6" style="display:flex;justify-content:flex-end">
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div><br>
-{!! Form::open(['url' => ['admin/update-client',$user->id],'method' => 'post']) !!}
+{!! Form::open(['url' => ['admin/update-client',$client->id],'method' => 'post']) !!}
         <div class="form-group">
-        <?php echo Form::label('name', 'Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('name',  $user->name,['class' => 'form-control ']);?>
+        <?php echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
+        <?php echo Form::text('company_name',  $client->company_name,['class' => 'form-control ']);?>
         @if($errors->has('name'))
-            <div class="error">{{ $errors->first('name') }}</div>
+            <div class="error">{{ $errors->first('company_name') }}</div>
         @endif
         </div>
         <div class="form-group">
-        <?php echo Form::label('email', 'E-Mail Address', ['class' => 'form-control']); ?>
-        <?php echo Form::text('email', $user->email,['class' => 'form-control']);?>
+        <?php echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
+        <?php echo Form::textarea('company_description', $client->description,['class' => 'form-control']);?>
         @if($errors->has('email'))
-            <div class="error">{{ $errors->first('email') }}</div>
+            <div class="error">{{ $errors->first('company_description') }}</div>
         @endif
         </div>
-        <div class="form-group">
-        <?php echo Form::label('password', 'Enter Password', ['class' => 'form-control']); ?>
-        <?php echo Form::text('password',  $user->text_password,['class' => 'form-control']);?>
-        @if($errors->has('password'))
-            <div class="error">{{ $errors->first('password') }}</div>
-        @endif
-        </div>
+       
         <div class="form-group">
             <?php echo Form::submit('Submit',['class'=>'btn btn-primary']);?>
         </div>

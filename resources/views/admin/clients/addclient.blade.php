@@ -8,27 +8,21 @@ Add Client
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div><br>
 {!! Form::open(['url' => '/admin/add-client','method' => 'post']) !!}
-        <div class="form-group">
-        <?php echo Form::label('name', 'Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('name', '',['class' => 'form-control ']);?>
+<div class="form-group">
+        <?php echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
+        <?php echo Form::text('company_name', '',['class' => 'form-control ']);?>
         @if($errors->has('name'))
-            <div class="error">{{ $errors->first('name') }}</div>
+            <div class="error">{{ $errors->first('company_name') }}</div>
         @endif
         </div>
         <div class="form-group">
-        <?php echo Form::label('email', 'E-Mail Address', ['class' => 'form-control']); ?>
-        <?php echo Form::text('email', '',['class' => 'form-control']);?>
+        <?php echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
+        <?php echo Form::textarea('company_description', '',['class' => 'form-control']);?>
         @if($errors->has('email'))
-            <div class="error">{{ $errors->first('email') }}</div>
+            <div class="error">{{ $errors->first('company_description') }}</div>
         @endif
         </div>
-        <div class="form-group">
-        <?php echo Form::label('password', 'Enter Password', ['class' => 'form-control']); ?>
-        <?php echo Form::text('password', '',['class' => 'form-control']);?>
-        @if($errors->has('password'))
-            <div class="error">{{ $errors->first('password') }}</div>
-        @endif
-        </div>
+       
         <div class="form-group">
             <?php echo Form::submit('Submit',['class'=>'btn btn-primary']);?>
         </div>

@@ -7,7 +7,7 @@ Manage User
 <div class="col-xs-6" style="display:flex;justify-content:flex-end">
     <a href="{!! url('admin/create-user');!!}"  class="btn btn-primary pull-right">Add User</a>
 </div>
-<table class="table admin-user-table">
+<table id="admin-user-table" class="table admin-user-table">
         <thead>
             <tr>
             <th scope="col">#</th>
@@ -34,6 +34,3 @@ Manage User
 @section('vuejs')
 <script  src="{{URL::asset('js/admin/user.js')}}"></script>
 @endsection
-<script>
-    alert("Hello world");
-</script>

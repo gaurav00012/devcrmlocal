@@ -25,26 +25,27 @@
             <li class="nav-item nav-category">
              <span class="nav-link"><?php echo Form::select('projects', array(''=>'Select Projects'), null, array('class' => 'form-control projects'));?></span>
           </li> -->
+
           <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="{{ url('admin/manage-projects') }}" aria-expanded="false" aria-controls="auth">
+              <a class="nav-link"  href="{{ url('admin/manage-projects') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Projects</span>
                 <i class="icon-user menu-icon"></i>
               </a>
         </li>
           <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="{{ url('admin/manage-user') }}" aria-expanded="false" aria-controls="auth">
+              <a class="nav-link"  href="{{ url('admin/manage-user') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage User</span>
                 <i class="icon-user menu-icon"></i>
               </a>
             </li>
            <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="{{ url('admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
+              <a class="nav-link" href="{{ url('admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Clients</span>
                 <i class="icon-user menu-icon"></i>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-toggle="collapse" href="{{ url('admin/dev-team') }}" aria-expanded="false" aria-controls="auth">
+              <a class="nav-link"  href="{{ url('admin/dev-team') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Dev Team</span>
                 <i class="icon-user menu-icon"></i>
               </a>
@@ -59,7 +60,7 @@
                 <span class="nav-link"> Setting <span class="nav-link">
             </li>
             <!-- <li class="nav-item nav-category"><span class="nav-link">Setting</span></li> -->
-           <!--  <li class="nav-item">
+             <li class="nav-item">
               <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Other Pages</span>
                 <i class="icon-doc menu-icon"></i>
@@ -73,7 +74,7 @@
                   <li class="nav-item"> <a class="nav-link" href="#"> Blank Page </a></li>
                 </ul>
               </div>
-            </li> -->
+            </li>
            
           </ul>
           <div class="overlay"></div>

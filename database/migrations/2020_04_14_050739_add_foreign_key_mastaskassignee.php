@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterUserTabletextpassword extends Migration
+class AddForeignKeyMastaskassignee extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,12 @@ class AlterUserTabletextpassword extends Migration
     public function up()
     {
         //
-        DB::statement("
-        ALTER TABLE `{d}crm`.`users`   
-        ADD COLUMN `text_password` VARCHAR(255) NULL AFTER `password`;
+           DB::statement("
+       ALTER TABLE `{d}crm`.`mas_task_assignee`   
+  CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, 
+  ADD PRIMARY KEY (`id`),
+  ADD FOREIGN KEY (`task_id`) REFERENCES `{d}crm`.`master_tasks`(`task_id`);
+
         ");
     }
 

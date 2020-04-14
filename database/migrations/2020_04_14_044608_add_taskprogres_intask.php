@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterUserTabletextpassword extends Migration
+class AddTaskprogresIntask extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,9 @@ class AlterUserTabletextpassword extends Migration
     public function up()
     {
         //
-        DB::statement("
-        ALTER TABLE `{d}crm`.`users`   
-        ADD COLUMN `text_password` VARCHAR(255) NULL AFTER `password`;
+         DB::statement("
+        ALTER TABLE `{d}crm`.`master_tasks`   
+  ADD COLUMN `task_progress` INT(11) NULL AFTER `project_id`;
         ");
     }
 

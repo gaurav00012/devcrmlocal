@@ -16,8 +16,21 @@
   </body>
 
    <!-- js -->
-   <script src="{{asset('js/bootstrap.min.js')}}"></script>
-   <script src="{{asset('js/off-canvas.js')}}"></script>
-   <script src="{{asset('js/misc.js')}}"></script>
    
+
+
+  
+   <script defer src="{{asset('js/off-canvas.js')}}"></script>
+   <script defer src="{{asset('js/misc.js')}}"></script>
+   <script defer src="{{asset('js/hoverable-collapse.js')}}"></script>
+     <script>
+    // $(document).ready( function () {
+    //     $('#admin-user-table').DataTable();
+    // });
+  
+ 
+  </script>
+      
+        
+      
 </html>

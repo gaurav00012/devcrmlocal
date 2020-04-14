@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class MasterCompany extends Model
 {
     //
-	protected $table = 'mas_companies';
+    protected $table = 'mas_companies';
+    protected $fillable = [
+        'company_name', 'description',
+    ];
 
-    public function findAllCompany()
+    public function findCompany()
     {
-    	//return 
+    	return $this->hasMany('App\MasterProject', 'company_id', 'id');
     }
 }
