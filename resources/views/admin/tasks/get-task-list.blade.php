@@ -21,21 +21,15 @@ Manage Tasks
       </tr>
     </thead>
     <tbody>
+       @foreach ($projectTask as $key => $projectask)
       <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
+        <td>{{$projectask->task_name}}</td>
+        <td>{{$projectask->task_name}}</td>
+        <td>{{$projectask->due_date}}</td>
+        <td>{{$projectask->task_progress}}</td>
+         <td>{{$projectask->task_progress}}</td>
       </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-      </tr>
+     @endforeach
     </tbody>
   </table>
 

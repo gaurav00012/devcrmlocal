@@ -74,6 +74,21 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $project = MasterProject::find($id);
+         $this->validate($request,[
+           // 'project_name' => 'required',
+            'project_description' => 'required',
+            
+         ]);
+ $request->post('email');
+        
+         //$project = $input['project_name'];
+         $project->description = $request->post('project_description');
+       
+         $project->save();
+
+         //return redirect("/admin/manage-projects/$id");
+        //dd($project);
     }
 
     /**
@@ -119,5 +134,16 @@ class ProjectController extends Controller
          $projectSave = MasterProject::create($project);
 
          return redirect("/admin/manage-projects/$id");
+    }
+
+    public function editProject($id)
+    {
+        $projectdetail = MasterProject::find($id);
+        $company = MasterCompany::find($projectdetail->id);
+        $clientData = array();
+        $clientData['clientId'] = $company->id;
+        $clientData['clientName'] = $company->company_name;
+       // dd($company);
+        return view('admin.projects.edit-company-project',['projectdetail'=>$projectdetail,'clientData'=>$clientData]);
     }
 }

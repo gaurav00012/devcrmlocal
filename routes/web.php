@@ -52,6 +52,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/manage-projects','Admin\ProjectController@index');
 	Route::get('admin/manage-projects/{id}','Admin\ProjectController@getCompanyProject');
 	Route::get('admin/add-project/{id}','Admin\ProjectController@addProject');
+	Route::get('admin/edit-project/{id}','Admin\ProjectController@editProject');
+	Route::post('admin/edit-save-project/{id}','Admin\ProjectController@update');
 	Route::post('admin/add-client-project/{id}','Admin\ProjectController@addClientProject');
 	Route::get('admin/manage-task/{id}','Admin\TaskController@getTaskList');
 

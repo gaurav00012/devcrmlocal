@@ -34,17 +34,17 @@ Manage Clients
 @section('vuejs')
 <!-- <script  src="{{URL::asset('js/admin/user.js')}}"></script> -->
 <script>
-// var view_table = $("#client-table").DataTable({
-//     pagingType: "full_numbers",
-//     //columns: columns_operation,
-//   });
+var view_table = $("#client-table").DataTable({
+    pagingType: "full_numbers",
+    //columns: columns_operation,
+  });
 
-//   $(".dataTables_length").addClass("bs-select");
+  $(".dataTables_length").addClass("bs-select");
 
-//   //To remove unwanted class from pagination drop-down
-//   if ($("#client-table_length > label > select")[0])
-//     $("#client-table_length > label > select").removeClass(
-//       "custom-select-sm form-control form-control-sm"
-//     );
+  //To remove unwanted class from pagination drop-down
+  if ($("#client-table_length > label > select")[0])
+    $("#client-table_length > label > select").removeClass(
+      "custom-select-sm form-control form-control-sm"
+    );
 </script>
 @endsection

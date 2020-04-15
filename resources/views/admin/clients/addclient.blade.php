@@ -9,15 +9,15 @@ Add Client
 </div><br>
 {!! Form::open(['url' => '/admin/add-client','method' => 'post']) !!}
 <div class="form-group">
-        <?php echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('company_name', '',['class' => 'form-control ']);?>
+        <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
+        <?php echo Form::text('company_name', '',['class' => 'form-control','placeholder'=>'Enter Company name']);?>
         @if($errors->has('name'))
             <div class="error">{{ $errors->first('company_name') }}</div>
         @endif
         </div>
         <div class="form-group">
-        <?php echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
-        <?php echo Form::textarea('company_description', '',['class' => 'form-control']);?>
+        <?php //echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
+        <?php echo Form::textarea('company_description', '',['class' => 'form-control','placeholder'=>'Enter Company description']);?>
         @if($errors->has('email'))
             <div class="error">{{ $errors->first('company_description') }}</div>
         @endif
