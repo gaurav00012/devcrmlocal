@@ -6,7 +6,7 @@ Manage Tasks
 @section('content')
 <div id="task-list">
 <div class="col-xs-6" style="display:flex;justify-content:flex-end">
-    <a href="{!! url('admin/add-project')!!}"  class="btn btn-primary pull-right" style="margin-right:1em">Add Project</a> 
+    <a href="{!! url('admin/add-task',$projectId)!!}"  class="btn btn-primary pull-right" style="margin-right:1em">Add Task</a> 
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div>
 <p></p>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\MasterTask;
+use App\MasterProject;
+use App\MasterCompany;
 
 class TaskController extends Controller
 {
@@ -88,6 +90,22 @@ class TaskController extends Controller
     public function getTaskList($id)
     {
         $projectTask = MasterTask::where('project_id','=',$id)->get();
-        return view('admin/tasks/get-task-list',['projectTask'=>$projectTask]);
+        $projectId = $id;
+        return view('admin/tasks/get-task-list',['projectTask'=>$projectTask,'projectId'=>$projectId]);
+    }
+
+    public function addTaskInProject($id)
+    {
+        $project = MasterProject::find($id);
+        $allProject = MasterProject::all();
+        $allCompany = MasterCompany::all();
+        $company = MasterCompany::find($project->company_id);
+                        
+       return view('admin/tasks/add-task',[
+            'project' => $project,
+            'allProject' => $allProject,
+            'allCompany' => $allCompany,
+            'company' => $company
+       ]);
     }
 }
