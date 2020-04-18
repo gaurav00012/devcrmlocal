@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('admin/add-client-project/{id}','Admin\ProjectController@addClientProject');
 	Route::get('admin/manage-task/{id}','Admin\TaskController@getTaskList');
 	Route::get('admin/add-task/{id}','Admin\TaskController@addTaskInProject');
+	Route::post('admin/add-task/{id}','Admin\TaskController@saveProjectTask');
 
 	
 

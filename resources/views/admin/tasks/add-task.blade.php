@@ -5,10 +5,10 @@ Add Task
 
 @section('content')
 <div id="add-task">
-{!! Form::open(['url' => '/admin/add-client','method' => 'post']) !!}
+{!! Form::open(['url' => ['/admin/add-task',$getProject->id],'method' => 'post']) !!}
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
   <div class="col-md-6 col-sm-6">
-    <?php echo Form::text('company_name', '',['class' => 'form-control','placeholder'=>'Enter Task Name']);?>
+    <?php echo Form::text('task_name', '',['class' => 'form-control','placeholder'=>'Enter Task Name']);?>
   </div>
 
  
@@ -29,7 +29,7 @@ Add Task
     <?php echo Form::select('resource[]', $resource, null, array('class' => 'form-control resource-list','multiple'=>'multiple'));?>
   </div>
   <div class="col-md-6 col-sm-6">
-  <input type="text" class="form-control" value="02-16-2012">
+  <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date">
   </div>
 </div>
 <p></p>
@@ -52,7 +52,7 @@ Add Task
 <p></p>
 <div class="col-sm-12 col-md-12">
       <div class="form-group">
-            <?php echo Form::submit('Submit',['class'=>'btn btn-primary']);?>
+            <?php echo Form::submit('Submit',['class'=>'btn btn-primary btn-add-task']);?>
         </div>
   </div>
 {!! Form::close() !!}
@@ -103,7 +103,15 @@ var addedFile = '';
       myDropzone.on("addedfile", function(file) {
       console.log("file uploades")
       });
-  
+      
+      $('.btn-add-task').click(function(){           
+        myDropzone.processQueue();
+      });
+
+      $('#datepicker').datepicker({
+        format: 'mm-dd-yyyy',
+        startDate: '-3d'
+    });
     // $("#dZUpload").dropzone({
     //     url: "hn_SimpeFileUploader.ashx",
     //     addRemoveLinks: true,

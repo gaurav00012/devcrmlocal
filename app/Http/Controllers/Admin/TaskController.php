@@ -9,6 +9,7 @@ use App\MasterProject;
 use App\MasterCompany;
 use App\User;
 use App\MasterDropDowns;
+use App\MasterTaskAttachment;
 
 class TaskController extends Controller
 {
@@ -136,5 +137,29 @@ class TaskController extends Controller
             'resource' => $resourceArray,
             'taskstatus' => $taskStatusArray,
        ]);
+    }
+
+    public function saveProjectTask(Request $request,$id)
+    {
+        $this->validate($request,[
+            'task_name' => 'required',
+            'duedate' => 'required',
+            'task_description' => 'required',
+            'task_status' => 'required',
+          ]);
+        
+          
+        // $input = $request->post();
+        // $task['task_name'] = 
+        // $task['project_id'] =
+        // $task['task_status'] =
+        // $task['task_description'] = 
+        // $task['due_date'] = 
+        
+    }
+
+    public function saveTaskImage()
+    {
+
     }
 }

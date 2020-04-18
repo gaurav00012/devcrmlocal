@@ -146,4 +146,6 @@ class ProjectController extends Controller
        // dd($company);
         return view('admin.projects.edit-company-project',['projectdetail'=>$projectdetail,'clientData'=>$clientData]);
     }
+
+   
 }
