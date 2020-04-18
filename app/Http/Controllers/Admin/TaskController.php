@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\MasterTask;
 use App\MasterProject;
 use App\MasterCompany;
+use App\User;
+use App\MasterDropDowns;
 
 class TaskController extends Controller
 {
@@ -96,16 +98,43 @@ class TaskController extends Controller
 
     public function addTaskInProject($id)
     {
-        $project = MasterProject::find($id);
-        $allProject = MasterProject::all();
+        $getProject = MasterProject::find($id);
+        
+        $allProject = MasterProject::where('company_id','=',$getProject->company_id)->get();
         $allCompany = MasterCompany::all();
-        $company = MasterCompany::find($project->company_id);
-                        
+        $getCompany = MasterCompany::find($getProject->company_id);
+        $resource = User::where('user_role','=',2)->get();
+        $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
+      
+        
+      
+        $companyArray = array(
+            '' => 'Please select Client'
+        );
+        foreach($allCompany as $companyId => $company)$companyArray[$company->id] = $company->company_name;
+        $projectArray = array(
+            '' => 'Please select Project'
+        );
+        foreach($allProject as $projectId => $project)$projectArray[$project->id] = $project->project_name;
+      
+        $resourceArray = array();
+        foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = $resoucrData->name;
+
+        $taskStatusArray = array(
+            '' => 'Please select status'
+        );
+        foreach($taskstatus as $taskId => $task)$taskStatusArray[$task->id] = $task->name;
+   
+     
        return view('admin/tasks/add-task',[
             'project' => $project,
-            'allProject' => $allProject,
-            'allCompany' => $allCompany,
-            'company' => $company
+            'allProject' => $projectArray,
+            'allCompany' => $companyArray,
+            'company' => $company,
+            'getProject' => $getProject,
+            'getCompany' => $getCompany,
+            'resource' => $resourceArray,
+            'taskstatus' => $taskStatusArray,
        ]);
     }
 }

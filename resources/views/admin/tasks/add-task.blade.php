@@ -5,18 +5,66 @@ Add Task
 
 @section('content')
 <div id="add-task">
-<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+{!! Form::open(['url' => '/admin/add-client','method' => 'post']) !!}
+<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
+  <div class="col-md-6 col-sm-6">
+    <?php echo Form::text('company_name', '',['class' => 'form-control','placeholder'=>'Enter Task Name']);?>
+  </div>
 
+ 
+</div>
+<p></p>
+<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
+<div class="col-md-6 col-sm-6">
+    <?php echo Form::select('project', $allProject, $getProject->id, array('class' => 'form-control project-list','disabled'=>'disabled'));?>
+  </div>
+  <div class="col-md-6 col-sm-6">
+    <?php echo Form::select('client', $allCompany, $getCompany->id, array('class' => 'form-control client-list','disabled'=>'disabled'));?>
+  </div>
 </div>
 <p></p>
 
+<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
+<div class="col-md-6 col-sm-6">
+    <?php echo Form::select('resource[]', $resource, null, array('class' => 'form-control resource-list','multiple'=>'multiple'));?>
+  </div>
+  <div class="col-md-6 col-sm-6">
+  <input type="text" class="form-control" value="02-16-2012">
+  </div>
+</div>
+<p></p>
+<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
+<div class="col-md-6 col-sm-6">
+<?php echo Form::textarea('task_description', '',['class' => 'form-control','placeholder'=>'Enter Task description']);?>
+  </div>
+  <div class="col-md-6 col-sm-6">
+   <?php echo Form::select('task_status', $taskstatus, null, array('class' => 'form-control task-status'));?>
+  </div>
+</div>
+<p></p>
+<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
+<div class="col-md-12 col-sm-12">
+<div id="dZUpload" class="dropzone">
+      <div class="dz-default dz-message">Click Here to Upload File</div>
+</div>
+</div>
+</div>
+<p></p>
+<div class="col-sm-12 col-md-12">
+      <div class="form-group">
+            <?php echo Form::submit('Submit',['class'=>'btn btn-primary']);?>
+        </div>
+  </div>
+{!! Form::close() !!}
 </div>
 @endsection
 @section('vuejs')
 <!--         -->
 
 <script>
-
+Dropzone.autoDiscover = false;
+var myDropzone = '';
+var addedFile = '';
   var view_table = $("#task-table").DataTable({
     pagingType: "full_numbers",
     //columns: columns_operation,
@@ -30,5 +78,50 @@ Add Task
       "custom-select-sm form-control form-control-sm"
     );
  $('#task-table tbody').sortable();
+ $(document).ready(function() {
+  
+    $('.resource-list').select2({
+      placeholder: 'Select Assignee'
+    });
+   
+     myDropzone = new Dropzone("#dZUpload", {
+        autoProcessQueue: false,
+        url: "hn_SimpeFileUploader.ashx",
+        addRemoveLinks: true,
+        maxFiles: 2,
+        success: function (file, response) {
+            var imgName = response;
+            file.previewElement.classList.add("dz-success");
+            console.log("Successfully uploaded :" + imgName);
+        },
+        error: function (file, response) {
+            file.previewElement.classList.add("dz-error");
+        }
+        // other options
+      });
+
+      myDropzone.on("addedfile", function(file) {
+      console.log("file uploades")
+      });
+  
+    // $("#dZUpload").dropzone({
+    //     url: "hn_SimpeFileUploader.ashx",
+    //     addRemoveLinks: true,
+    //     success: function (file, response) {
+    //         var imgName = response;
+    //         file.previewElement.classList.add("dz-success");
+    //         console.log("Successfully uploaded :" + imgName);
+    //     },
+    //     error: function (file, response) {
+    //         file.previewElement.classList.add("dz-error");
+    //     }
+    // });
+
+});
+
+
+
+   
+
 </script>
 @endsection
