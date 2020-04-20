@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Addfiletypeinattachment extends Migration
+class Changecreateupdateinmastertasks extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,9 @@ class Addfiletypeinattachment extends Migration
     public function up()
     {
         DB::statement("
-        ALTER TABLE `devcrm`.`mas_task_attachments`   
-        ADD COLUMN `file_type` VARCHAR(25) NULL AFTER `file_name`;
+        ALTER TABLE `master_tasks`   
+        CHANGE `created` `created_at` DATETIME NULL,
+        CHANGE `updated` `updated_at` DATETIME NULL;
         ");
     }
 

@@ -41,6 +41,3 @@ Dashboard
           </div>
 
 @endsection
-
-
-background: #39b24a;

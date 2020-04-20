@@ -95,5 +95,5 @@
           <!-- content-wrapper ends -->
           <!-- partial:partials/_footer.html -->
          @yield('vuejs')
-
+          @yield("customjs")
          @include('common.footer')

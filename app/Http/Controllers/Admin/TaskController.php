@@ -10,6 +10,8 @@ use App\MasterCompany;
 use App\User;
 use App\MasterDropDowns;
 use App\MasterTaskAttachment;
+use App\TaskAssignee;
+use Auth;
 
 class TaskController extends Controller
 {
@@ -141,25 +143,48 @@ class TaskController extends Controller
 
     public function saveProjectTask(Request $request,$id)
     {
+      
+
         $this->validate($request,[
             'task_name' => 'required',
             'duedate' => 'required',
             'task_description' => 'required',
             'task_status' => 'required',
           ]);
-        
+          $project = MasterProject::find($id);
+          $company = MasterCompany::find($project->company_id);
+         
           
-        // $input = $request->post();
-        // $task['task_name'] = 
-        // $task['project_id'] =
-        // $task['task_status'] =
-        // $task['task_description'] = 
-        // $task['due_date'] = 
+         $input = $request->post();
+         $user = Auth::user();
+         
+         
+         
+         $task['task_name'] = $input['task_name'];
+         $task['company_id'] = $project->company_id;
+         $task['project_id'] = $id;
+         $task['task_status'] = $input['task_status'];
+         $task['task_description'] = $input['task_description']; 
+         $task['due_date'] = date("Y-m-d", strtotime($input['duedate']));
+         $task['created_by'] = $user->id;
+
+         $taskSave = MasterTask::create($task);
+         if(!empty($input['task_resource']))
+         {
+            $resourceArray = $input['task_resource'];
+            foreach($resourceArray as $key => $resourceVal)
+            {
+                $resource['task_id'] = $taskSave->id;
+                $resource['assignee'] = $resourceVal;
+                $resource['created_by'] = $user->id;
+                $resourceSave = TaskAssignee::create($resource);    
+            }
+         }
         
     }
 
     public function saveTaskImage()
     {
-
+        echo 'hello world';
     }
 }
