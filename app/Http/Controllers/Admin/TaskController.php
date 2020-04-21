@@ -9,9 +9,10 @@ use App\MasterProject;
 use App\MasterCompany;
 use App\User;
 use App\MasterDropDowns;
-use App\MasterTaskAttachment;
+use App\MasterTaskAttachments;
 use App\TaskAssignee;
 use Auth;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -143,7 +144,8 @@ class TaskController extends Controller
 
     public function saveProjectTask(Request $request,$id)
     {
-      
+        $result['success'] = true;
+        $result['exception_message'] = '';
 
         $this->validate($request,[
             'task_name' => 'required',
@@ -151,6 +153,8 @@ class TaskController extends Controller
             'task_description' => 'required',
             'task_status' => 'required',
           ]);
+          try{
+
           $project = MasterProject::find($id);
           $company = MasterCompany::find($project->company_id);
          
@@ -180,11 +184,64 @@ class TaskController extends Controller
                 $resourceSave = TaskAssignee::create($resource);    
             }
          }
+         $result['taskid'] = $taskSave->id;
+        }
+        catch(\Exception $e){
+            $result['success'] = false;
+            $result['exception_message'] = $e->getMessage();
+        }
+
+        return response()->json($result);
         
     }
 
-    public function saveTaskImage()
+    public function saveTaskImage(Request $request)
     {
-        echo 'hello world';
+        $result['success'] = true;
+        $result['exception_message'] = array();
+       
+        $user = Auth::user();
+        if($request->hasFile('file')) {
+            try{
+            $taskId = $request->post('task_id');
+            // Upload path
+            $destinationPath = 'files/';
+     
+            // Create directory if not exists
+            if (!file_exists($destinationPath)) {
+               mkdir($destinationPath, 0755, true);
+            }
+     
+            // Get file extension
+            $extension = $request->file('file')->getClientOriginalExtension();
+     
+            // Valid extensions
+            $validextensions = array("jpeg","jpg","png","pdf");
+     
+            // Check extension
+            //if(in_array(strtolower($extension), $validextensions)){
+     
+              // Rename file 
+            //  $fileName = str_slug(Carbon::now()->toDayDateTimeString()).rand(11111, 99999) .'.' . $extension;
+            $fileName = 'task_'.str_slug(Carbon::now()->toDayDateTimeString()).'.' . $extension;
+     
+              // Uploading file to given path
+              $request->file('file')->move($destinationPath, $fileName); 
+              
+              $taskAttachment['task_id'] = $taskId;
+              $taskAttachment['file_name'] = $fileName;
+              $taskAttachment['file_type'] = $extension;
+              $taskAttachment['created_by'] = $user->id;
+              $taskAttachmentSave = MasterTaskAttachments::create($taskAttachment);  
+              $result['success'] = true;
+            }
+            catch (\Exception $e) {
+                $result['success'] = false;
+                $result['exception_message'] = $e->getMessage();
+            }
+           
+            
+          }
+          return response()->json($result);
     }
 }

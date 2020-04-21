@@ -22,7 +22,7 @@ Manage Tasks
     </thead>
     <tbody>
        @foreach ($projectTask as $key => $projectask)
-      <tr>
+      <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
         <td>{{$projectask->task_name}}</td>
         <td>{{$projectask->task_name}}</td>
         <td>{{$projectask->due_date}}</td>
@@ -52,6 +52,24 @@ Manage Tasks
     $("#task-table_length > label > select").removeClass(
       "custom-select-sm form-control form-control-sm"
     );
- $('#task-table tbody').sortable();
+ $('#task-table tbody').sortable({
+   update: function($event, ui)
+   {
+    $(this).children().each(function(index){
+      if($(this).attr('data-position') != index+1){
+        $(this).attr('data-position',(index+1)).addClass('updated');
+      }
+    });
+    saveNewPositions();
+   }
+ });
+
+ function saveNewPositions()
+ {
+   var positions = [];
+   $('.updated').each(function(){
+      positions.push([$(this).attr('data-position')])
+   });
+ }
 </script>
 @endsection

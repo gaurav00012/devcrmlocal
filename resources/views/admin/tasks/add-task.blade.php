@@ -82,52 +82,49 @@ let fileaddedDropzone = 0;
 //       "custom-select-sm form-control form-control-sm"
 //     );
  //$('#task-table tbody').sortable();
+
+
+ myDropzone = new Dropzone("#dZUpload", {
+        autoProcessQueue: false,
+        url: "/admin/add-task-image",
+        headers: {
+                    'x-csrf-token': "{{ csrf_token() }}",
+                },
+        addRemoveLinks: true,
+        autoProcessQueue: false,
+        maxFiles: 10,
+        // success: function (file, response) {
+        //     var imgName = response;
+        //     file.previewElement.classList.add("dz-success");
+        //     console.log("Successfully uploaded :" + imgName);
+        // },
+        // error: function (file, response) {
+        //     file.previewElement.classList.add("dz-error");
+        // }
+        // other options
+      });
+
+      myDropzone.on("addedfile", function(file) {
+        fileaddedDropzone = 1;
+        alert(fileaddedDropzone);
+      });
+
+ 
  $(document).ready(function() {
   
     $('.resource-list').select2({
       placeholder: 'Select Assignee'
     });
    
-     myDropzone = new Dropzone("#dZUpload", {
-        autoProcessQueue: false,
-        url: "/admin/add-task-image",
-        addRemoveLinks: true,
-        maxFiles: 2,
-        success: function (file, response) {
-            var imgName = response;
-            file.previewElement.classList.add("dz-success");
-            console.log("Successfully uploaded :" + imgName);
-        },
-        error: function (file, response) {
-            file.previewElement.classList.add("dz-error");
-        }
-        // other options
-      });
-
-      myDropzone.on("addedfile", function(file) {
-        fileaddedDropzone = 1;
-      });
-      
-      $('.btn-add-task').click(function(){           
-        myDropzone.processQueue();
-      });
+      // $('.btn-add-task').click(function(){           
+      //   myDropzone.processQueue();
+      // });
 
       $('#datepicker').datepicker({
         format: 'mm-dd-yyyy',
         startDate: '-3d'
-    });
-    // $("#dZUpload").dropzone({
-    //     url: "hn_SimpeFileUploader.ashx",
-    //     addRemoveLinks: true,
-    //     success: function (file, response) {
-    //         var imgName = response;
-    //         file.previewElement.classList.add("dz-success");
-    //         console.log("Successfully uploaded :" + imgName);
-    //     },
-    //     error: function (file, response) {
-    //         file.previewElement.classList.add("dz-error");
-    //     }
-    // });
+    }); 
+
 
     $('.btn-add-task').click(function(){
      let params = {};
@@ -140,6 +137,14 @@ let fileaddedDropzone = 0;
      let taskdescription = $('#task_description').val();
      let taskstatus = $('#task_status').val();
      console.log(params);
+
+    // if(fileaddedDropzone == '1')
+    //    {
+    //     uploadFile(12);
+    //     //myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+    //    }
+    //    return;
+
 
      $.ajax({
       url: '/admin/add-task/'+projectId,
@@ -155,21 +160,37 @@ let fileaddedDropzone = 0;
             },
       dataType : 'JSON',
       success : function(resp){
-        console.log(resp);
-       if(fileaddedDropzone === 1)
+        let taskId = resp.taskid;
+        console.log(taskId);
+       if(fileaddedDropzone == '1')
        {
-        myDropzone.on("sending", function(file, xhr, formData) {
-        			formData.append("_token",CSRF_TOKEN);
+        uploadFile(taskId);
+         //alert("hello world");
+         myDropzone.on("sending", function(file, xhr, formData) {
+          console.log('file'+file);
+          console.log(formData);
+          
+           formData.append("task_id",taskId);
           });
-          myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED));
+      
+          myDropzone.processQueue();
        }
-      },      
+      },
+      error: function (textStatus, errorThrown) {
+           console.log(errorThrown);
+        }      
 
      });
     });
 
 });
 
+
+function uploadFile(taskId)
+{
+    alert(taskId);
+    
+}
 
 
    
