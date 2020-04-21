@@ -95,8 +95,9 @@ class TaskController extends Controller
 
     public function getTaskList($id)
     {
-        $projectTask = MasterTask::where('project_id','=',$id)->get();
+        $projectTask = MasterTask::where('project_id','=',$id)->orderBy('position','ASC')->get();
         $projectId = $id;
+     
         return view('admin/tasks/get-task-list',['projectTask'=>$projectTask,'projectId'=>$projectId]);
     }
 
@@ -243,5 +244,34 @@ class TaskController extends Controller
             
           }
           return response()->json($result);
+    }
+
+    public function saveTaskPosition(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = array();
+       
+        $user = Auth::user();
+        try{
+            $taskpositions = $request->post()['positions'];
+            foreach($taskpositions as $key => $position)
+            {
+                $index = $position[0];
+                $newPosition = $position[1];
+
+                $task = MasterTask::find($index);
+               
+                $task->position = $newPosition;
+                $task->save();
+              
+             
+            }
+            $result['success'] = true;
+        }
+        catch(\Exception $e){
+            $result['success'] = false;
+            $result['exception_message'] = $e->getMessage();
+        }
+        return response()->json($result);
     }
 }

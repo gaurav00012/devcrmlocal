@@ -13,6 +13,7 @@ Manage Tasks
 <table class="table table-striped" id="task-table">
     <thead>
       <tr>
+      <th hidden>position</th>
         <th>Task Name</th>
         <th>Assigne</th>
         <th>Due Date</th>
@@ -23,6 +24,7 @@ Manage Tasks
     <tbody>
        @foreach ($projectTask as $key => $projectask)
       <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
+         <td hidden>{{$projectask->position}}</td>
         <td>{{$projectask->task_name}}</td>
         <td>{{$projectask->task_name}}</td>
         <td>{{$projectask->due_date}}</td>
@@ -67,8 +69,25 @@ Manage Tasks
  function saveNewPositions()
  {
    var positions = [];
+   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
    $('.updated').each(function(){
-      positions.push([$(this).attr('data-position')])
+      positions.push([$(this).attr('data-index'),$(this).attr('data-position')]);
+      $(this).removeClass('updated');
+   });
+
+   $.ajax({
+      url : '/admin/save-task-position',
+      method : 'POST',
+      dataType : 'text',
+      data : {
+        _token: CSRF_TOKEN, 
+        update : 1, 
+        positions : positions
+      },
+      success : function(resp){
+        console.log(resp);
+      },
+
    });
  }
 </script>
