@@ -179,13 +179,13 @@ class TaskController extends Controller
             $resourceArray = $input['task_resource'];
             foreach($resourceArray as $key => $resourceVal)
             {
-                $resource['task_id'] = $taskSave->id;
+                $resource['task_id'] = $taskSave->task_id;
                 $resource['assignee'] = $resourceVal;
                 $resource['created_by'] = $user->id;
                 $resourceSave = TaskAssignee::create($resource);    
             }
          }
-         $result['taskid'] = $taskSave->id;
+         $result['taskid'] = $taskSave->task_id;
         }
         catch(\Exception $e){
             $result['success'] = false;
@@ -273,5 +273,73 @@ class TaskController extends Controller
             $result['exception_message'] = $e->getMessage();
         }
         return response()->json($result);
+    }
+
+    public function editProjectTask($id)
+    {
+        
+        $taskDetail = MasterTask::find($id);
+        $taskAssignee = TaskAssignee::where('task_id','=',$id)->get();
+        $taskAttachment = MasterTaskAttachments::where('task_id','=',$id)->get();
+      
+        $getProject = MasterProject::find($taskDetail->project_id);
+       
+        $allProject = MasterProject::where('company_id','=',$taskDetail->company_id)->get();
+        $allCompany = MasterCompany::all();
+        $getCompany = MasterCompany::find($getProject->company_id);
+        $resource = User::where('user_role','=',2)->get();
+        $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
+      
+        
+        
+        $companyArray = array(
+            '' => 'Please select Client'
+        );
+        foreach($allCompany as $companyId => $company)$companyArray[$company->id] = $company->company_name;
+        $projectArray = array(
+            '' => 'Please select Project'
+        );
+        foreach($allProject as $projectId => $project)$projectArray[$project->id] = $project->project_name;
+      
+        $resourceArray = array();
+        foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = $resoucrData->name;
+
+        $taskStatusArray = array(
+            '' => 'Please select status'
+        );
+        foreach($taskstatus as $taskId => $task)$taskStatusArray[$task->id] = $task->name;
+
+        $taskAssigneeArray = array();
+       foreach($taskAssignee as $assigneeKey => $assignee)
+       {
+         array_push($taskAssigneeArray,$assignee->assignee);
+       }
+     
+       return view('admin/tasks/edit-task',[
+            'project' => $project,
+            'allProject' => $projectArray,
+            'allCompany' => $companyArray,
+            'company' => $company,
+            'getProject' => $getProject,
+            'getCompany' => $getCompany,
+            'resource' => $resourceArray,
+            'taskstatus' => $taskStatusArray,
+            'taskDetail' => $taskDetail,
+           // 'taskAssignee' => $taskTeam,
+            'taskAssigneeArray' => $taskAssigneeArray,
+            'taskAttachment' => $taskAttachment
+       ]);
+    }
+
+    public function showTaskToClient(Request $request,$id)
+    {
+        $post = $request->post();
+        $taskDetail = MasterTask::find($id);
+        $taskDetail->task_view_to_client =  $request->post()['is_checked'];
+        $taskDetail->save();
+        //dd($taskDetail);
+        // echo '<pre>';
+        // print_r ($post);
+        // echo '</pre>';
     }
 }

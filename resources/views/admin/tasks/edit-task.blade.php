@@ -1,6 +1,9 @@
+<?php
+
+?>
 @extends('layouts.admin.main')
 @section('heading')
-Add Task
+Edit Task
 @endsection
 
 @section('content')
@@ -9,7 +12,7 @@ Add Task
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <?php echo Form::hidden('project_id', $getProject->id,['class' => 'form-control','id'=>'project_id']);?>
   <div class="col-md-6 col-sm-6">
-    <?php echo Form::text('task_name', '',['class' => 'form-control','placeholder'=>'Enter Task Name','id'=>'task_name']);?>
+    <?php echo Form::text('task_name', $taskDetail->task_name ,['class' => 'form-control','placeholder'=>'Enter Task Name','id'=>'task_name']);?>
   </div>
 
  
@@ -27,7 +30,7 @@ Add Task
 
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <div class="col-md-6 col-sm-6">
-    <?php echo Form::select('resource[]', $resource, null, array('class' => 'form-control resource-list','multiple'=>'multiple','id'=>'resource'));?>
+    <?php echo Form::select('resource[]', $resource, $taskAssigneeArray, array('class' => 'form-control resource-list','multiple'=>'multiple','id'=>'resource'));?>
   </div>
   <div class="col-md-6 col-sm-6">
   <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date">
@@ -36,10 +39,10 @@ Add Task
 <p></p>
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <div class="col-md-6 col-sm-6">
-<?php echo Form::textarea('task_description', '',['class' => 'form-control','placeholder'=>'Enter Task description','id'=>'task_description']);?>
+<?php echo Form::textarea('task_description', $taskDetail->task_description,['class' => 'form-control','placeholder'=>'Enter Task description','id'=>'task_description']);?>
   </div>
   <div class="col-md-6 col-sm-6">
-   <?php echo Form::select('task_status', $taskstatus, null, array('class' => 'form-control task-status','id'=>'task_status'));?>
+   <?php echo Form::select('task_status', $taskstatus, $taskDetail->task_status, array('class' => 'form-control task-status','id'=>'task_status'));?>
   </div>
 </div>
 <p></p>
@@ -109,6 +112,42 @@ let fileaddedDropzone = 0;
        // alert(fileaddedDropzone);
       });
 
+<?php if(!empty($taskAttachment)){?>
+    <?php foreach($taskAttachment as $attachmentId => $attachment){ ?>
+
+        var fileName='<?php echo $attachment->file_name ?>';	
+        if(fileName != '')
+        {
+          myDropzone.on("addedfile", function(file)
+        			{
+        		    	$(file.previewTemplate).find(".dz-details").wrap("<a href='http://localhost:8000/files/"+fileName+"' data-original-title='Download Document' data-toggle='tooltip'></a>")
+        			});
+        }
+        <?php 
+        $url = 'http://localhost/devcrmlocal/public/files/';
+      //  $headers = array_change_key_case(get_headers('http://localhost/devcrmlocal/public/files/task_wed-apr-22-2020-530-pm', 1));
+        	 //  $fileName=$form->get('file_name')->getValue();
+        	
+            	//$isImage=@exif_imagetype($bucketurl.'/sales/vendor/'.$fileName);
+            	//$docSize=@filesize($bucketurl.'/sales/vendor/'.$fileName);
+             //   $isImage=@exif_imagetype('http://localhost:8000/files/'.$attachment->file_name);
+      //   $docSize=filesize('http://localhost:8000/files/task_wed-apr-22-2020-530-pm');
+         
+                $headers = array_change_key_case(get_headers($url.'/'.$attachment->file_name, 1));
+                $docSize = isset($headers['content-length'])?trim($headers['content-length'],'"'):0;
+               
+                
+            ?>
+         
+            var mockFile = { name: '<?php echo $attachment->file_name; ?>',accepted: true,custom:true,size:<?php echo $docSize?$docSize:0;?>};
+       //     myDropzone.emit("complete", mockFile);
+            myDropzone.emit("addedfile", mockFile);
+            myDropzone.emit("thumbnail",mockFile,"http://localhost:8000/files/"+fileName);
+            mockFile.previewElement.classList.add('dz-success');
+    		mockFile.previewElement.classList.add('dz-complete');
+    		myDropzone.options.maxFiles=0;	
+    <?php } ?>
+<?php } ?>
  
  $(document).ready(function() {
   
@@ -188,7 +227,7 @@ let fileaddedDropzone = 0;
 
 function uploadFile(taskId)
 {
-    alert(taskId);
+    // alert(taskId);
     
 }
 

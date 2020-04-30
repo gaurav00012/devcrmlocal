@@ -60,6 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('admin/add-task/{id}','Admin\TaskController@saveProjectTask');
 	Route::post('admin/add-task-image','Admin\TaskController@saveTaskImage');
 	Route::post('admin/save-task-position','Admin\TaskController@saveTaskPosition');
+	Route::get('admin/edit-task/{id}','Admin\TaskController@editProjectTask');
+	Route::post('admin/task-show-to-client/{id}','Admin\TaskController@showTaskToClient');
 
 	
 

@@ -14,22 +14,34 @@ Manage Tasks
     <thead>
       <tr>
       <th hidden>position</th>
+      <th>#</th>
         <th>Task Name</th>
         <th>Assigne</th>
         <th>Due Date</th>
-        <th>Task Progress</th>
-        <th>Priority</th>
+        <!-- <th>Task Progress</th>
+        <th>Priority</th> -->
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
        @foreach ($projectTask as $key => $projectask)
       <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
+          <td><!-- Default switch -->
+<div class="custom-control custom-switch">
+
+  <input type="checkbox" class="custom-control-input radio-btn" id="customSwitches{{$key}}" data-key="{{$projectask->task_id}}" <?php echo $projectask->task_view_to_client === 1 ? 'checked' : ''  ?>>
+  
+ 
+ 
+  <label class="custom-control-label" for="customSwitches{{$key}}"></label>
+</div></td>
          <td hidden>{{$projectask->position}}</td>
         <td>{{$projectask->task_name}}</td>
         <td>{{$projectask->task_name}}</td>
         <td>{{$projectask->due_date}}</td>
-        <td>{{$projectask->task_progress}}</td>
-         <td>{{$projectask->task_progress}}</td>
+        <!-- <td>{{$projectask->task_progress}}</td>
+         <td>{{$projectask->task_progress}}</td> -->
+         <td><a href="{!! url('admin/edit-task');!!}/{{ $projectask->task_id }}"  class="btn  green-btn">Edit</a>  <a href="{!! url('admin/delete-client');!!}/{{ $projectask ->id }}"  class="btn  green-btn">Delete</a> </td>
       </tr>
      @endforeach
     </tbody>
@@ -40,8 +52,8 @@ Manage Tasks
 @section('vuejs')
 <!--         -->
 
-<script>
-
+<script type="text/javascript">
+  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var view_table = $("#task-table").DataTable({
     pagingType: "full_numbers",
     //columns: columns_operation,
@@ -54,6 +66,9 @@ Manage Tasks
     $("#task-table_length > label > select").removeClass(
       "custom-select-sm form-control form-control-sm"
     );
+
+
+    $(document).ready(function() {
  $('#task-table tbody').sortable({
    update: function($event, ui)
    {
@@ -65,6 +80,31 @@ Manage Tasks
     saveNewPositions();
    }
  });
+
+ $('.radio-btn').on('change',function(){
+  let isChecked = $(this).is(':checked') ? 1 : 0;
+  let taskId = $(this).attr('data-key');
+ 
+   $.ajax({
+  url : '/admin/task-show-to-client/'+taskId,
+  method : 'POST',
+  dataType : 'text',
+  data : {
+    _token: CSRF_TOKEN,
+    is_checked : isChecked 
+    },
+  success:function(resp)
+  {
+    console.log(resp);
+  },
+ });
+
+ });
+
+
+
+
+});
 
  function saveNewPositions()
  {
@@ -90,5 +130,7 @@ Manage Tasks
 
    });
  }
+
+
 </script>
 @endsection
