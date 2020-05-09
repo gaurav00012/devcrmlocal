@@ -62,13 +62,16 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('admin/save-task-position','Admin\TaskController@saveTaskPosition');
 	Route::get('admin/edit-task/{id}','Admin\TaskController@editProjectTask');
 	Route::post('admin/task-show-to-client/{id}','Admin\TaskController@showTaskToClient');
-
+	
 	
 
 	Route::get('/client/home','Client\IndexController@index')->middleware('isClient');
 	
 
 	Route::get('/developer/home','Developer\IndexController@index')->middleware('isDeveloper');
+	Route::post('/developer/edit-task','Developer\IndexController@editTask')->middleware('isDeveloper');
+	Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile')->middleware('isDeveloper');
+	Route::post('developer/add-comment/{taskId}','Developer\IndexController@addComment')->middleware('isDeveloper');
 	//Route::get('admin/dashboard','Admin\DashboardController@index');
 	//Route::get('admin/create-shopkeeper','Admin\ShopkeeperController@create')->middleware('is_admin');
 	//Route::get('admin/get-shopkeeper','Admin\ShopkeeperController@getallshopkeeper')->middleware('is_admin');

@@ -43,6 +43,12 @@ Add Task
   </div>
 </div>
 <p></p>
+<div class="col-md-12">
+<div class="col-md-6">
+<?php echo Form::select('task_status',[''=>'Select Ask Suggestion from','1' => 'Client','2'=>'Client and Developer'], null, array('class' => 'form-control task-status','id'=>'task_status'));?>
+</div>
+</div>
+<p></p>
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <div class="col-md-12 col-sm-12">
 <div id="dZUpload" class="dropzone">

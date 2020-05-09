@@ -26,7 +26,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
     <link rel="stylesheet" href="{{asset('js/select2/dist/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('js/dropzone/dist/min/dropzone.min.css')}}">
-
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     
       <script src="{{asset('js/bootstrap.min.js')}}"></script>

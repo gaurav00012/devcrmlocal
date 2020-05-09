@@ -30,9 +30,7 @@ Manage Tasks
 <div class="custom-control custom-switch">
 
   <input type="checkbox" class="custom-control-input radio-btn" id="customSwitches{{$key}}" data-key="{{$projectask->task_id}}" <?php echo $projectask->task_view_to_client === 1 ? 'checked' : ''  ?>>
-  
- 
- 
+
   <label class="custom-control-label" for="customSwitches{{$key}}"></label>
 </div></td>
          <td hidden>{{$projectask->position}}</td>
@@ -81,7 +79,26 @@ Manage Tasks
    }
  });
 
- $('.radio-btn').on('change',function(){
+//  $('.radio-btn').on('change',function(){
+//   let isChecked = $(this).is(':checked') ? 1 : 0;
+//   let taskId = $(this).attr('data-key');
+ 
+//    $.ajax({
+//   url : '/admin/task-show-to-client/'+taskId,
+//   method : 'POST',
+//   dataType : 'text',
+//   data : {
+//     _token: CSRF_TOKEN,
+//     is_checked : isChecked 
+//     },
+//   success:function(resp)
+//   {
+//     console.log(resp);
+//   },
+//  });
+
+//  });
+$('#task-table').on('click','.radio-btn',function(){
   let isChecked = $(this).is(':checked') ? 1 : 0;
   let taskId = $(this).attr('data-key');
  
@@ -99,7 +116,9 @@ Manage Tasks
   },
  });
 
- });
+
+
+});
 
 
 

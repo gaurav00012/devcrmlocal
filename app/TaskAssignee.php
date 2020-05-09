@@ -10,4 +10,9 @@ class TaskAssignee extends Model
     protected $fillable = [
         'task_id', 'assignee','created_at','created_by','updated_at','updated_by',
     ];
+
+    public function getTask()
+    {
+        return $this->belongs('App\MasterTask','task_id','id');
+    }
 }
