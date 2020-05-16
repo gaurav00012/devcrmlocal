@@ -59,7 +59,13 @@
 
 
  $('#task-table').on('click','.edit-task',function(event){
-   let taskId = $(this).attr('data-taskid');
+  // $(this).attr('data-taskid');
+  getEditTaskModel($(this).attr('data-taskid'))
+ });
+
+ function getEditTaskModel(id)
+ {
+  let taskId = id;
    console.log($(this).attr('data-taskid'));
    //console.log(taskId);
    
@@ -74,10 +80,10 @@
   success:function(resp)
   {
     $("#edit-task-modal").html(resp);
-    $('#edit-task-modal').modal('toggle');
+    $('#edit-task-modal').modal('show');
   },
  });
- });
+ }
  
 
 </script>

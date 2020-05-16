@@ -1,5 +1,5 @@
 <?php
-
+//dd($taskDetail->getTaskComment);
 ?>
 @extends('layouts.admin.main')
 @section('heading')
@@ -8,7 +8,8 @@ Edit Task
 
 @section('content')
 <div id="add-task">
-{!! Form::open(['url' => ['/admin/add-task',$getProject->id],'method' => 'post']) !!}
+{!! Form::open(['url' => ['/admin/edit-task',$getProject->id],'method' => 'post']) !!}
+<input type="hidden" name="task_id" id="task_id" value="{{$taskDetail->task_id}}" >
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <?php echo Form::hidden('project_id', $getProject->id,['class' => 'form-control','id'=>'project_id']);?>
   <div class="col-md-6 col-sm-6">
@@ -46,6 +47,7 @@ Edit Task
   </div>
 </div>
 <p></p>
+      
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <div class="col-md-12 col-sm-12">
 <div id="dZUpload" class="dropzone">
@@ -54,9 +56,37 @@ Edit Task
 </div>
 </div>
 <p></p>
+@if(!$taskDetail->getTaskComment->isEmpty())
+  
+         <div  style="margin-top: 2em;">
+         <h4>Comments</h4>
+            <ul class="list-group">
+              @foreach($taskDetail->getTaskComment as $tKey => $tValue)
+               <li class="list-group-item">
+                  <div class="col-sm-12 col-lg-12">
+                  
+                      <?php echo $tValue->task_comments; ?>
+                      
+                  </div>
+                  <div class="col-sm-12 col-lg-12 ">
+                     <div class="col-md-6 col-sm-6 pull-left">
+                     @if($tValue->edit_count > 0)
+                     <h1><span class="badge badge-secondary">Edited</span></h1>
+                     @endif
+                     </div>
+                     
+                  </div>
+                  </li>
+              @endforeach
+              </ul>
+         </div>
+         @else
+          <p>No Comments to show</p>
+         @endif
+         <p></p>
 <div class="col-sm-12 col-md-12">
       <div class="form-group">
-            <?php echo Form::button('Submit',['class'=>'btn btn-primary btn-add-task']);?>
+            <?php echo Form::button('Submit',['class'=>'btn btn-primary btn-add-task','id'=>'edit-task']);?>
         </div>
   </div>
 {!! Form::close() !!}
@@ -95,7 +125,7 @@ let fileaddedDropzone = 0;
                 },
         addRemoveLinks: true,
         autoProcessQueue: false,
-        maxFiles: 10,
+        //maxFiles: 10,
         // success: function (file, response) {
         //     var imgName = response;
         //     file.previewElement.classList.add("dz-success");
@@ -166,16 +196,17 @@ let fileaddedDropzone = 0;
 
 
     $('.btn-add-task').click(function(){
+      alert("clicked");
      let params = {};
+     let taskId = $('#task_id').val();
      let projectId = $('#project_id').val();
      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-     console.log(CSRF_TOKEN);
      let taskName = $('#task_name').val();
      let taskresource = $('#resource').val()
      let taskDueDate = $('#datepicker').val();
      let taskdescription = $('#task_description').val();
      let taskstatus = $('#task_status').val();
-     console.log(params);
+     
 
     // if(fileaddedDropzone == '1')
     //    {
@@ -186,7 +217,7 @@ let fileaddedDropzone = 0;
 
 
      $.ajax({
-      url: '/admin/add-task/'+projectId,
+      url: '/admin/update-task/'+taskId,
       type : 'post',
       data : {
               _token: CSRF_TOKEN, 
@@ -199,7 +230,7 @@ let fileaddedDropzone = 0;
             },
       dataType : 'JSON',
       success : function(resp){
-        let taskId = resp.taskid;
+        let taskId = resp.task_id;
         console.log(taskId);
        if(fileaddedDropzone == '1')
        {
@@ -221,6 +252,10 @@ let fileaddedDropzone = 0;
 
      });
     });
+
+    // $('#edit-task').click(function(){
+    //   alert("Hello World");
+    // });
 
 });
 

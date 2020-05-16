@@ -9,7 +9,7 @@ class MasterCompany extends Model
     //
     protected $table = 'mas_companies';
     protected $fillable = [
-        'company_name', 'description',
+        'company_name','user_id','description',
     ];
 
     public function findCompany()

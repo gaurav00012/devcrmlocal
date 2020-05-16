@@ -8,17 +8,24 @@ Add Client
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div><br>
 {!! Form::open(['url' => '/admin/add-client','method' => 'post']) !!}
-<div class="form-group">
+        <div class="form-group">
         <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
         <?php echo Form::text('company_name', '',['class' => 'form-control','placeholder'=>'Enter Company name']);?>
-        @if($errors->has('name'))
+        @if($errors->has('company_name'))
             <div class="error">{{ $errors->first('company_name') }}</div>
+        @endif
+        </div>
+        <div class="form-group">
+        <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
+        <?php echo Form::text('company_email', '',['class' => 'form-control','placeholder'=>'Enter Company email']);?>
+        @if($errors->has('company_email'))
+            <div class="error">{{ $errors->first('company_email') }}</div>
         @endif
         </div>
         <div class="form-group">
         <?php //echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
         <?php echo Form::textarea('company_description', '',['class' => 'form-control','placeholder'=>'Enter Company description']);?>
-        @if($errors->has('email'))
+        @if($errors->has('company_description'))
             <div class="error">{{ $errors->first('company_description') }}</div>
         @endif
         </div>

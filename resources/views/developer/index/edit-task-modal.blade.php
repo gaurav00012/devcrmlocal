@@ -46,7 +46,23 @@
          <div  style="margin-top: 2em;">
             <ul class="list-group">
               @foreach($taskComment as $tKey => $tValue)
-               <li class="list-group-item"><?php echo $tValue->task_comments; ?></li>
+               <li class="list-group-item">
+                  <div class="col-sm-12 col-lg-12">
+                  
+                      <?php echo $tValue->task_comments; ?>
+                      
+                  </div>
+                  <div class="col-sm-12 col-lg-12 ">
+                     <div class="col-md-6 col-sm-6 pull-left">
+                     @if($tValue->edit_count > 0)
+                     <h1><span class="badge badge-secondary">Edited</span></h1>
+                     @endif
+                     </div>
+                     <div class="col-md-6 col-sm-6 pull-right">
+                     <button type="button" class="btn btn-primary edit-comment pull-right" data-comment-id="{{$tValue->id}}" id="edit-comment_{{$tValue->task_id}}">Edit</button>
+                     </div>
+                  </div>
+                  </li>
               @endforeach
               </ul>
          </div>
@@ -85,8 +101,30 @@
           },
         success:function(resp)
         {
+         let jsonesp = JSON.parse(resp);
+         getEditTaskModel(jsonesp.task_id);
+          //$("#edit-task-modal").html(resp);
+          //$('#edit-task-modal').modal('toggle');
+        },
+      });
+    });
+
+    $('.edit-comment').click(function(){
+      let commentId = $(this).attr('data-comment-id');
+      
+      $.ajax({
+        url : '/developer/edit-comment/',
+        method : 'POST',
+        dataType : 'text',
+        data : {
+          _token: CSRF_TOKEN,
+          comment_id : commentId,
+          },
+        success:function(resp)
+        {
+           
           $("#edit-task-modal").html(resp);
-          $('#edit-task-modal').modal('toggle');
+         //  $('#edit-task-modal').modal('show');
         },
       });
     });

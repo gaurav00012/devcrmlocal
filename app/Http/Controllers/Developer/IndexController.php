@@ -24,22 +24,20 @@ class IndexController extends Controller
      */
     public function index()
     {
-        //
-        $user = Auth::user();
-      //  $tasks = TaskAssignee::where('assignee',$user->id)->get()->getTask();
-      $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = 4 ORDER BY due_date');
-      foreach($tasks as $key => $task)
-      {
         
-         $assignee = User::find($task->assignee);
-         $company = MasterCompany::find($task->company_id);
-         $task->assigneename = $assignee->name;
-         $task->companyname = $company->company_name;
+        $user = Auth::user();
+      
+        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' ORDER BY mt.position asc');
+        foreach($tasks as $key => $task)
+        {
+            
+            $assignee = User::find($task->assignee);
+            $company = MasterCompany::find($task->company_id);
+            $task->assigneename = $assignee->name;
+            $task->companyname = $company->company_name;
 
-      }
-    //   echo '<pre>';
-    //   print_r ($tasks);
-      return view('developer.index.index',['tasks'=>$tasks]);
+        }
+        return view('developer.index.index',['tasks'=>$tasks]);
     }
 
     /**
@@ -193,14 +191,53 @@ class IndexController extends Controller
            $comment['created_by'] = $user->id;
            $comment = MasterTaskComment::create($comment);
            $result['comment_id'] = $comment->id;
-           
-           return $result;
+           $result['task_id'] = $id;
+        //    return json$result;
 
         }
         catch(\Exception $e){
             $result['success'] = false;   
             $result['exception_message'] = $e->getMessage();
+           // return $result;
+        }
+        return response()->json($result);
+    }
+
+    public function editComment(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try{
+            $commentData = MasterTaskComment::find($request->post()['comment_id']);
+            return view('developer.index.edit-comment',['commentData'=>$commentData]);
+        } catch(\Exception $e){
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
             return $result;
         }
+    }
+
+    public function updatecomment(Request $request,$id)
+    {
+        $result['success'] = true;
+
+        try{
+            $user = Auth::user();
+            $post = $request->post();
+            $commentData = MasterTaskComment::find($id);
+            $commentData->task_comments = $post['comment'];
+            $commentData->edit_count = $commentData->edit_count + 1;
+            $commentData->updated_by = $user->id;
+            
+            if($commentData->save())
+                $result['comment_id'] = $commentData->id;$result['task_id'] = $commentData->task_id;
+            
+        } catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+        return response()->json($result);
     }
 }

@@ -46,19 +46,36 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $result['success'] = true;
+       
+        try{
+
         $this->validate($request,[
             'company_name' => 'required',
+            'company_email' => 'required|email',
             'company_description' => 'required',
             
          ]);
          $input = $request->post();
+         $user['name'] = $input['company_name'];
+         $user['email'] = $input['company_email'];
+         $user['user_role'] = 3;
+         $user['password'] = bcrypt('test12345');
+         $user['text_password'] = 'test12345';
+         $user = User::create($user);
+
+         $client['user_id'] = $user->id;
          $client['company_name'] = $input['company_name'];
          $client['description'] = $input['company_description'];
         
          $client = MasterCompany::create($client);
 
          return redirect('/admin/manage-client');
+        } catch(\Exception $e){
+                $result['success'] = false;   
+                $result['error'] = $e->getMessage();
+                return $result;
+           }
     }
 
     /**

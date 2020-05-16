@@ -13,6 +13,7 @@ use App\MasterTaskAttachments;
 use App\TaskAssignee;
 use Auth;
 use Carbon\Carbon;
+use DB;
 
 class TaskController extends Controller
 {
@@ -277,58 +278,63 @@ class TaskController extends Controller
 
     public function editProjectTask($id)
     {
-        
-        $taskDetail = MasterTask::find($id);
-        $taskAssignee = TaskAssignee::where('task_id','=',$id)->get();
-        $taskAttachment = MasterTaskAttachments::where('task_id','=',$id)->get();
-      
-        $getProject = MasterProject::find($taskDetail->project_id);
-       
-        $allProject = MasterProject::where('company_id','=',$taskDetail->company_id)->get();
-        $allCompany = MasterCompany::all();
-        $getCompany = MasterCompany::find($getProject->company_id);
-        $resource = User::where('user_role','=',2)->get();
-        $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
-      
-        
-        
-        $companyArray = array(
-            '' => 'Please select Client'
-        );
-        foreach($allCompany as $companyId => $company)$companyArray[$company->id] = $company->company_name;
-        $projectArray = array(
-            '' => 'Please select Project'
-        );
-        foreach($allProject as $projectId => $project)$projectArray[$project->id] = $project->project_name;
-      
-        $resourceArray = array();
-        foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = $resoucrData->name;
+        try{   
+                $taskDetail = MasterTask::find($id);
+                $taskAssignee = TaskAssignee::where('task_id','=',$id)->get();
+                $taskAttachment = MasterTaskAttachments::where('task_id','=',$id)->get();
+            
+                $getProject = MasterProject::find($taskDetail->project_id);
+            
+                $allProject = MasterProject::where('company_id','=',$taskDetail->company_id)->get();
+                $allCompany = MasterCompany::all();
+                $getCompany = MasterCompany::find($getProject->company_id);
+                $resource = User::where('user_role','=',2)->get();
+                $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
+                $taskComment = $taskDetail->getTaskComment;
+                //dd($taskComment);
+                
+                
+                $companyArray = array(
+                    '' => 'Please select Client'
+                );
+                foreach($allCompany as $companyId => $company)$companyArray[$company->id] = $company->company_name;
+                $projectArray = array(
+                    '' => 'Please select Project'
+                );
+                foreach($allProject as $projectId => $project)$projectArray[$project->id] = $project->project_name;
+            
+                $resourceArray = array();
+                foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = $resoucrData->name;
 
-        $taskStatusArray = array(
-            '' => 'Please select status'
-        );
-        foreach($taskstatus as $taskId => $task)$taskStatusArray[$task->id] = $task->name;
+                $taskStatusArray = array(
+                    '' => 'Please select status'
+                );
+                foreach($taskstatus as $taskId => $task)$taskStatusArray[$task->id] = $task->name;
 
-        $taskAssigneeArray = array();
-       foreach($taskAssignee as $assigneeKey => $assignee)
-       {
-         array_push($taskAssigneeArray,$assignee->assignee);
-       }
-     
-       return view('admin/tasks/edit-task',[
-            'project' => $project,
-            'allProject' => $projectArray,
-            'allCompany' => $companyArray,
-            'company' => $company,
-            'getProject' => $getProject,
-            'getCompany' => $getCompany,
-            'resource' => $resourceArray,
-            'taskstatus' => $taskStatusArray,
-            'taskDetail' => $taskDetail,
-           // 'taskAssignee' => $taskTeam,
-            'taskAssigneeArray' => $taskAssigneeArray,
-            'taskAttachment' => $taskAttachment
-       ]);
+                $taskAssigneeArray = array();
+                foreach($taskAssignee as $assigneeKey => $assignee)
+                {
+                    array_push($taskAssigneeArray,$assignee->assignee);
+                }
+            // dd($taskDetail->task_id);
+            return view('admin/tasks/edit-task',[
+                    'project' => $project,
+                    'allProject' => $projectArray,
+                    'allCompany' => $companyArray,
+                    'company' => $company,
+                    'getProject' => $getProject,
+                    'getCompany' => $getCompany,
+                    'resource' => $resourceArray,
+                    'taskstatus' => $taskStatusArray,
+                    'taskDetail' => $taskDetail,
+                // 'taskAssignee' => $taskTeam,
+                    'taskAssigneeArray' => $taskAssigneeArray,
+                    'taskAttachment' => $taskAttachment
+            ]);
+        }
+        catch(\Exception $e){
+            return $e->getMessage();
+        }
     }
 
     public function showTaskToClient(Request $request,$id)
@@ -341,5 +347,59 @@ class TaskController extends Controller
         // echo '<pre>';
         // print_r ($post);
         // echo '</pre>';
+    }
+
+    public function updateTask(Request $request,$id)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try{
+        
+            // $this->validate($request,[
+            //     'task_name' => 'required',
+            //     'duedate' => 'required',
+            //     'task_description' => 'required',
+            //     'task_status' => 'required',
+            //   ]);
+             
+    
+           
+             $input = $request->post();
+             $user = Auth::user();
+             
+            // $taskAssignee = TaskAssignee::where('task_id','=','26')->get();
+            
+             $task = MasterTask::find($id);
+             $taskAssignee = $task->getAssignee;
+             if (!$taskAssignee->isEmpty())
+             {
+                DB::table('mas_task_assignee')->where('task_id', $id)->delete();
+             }
+
+             if(!empty($input['task_resource']))
+             {
+                $resourceArray = $input['task_resource'];
+                foreach($resourceArray as $key => $resourceVal)
+                {
+                    $resource['task_id'] = $id;
+                    $resource['assignee'] = $resourceVal;
+                    $resource['created_by'] = $user->id;
+                    $resourceSave = TaskAssignee::create($resource);    
+                }
+             }
+            
+
+             $task->task_name = $input['task_name'];
+             $task->task_status = $input['task_status'];
+             $task->task_description = $input['task_description']; 
+             $task->due_date = date("Y-m-d", strtotime($input['duedate']));
+             $task->updated_by = $user->id;
+             $task->save();
+             $result['task_id'] = $task->task_id;
+        } catch(\Exception $e){
+            $result['success'] = false;
+            $result['exception_message'] = $e->getMessage();;
+        }
+        return response()->json($result);
     }
 }
