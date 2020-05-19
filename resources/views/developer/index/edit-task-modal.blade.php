@@ -34,7 +34,7 @@
             </div>
             <div class="col-md-6 col-sm-6">
                <label for="email">Task Status:</label>
-               <?php echo Form::select('task_status', $taskStatusArray, null, array('class' => 'form-control task-status','id'=>'task_status'));?>
+               <?php echo Form::select('task_status', $taskStatusArray, $taskDetail->task_status, array('class' => 'form-control task-status','id'=>'task_status'));?>
             </div>
             <br>
             <div class="col-md-12 col-sm-12" style="margin-top: 2em;">
@@ -54,13 +54,17 @@
                   </div>
                   <div class="col-sm-12 col-lg-12 ">
                      <div class="col-md-6 col-sm-6 pull-left">
+                     <h1><span class="badge badge-secondary"><?php echo $tValue->getUserName->name; ?></span>  <span class="badge badge-secondary"><?php echo $tValue->getUserName->created_at; ?></span>
                      @if($tValue->edit_count > 0)
-                     <h1><span class="badge badge-secondary">Edited</span></h1>
+                     <span class="badge badge-secondary">Edited</span>
                      @endif
+                     </h1>
                      </div>
+                     @if(Auth::user()->id ==  $tValue->created_by)
                      <div class="col-md-6 col-sm-6 pull-right">
                      <button type="button" class="btn btn-primary edit-comment pull-right" data-comment-id="{{$tValue->id}}" id="edit-comment_{{$tValue->task_id}}">Edit</button>
                      </div>
+                     @endif
                   </div>
                   </li>
               @endforeach
@@ -91,6 +95,8 @@
     $('#save-comment').click(function(){
       var editorData= CKEDITOR.instances['task_comments'].getData();
       let taskId = $(this).attr('data-taskid');
+      let taskStatus = $('#task_status').val();
+     
       $.ajax({
         url : '/developer/add-comment/'+taskId,
         method : 'POST',
@@ -98,6 +104,7 @@
         data : {
           _token: CSRF_TOKEN,
           comment : editorData,
+          taskstatus : taskStatus
           },
         success:function(resp)
         {

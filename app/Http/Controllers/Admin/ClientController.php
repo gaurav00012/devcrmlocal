@@ -47,18 +47,19 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $result['success'] = true;
+        
        
         try{
 
         $this->validate($request,[
             'company_name' => 'required',
-            'company_email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'company_description' => 'required',
             
          ]);
          $input = $request->post();
          $user['name'] = $input['company_name'];
-         $user['email'] = $input['company_email'];
+         $user['email'] = $input['email'];
          $user['user_role'] = 3;
          $user['password'] = bcrypt('test12345');
          $user['text_password'] = 'test12345';

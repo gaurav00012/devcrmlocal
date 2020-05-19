@@ -181,6 +181,9 @@ let fileaddedDropzone = 0;
       
           myDropzone.processQueue();
        }
+       else{
+        window.location.href = '/admin/manage-task/'+resp.project_id;
+       }
       },
       error: function (textStatus, errorThrown) {
            console.log(errorThrown);

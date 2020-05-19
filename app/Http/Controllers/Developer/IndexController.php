@@ -116,6 +116,13 @@ class IndexController extends Controller
             $taskId = $request->post()['taskid'];
             $taskDetail = MasterTask::find($taskId);
             $taskComment = $taskDetail->getTaskComment;
+        //     foreach($taskComment as $key => $taskCmnt)
+        //     {
+        //         echo '<pre>';
+        //         print_r ($taskCmnt->getUserName->name);
+        //         echo '</pre>';
+        //     }
+        //    die();
             $taskCommentAttachment = MasterTaskCommentAttachment::find($taskId);
             $assignee = User::where('user_role','=',2)->get();
             $assigneeArray = array();
@@ -136,9 +143,7 @@ class IndexController extends Controller
             {
                $taskAttachmentArray[$tkValue->id] = $tkValue->file_name;
             }
-            
-            
-             
+       
             $taskStatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
             $taskStatusArray = array(''=>'Please select Status');
             foreach($taskStatus as $taskKey => $taskstatus)$taskStatusArray[$taskstatus->id] = $taskstatus->name;
@@ -179,13 +184,21 @@ class IndexController extends Controller
     {
         $result['success'] = true;
         $result['exception_message'] = '';
+      
         try{
             $this->validate($request,[
                 'comment' => 'required',
              ]);
             $user = Auth::user();
-            $taskId = MasterTask::findOrFail($id);
-           // $taskComment = MasterTaskComment
+            
+            if($request->post()['taskstatus'] != '' || $request->post()['taskstatus'] != null)
+            {
+                $getTask = MasterTask::find($id);
+                $getTask->task_status = $request->post()['taskstatus'];
+                $getTask->save();
+            }
+            
+           $taskId = MasterTask::findOrFail($id);
            $comment['task_id'] = $id;
            $comment['task_comments'] = $request->post()['comment'];
            $comment['created_by'] = $user->id;

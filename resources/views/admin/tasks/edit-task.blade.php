@@ -56,6 +56,9 @@ Edit Task
 </div>
 </div>
 <p></p>
+<div class="col-md-12 col-sm-12 col-kg-12">
+<button class="btn btn-primary pull-right"> Add Comment </button>
+</div>
 @if(!$taskDetail->getTaskComment->isEmpty())
   
          <div  style="margin-top: 2em;">
@@ -70,11 +73,17 @@ Edit Task
                   </div>
                   <div class="col-sm-12 col-lg-12 ">
                      <div class="col-md-6 col-sm-6 pull-left">
+                     <h1><span class="badge badge-secondary"><?php echo $tValue->getUserName->name; ?></span>  <span class="badge badge-secondary"><?php echo $tValue->getUserName->created_at; ?></span>
                      @if($tValue->edit_count > 0)
-                     <h1><span class="badge badge-secondary">Edited</span></h1>
+                     <span class="badge badge-secondary">Edited</span>
                      @endif
+                     </h1>
                      </div>
-                     
+                     @if(Auth::user()->id ==  $tValue->created_by)
+                     <div class="col-md-6 col-sm-6 pull-right">
+                     <button type="button" class="btn btn-primary edit-comment pull-right" data-comment-id="{{$tValue->id}}" id="edit-comment_{{$tValue->task_id}}">Edit</button>
+                     </div>
+                     @endif
                   </div>
                   </li>
               @endforeach

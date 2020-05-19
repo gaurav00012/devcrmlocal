@@ -17,7 +17,7 @@ Add Client
         </div>
         <div class="form-group">
         <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('company_email', '',['class' => 'form-control','placeholder'=>'Enter Company email']);?>
+        <?php echo Form::text('email', '',['class' => 'form-control','placeholder'=>'Enter Company email']);?>
         @if($errors->has('company_email'))
             <div class="error">{{ $errors->first('company_email') }}</div>
         @endif

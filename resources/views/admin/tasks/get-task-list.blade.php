@@ -14,7 +14,7 @@ Manage Tasks
     <thead>
       <tr>
       <th hidden>position</th>
-      <th>#</th>
+      <th>Client Can See</th>
         <th>Task Name</th>
         <th>Assigne</th>
         <th>Due Date</th>

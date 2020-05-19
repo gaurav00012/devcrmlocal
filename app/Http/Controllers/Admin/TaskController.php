@@ -187,6 +187,7 @@ class TaskController extends Controller
             }
          }
          $result['taskid'] = $taskSave->task_id;
+         $result['project_id'] = $taskSave->project_id;
         }
         catch(\Exception $e){
             $result['success'] = false;

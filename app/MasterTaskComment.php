@@ -11,4 +11,9 @@ class MasterTaskComment extends Model
     protected $fillable = [
          'task_id','task_comments','edit_count','created_by','updated_at','updated_by','created_at',
     ];
+
+    public function getUserName()
+    {
+        return $this->hasOne('App\User','id','created_by');
+    }
 }
