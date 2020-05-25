@@ -14,6 +14,7 @@ use App\MasterDropDowns;
 use App\MasterTaskAttachments;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class IndexController extends Controller
 {
@@ -116,25 +117,16 @@ class IndexController extends Controller
             $taskId = $request->post()['taskid'];
             $taskDetail = MasterTask::find($taskId);
             $taskComment = $taskDetail->getTaskComment;
-        //     foreach($taskComment as $key => $taskCmnt)
-        //     {
-        //         echo '<pre>';
-        //         print_r ($taskCmnt->getUserName->name);
-        //         echo '</pre>';
-        //     }
-        //    die();
             $taskCommentAttachment = MasterTaskCommentAttachment::find($taskId);
             $assignee = User::where('user_role','=',2)->get();
             $assigneeArray = array();
             foreach($assignee as $aK => $assigneValue)$assigneeArray[$assigneValue->id] = $assigneValue->name;
-            //$taskAssigneeArray = array();
+           
             $taskAssignee = $taskDetail->getAssignee;
             $taskAttachments = $taskDetail->getTaskAttachments;
             $taskAssigneeArray = array();
             foreach($taskAssignee as $tk => $tValue)
             {
-                // $taskAssigneeName = User::find($tValue->assignee);
-                // $taskAssigneeArray[$tValue->assignee] = $taskAssigneeName->name;
                 array_push($taskAssigneeArray,$tValue->assignee);
             }
             
@@ -180,38 +172,83 @@ class IndexController extends Controller
         }
     }
 
-    public function addComment($id,Request $request)
+    // public function addComment($id,Request $request)
+    // {
+    //     $result['success'] = true;
+    //     $result['exception_message'] = '';
+      
+    //     try{
+    //         $this->validate($request,[
+    //             'comment' => 'required',
+    //          ]);
+    //         $user = Auth::user();
+            
+    //         if($request->post()['taskstatus'] != '' || $request->post()['taskstatus'] != null)
+    //         {
+    //             $getTask = MasterTask::find($id);
+    //             $getTask->task_status = $request->post()['taskstatus'];
+    //             $getTask->save();
+    //         }
+            
+    //        $taskId = MasterTask::findOrFail($id);
+    //        $comment['task_id'] = $id;
+    //        $comment['task_comments'] = $request->post()['comment'];
+    //        $comment['created_by'] = $user->id;
+    //        $comment = MasterTaskComment::create($comment);
+    //        $result['comment_id'] = $comment->id;
+    //        $result['task_id'] = $id;
+    //     //    return json$result;
+
+    //     }
+    //     catch(\Exception $e){
+    //         $result['success'] = false;   
+    //         $result['exception_message'] = $e->getMessage();
+    //        // return $result;
+    //     }
+    //     return response()->json($result);
+    // }
+
+     public function addComment(Request $request, $id)
     {
         $result['success'] = true;
         $result['exception_message'] = '';
-      
-        try{
-            $this->validate($request,[
-                'comment' => 'required',
-             ]);
-            $user = Auth::user();
-            
-            if($request->post()['taskstatus'] != '' || $request->post()['taskstatus'] != null)
-            {
-                $getTask = MasterTask::find($id);
-                $getTask->task_status = $request->post()['taskstatus'];
-                $getTask->save();
-            }
-            
-           $taskId = MasterTask::findOrFail($id);
-           $comment['task_id'] = $id;
-           $comment['task_comments'] = $request->post()['comment'];
-           $comment['created_by'] = $user->id;
-           $comment = MasterTaskComment::create($comment);
-           $result['comment_id'] = $comment->id;
-           $result['task_id'] = $id;
-        //    return json$result;
+        try
+        {
 
+            $user = Auth::user();
+            $taskDetail = TaskAssignee::where('task_id', '=', $id)->where('assignee', '=', $user->id)->get();
+            
+            if ($request->post()['task_status'] != '' || $request->post() ['task_status'] != null)
+            {
+
+                $taskDetail[0]->getTask->task_status = $request->post() ['task_status'];
+                $taskDetail[0]->getTask->save();
+                $result['task_id'] = $taskDetail[0]->getTask->task_id;
+            }
+            if ($request->post()['task_comment'] != '' || $request->post()['task_comment'] != null)
+            {
+                $comment['task_id'] = $id;
+                $comment['task_comments'] = $request->post() ['task_comment'];
+                $comment['created_by'] = $user->id;
+                $comment = MasterTaskComment::create($comment);
+                $result['comment_id'] = $comment->id;
+                $result['task_id'] = $taskDetail[0]->task_id;
+
+                  if($request->hasFile('attachment'))
+                  {
+                     $fileDestination = 'files/comment_attachment';
+                     $this->fileupload($request->file('attachment'),$fileDestination,$id,$comment->id);
+                  }
+            }
+
+            
         }
-        catch(\Exception $e){
-            $result['success'] = false;   
+        catch(\Exception $e)
+        {
+            $result['success'] = false;
             $result['exception_message'] = $e->getMessage();
-           // return $result;
+            // return $result;
+            
         }
         return response()->json($result);
     }
@@ -252,5 +289,35 @@ class IndexController extends Controller
             return $result;
         }
         return response()->json($result);
+    }
+
+     private function fileupload($file,$fileDestination,$taskId,$commentId)
+     {
+       $result['success'] = true;
+        $result['exception_message'] = array();
+       
+        $user = Auth::user();
+            try{
+            $destinationPath = $fileDestination;
+            if (!file_exists($destinationPath)) {
+               mkdir($destinationPath, 0755, true);
+            }
+            $extension = $file->getClientOriginalExtension();
+            $validextensions = array("jpeg","jpg","png","pdf");
+    
+            $fileName = 'comment_'.str_slug(Carbon::now()->toDayDateTimeString()).'.' . $extension;
+              // Uploading file to given path
+             $file->move($destinationPath, $fileName); 
+             $commentAttachment['task_id'] = $taskId;
+             $commentAttachment['task_comment_id'] = $commentId;
+             $commentAttachment['attachment_name'] = $fileName;
+             $commentAttachment['created_by'] = $user->id;
+             MasterTaskCommentAttachment::create($commentAttachment);
+            }
+            catch (\Exception $e) {
+                $result['success'] = false;
+                $result['exception_message'] = $e->getMessage();
+            }
+          return response()->json($result);
     }
 }

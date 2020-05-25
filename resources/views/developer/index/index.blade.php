@@ -1,8 +1,6 @@
 @extends('layouts.admin.main')
 
 @section('content')
-
-<!-- Modal -->
   <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
  
   </div>

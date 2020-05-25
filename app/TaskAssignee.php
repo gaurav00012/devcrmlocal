@@ -13,6 +13,6 @@ class TaskAssignee extends Model
 
     public function getTask()
     {
-        return $this->belongs('App\MasterTask','task_id','id');
+        return $this->belongsTo('App\MasterTask','task_id','task_id');
     }
 }

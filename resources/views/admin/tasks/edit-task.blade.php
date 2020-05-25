@@ -1,5 +1,5 @@
 <?php
-//dd($taskDetail->getTaskComment);
+//dd($taskDetail);
 ?>
 @extends('layouts.admin.main')
 @section('heading')
@@ -7,6 +7,10 @@ Edit Task
 @endsection
 
 @section('content')
+<div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
+ 
+</div>
+
 <div id="add-task">
 {!! Form::open(['url' => ['/admin/edit-task',$getProject->id],'method' => 'post']) !!}
 <input type="hidden" name="task_id" id="task_id" value="{{$taskDetail->task_id}}" >
@@ -57,7 +61,7 @@ Edit Task
 </div>
 <p></p>
 <div class="col-md-12 col-sm-12 col-kg-12">
-<button class="btn btn-primary pull-right"> Add Comment </button>
+<button type="button" class="btn btn-primary pull-right add-comment" data-taskid={{$taskDetail->task_id}} id="add-comment"> Add Comment </button>
 </div>
 @if(!$taskDetail->getTaskComment->isEmpty())
   
@@ -69,7 +73,14 @@ Edit Task
                   <div class="col-sm-12 col-lg-12">
                   
                       <?php echo $tValue->task_comments; ?>
-                      
+                       @if(!$tValue->getCommentAttachment->isEmpty())
+                              <p>
+                                  @foreach($tValue->getCommentAttachment as $attachmentKey => $attachmentValue)
+                                   
+                                    <a href="/client/download-file/{{$attachmentValue->attachment_name}}"><i class="fa fa-file" aria-hidden="true"></i></a>
+                                  @endforeach
+                              @endif
+                              </p>
                   </div>
                   <div class="col-sm-12 col-lg-12 ">
                      <div class="col-md-6 col-sm-6 pull-left">
@@ -262,6 +273,24 @@ let fileaddedDropzone = 0;
      });
     });
 
+    $('#add-comment').click(function(){
+      let taskId = $(this).attr('data-taskid');
+      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+          url : '/admin/add-comment/'+taskId,
+          method : 'POST',
+          dataType : 'text',
+          data : {
+            _token: CSRF_TOKEN,
+            taskid : taskId 
+            },
+          success:function(resp)
+          {
+            $("#edit-task-modal").html(resp);
+            $('#edit-task-modal').modal('show');
+          },
+ });
+    });
     // $('#edit-task').click(function(){
     //   alert("Hello World");
     // });

@@ -16,4 +16,9 @@ class MasterTaskComment extends Model
     {
         return $this->hasOne('App\User','id','created_by');
     }
+
+    public function getCommentAttachment()
+    {
+    	return $this->hasMany('App\MasterTaskCommentAttachment','task_comment_id','id');
+    }
 }

@@ -37,36 +37,42 @@
                <?php echo Form::select('task_status', $taskStatusArray, $taskDetail->task_status, array('class' => 'form-control task-status','id'=>'task_status'));?>
             </div>
             <br>
-            <div class="col-md-12 col-sm-12" style="margin-top: 2em;">
-               <label for="email">Comments:</label>
-               <?php echo Form::textarea('task_comments', '',['class' => 'form-control','id'=>'task_comments','style'=>'margin-top: 2em;']);?>
-            </div>
-             <div class="col-md-12 col-sm-12" style="margin-top: 1em;">
+
+           
+         </div>
+         {!! Form::open(['files' => true,'method' => 'post','id'=>'comment-form']) !!}
+         <div class="row" style="margin-top: 2em;">
+           <?php echo Form::hidden('task_id', $taskDetail->task_id,['class' => 'form-control','id'=>'task_id']);?>
+           <div class="col-md-12 col-sm-12" style="margin-top: 2em;">
+             <label for="email">Comments:</label>
+             <?php echo Form::textarea('task_comments', '',['class' => 'form-control','id'=>'task_comments','style'=>'margin-top: 2em;']);?>
+          </div>
+          <div class="col-md-12 col-sm-12" style="margin-top: 1em;">
              <label for="attachment">Attachment:</label>
              <?php echo Form::file('image',['class' => 'form-control','id'=>'task_attachment','style'=>'margin-top: 2em;']); //echo Form::file('comment_attachment', '',['class' => 'form-control','id'=>'task_attachment','style'=>'margin-top: 2em;']);?>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-taskid="{{$taskDetail->task_id}}" id="save-comment">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-         </div>
-         @if(!$taskComment->isEmpty())
-         <div  style="margin-top: 2em;">
+          </div>
+         <div class="modal-footer">
+         <button type="button" class="btn btn-primary" data-taskid="{{$taskDetail->task_id}}" id="save-comment">Save changes</button>
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+     </form>
+         @if(!$taskDetail->getTaskComment->isEmpty())
+         <div class="col-md-12 col-sm-12"   style="margin-top: 2em;">
             <ul class="list-group">
-              @foreach($taskComment as $tKey => $tValue)
+              @foreach($taskDetail->getTaskComment as $tKey => $tValue)
                <li class="list-group-item">
                   <div class="col-sm-12 col-lg-12">
-                  
+                    
                       <?php echo $tValue->task_comments; ?>
-                       @if(!$tValue->getCommentAttachment->isEmpty())
+
+                              @if(!$tValue->getCommentAttachment->isEmpty())
                               <p>
                                   @foreach($tValue->getCommentAttachment as $attachmentKey => $attachmentValue)
                                    
-                                    <a href="/developer/download-file/{{$attachmentValue->attachment_name}}"><i class="fa fa-file" aria-hidden="true"></i></a>
+                                    <a href="/client/download-file/{{$attachmentValue->attachment_name}}"><i class="fa fa-file" aria-hidden="true"></i></a>
                                   @endforeach
                               @endif
                               </p>
-                      
                   </div>
                   <div class="col-sm-12 col-lg-12 ">
                      <div class="col-md-6 col-sm-6 pull-left">
@@ -78,7 +84,7 @@
                      </div>
                      @if(Auth::user()->id ==  $tValue->created_by)
                      <div class="col-md-6 col-sm-6 pull-right">
-                     <button type="button" class="btn btn-primary edit-comment pull-right" data-comment-id="{{$tValue->id}}" id="edit-comment_{{$tValue->task_id}}">Edit</button>
+                     <button type="button" class="btn btn-primary edit-comment pull-right" data-comment-id="{{$tValue->id}}" id="edit-comment_{{$tValue->id}}">Edit</button>
                      </div>
                      @endif
                   </div>
@@ -89,9 +95,11 @@
          @else
           <p>No Comments to show</p>
          @endif
+         
+       </div>
       </div>
       
-      
+
    </div>
 </div>
 <script src="{{asset('js/ckeditor4/ckeditor.js')}}"></script>
@@ -105,39 +113,15 @@
       placeholder: 'Select Assignee'
     });
    
-    // $('#save-comment').click(function(){
-    //   var editorData= CKEDITOR.instances['task_comments'].getData();
-    //   let taskId = $(this).attr('data-taskid');
-    //   let taskStatus = $('#task_status').val();
-     
-    //   $.ajax({
-    //     url : '/developer/add-comment/'+taskId,
-    //     method : 'POST',
-    //     dataType : 'text',
-    //     data : {
-    //       _token: CSRF_TOKEN,
-    //       comment : editorData,
-    //       taskstatus : taskStatus
-    //       },
-    //     success:function(resp)
-    //     {
-    //      let jsonesp = JSON.parse(resp);
-    //      getEditTaskModel(jsonesp.task_id);
-    //       //$("#edit-task-modal").html(resp);
-    //       //$('#edit-task-modal').modal('toggle');
-    //     },
-    //   });
-    // });
-
-     $('#save-comment').click(function(){
+    $('#save-comment').click(function(){
       var editorData= CKEDITOR.instances['task_comments'].getData();
       let taskId = $(this).attr('data-taskid');
       let taskStatus = $('#task_status').val();
     //  let commentAttachment = $('#task_attachment');
-       let commentAttachment = document.getElementById('task_attachment');
-       let commentFiles =  commentAttachment.files;
-       let formData = new FormData();
-      
+    let commentAttachment = document.getElementById('task_attachment');
+    let commentFiles =  commentAttachment.files;
+    let formData = new FormData();
+   
      formData.append('task_comment',editorData);
      formData.append('task_status',taskStatus);
       if(commentAttachment.value.length != 0)
@@ -146,7 +130,7 @@
       }
       
       $.ajax({
-        url : '/developer/add-comment/'+taskId,
+        url : '/client/add-comment/'+taskId,
         method : 'POST',
         dataType : 'text',
          headers: {
@@ -175,9 +159,9 @@
 
     $('.edit-comment').click(function(){
       let commentId = $(this).attr('data-comment-id');
-      
+
       $.ajax({
-        url : '/developer/edit-comment/',
+        url : '/client/edit-comment/',
         method : 'POST',
         dataType : 'text',
         data : {
@@ -192,5 +176,53 @@
         },
       });
     });
+
+
+//     $("#comment-form").submit(function(event){
+//        event.preventDefault();
+
+//       //var formData = new FormData($(this)[0]);
+//      var formData = new FormData();
+    
+//       let taskId = $('#task_id').val();
+//       console.log(CSRF_TOKEN);
+//       $.ajax({
+//         url : '/client/add-comment/'+taskId,
+//         type : 'POST',
+//         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+//         // dataType : 'text',
+//         // data : {
+//         //   _token: CSRF_TOKEN,
+//         //   formdata : formData
+//         //   // comment : editorData,
+//         //   // taskstatus : taskStatus
+//         //   },
+//         data : $(this).serialize(),
+//         success:function(resp)
+//         {
+//          let jsonresp = JSON.parse(resp);
+//          getEditTaskModel(jsonresp.task_id);
+//           //$("#edit-task-modal").html(resp);
+//           //$('#edit-task-modal').modal('toggle');
+//         },
+//         // cache: false,
+//          //processData: false
+//       });
+
+//       // $.ajax({
+//       //     url: url to post,
+//       //     type: 'POST',
+//       //     data: formData,
+//       //     success: function (data) {
+//       //         alert(data)
+//       //     },
+//       //     cache: false,
+//       //     processData: false
+//       // });
+
+//       //return false;
+// });
+
+
    });
 </script>

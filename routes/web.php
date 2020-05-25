@@ -63,11 +63,16 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/edit-task/{id}','Admin\TaskController@editProjectTask');
 	Route::post('admin/task-show-to-client/{id}','Admin\TaskController@showTaskToClient');
 	Route::post('admin/update-task/{id}','Admin\TaskController@updateTask');
-	
+	Route::post('admin/add-comment/{taskId}','Admin\TaskController@addComment');
+	Route::post('admin/save-comment/{taskId}','Admin\TaskController@saveComment');
 	
 
-	Route::get('/client/home','Client\IndexController@index')->middleware('isClient');
-	
+	Route::get('client/home','Client\IndexController@index')->middleware('isClient');
+	Route::post('client/edit-task','Client\IndexController@editTask')->middleware('isClient');
+	Route::post('client/add-comment/{taskId}','Client\IndexController@addComment')->middleware('isClient');
+	Route::post('client/edit-comment/','Client\IndexController@editComment')->middleware('isClient');
+	Route::post('client/update-comment/{commentid}','Client\IndexController@updateComment')->middleware('isClient');
+	Route::get('client/download-file/{filename}','Client\IndexController@downloadfile')->middleware('isClient');	
 	
 
 	Route::get('/developer/home','Developer\IndexController@index')->middleware('isDeveloper');

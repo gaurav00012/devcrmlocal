@@ -27,4 +27,8 @@ class MasterTask extends Model
     {
         return $this->hasMany('App\MasterTaskComment','task_id','task_id');
     }
+
+    public function getTaskStatus(){
+        return $this->hasOne('App\MasterDropDowns','id','task_status');
+    }
 }

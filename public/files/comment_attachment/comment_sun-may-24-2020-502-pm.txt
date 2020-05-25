@@ -1,0 +1,4 @@
+IP	103.239.139.44
+Port 	5726
+Usename	i2k2admin
+Password	MOH@(!*%$wfsd1234JGh
