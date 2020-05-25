@@ -92,8 +92,8 @@
         success:function(resp)
         {
          let jsonresp = JSON.parse(resp);
-         
-         getEditTaskModel(jsonresp.task_id);
+         location.reload();
+         //getEditTaskModel(jsonresp.task_id);
           //$("#edit-task-modal").html(resp);
           //$('#edit-task-modal').modal('toggle');
         },
@@ -102,9 +102,9 @@
 
     $('.edit-comment').click(function(){
       let commentId = $(this).attr('data-comment-id');
-      
+       alert("add comment task blade");
       $.ajax({
-        url : '/developer/edit-comment/',
+        url : '/admin/edit-comment/',
         method : 'POST',
         dataType : 'text',
         data : {
@@ -115,7 +115,8 @@
         {
            
           $("#edit-task-modal").html(resp);
-         //  $('#edit-task-modal').modal('show');
+           $('#edit-task-modal').modal('show');
+
         },
       });
     });

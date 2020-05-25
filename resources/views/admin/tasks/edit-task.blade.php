@@ -77,7 +77,7 @@ Edit Task
                               <p>
                                   @foreach($tValue->getCommentAttachment as $attachmentKey => $attachmentValue)
                                    
-                                    <a href="/client/download-file/{{$attachmentValue->attachment_name}}"><i class="fa fa-file" aria-hidden="true"></i></a>
+                                    <a href="/admin/download-comment-file/{{$attachmentValue->attachment_name}}"><i class="fa fa-file" aria-hidden="true"></i></a>
                                   @endforeach
                               @endif
                               </p>
@@ -121,6 +121,7 @@ Edit Task
 Dropzone.autoDiscover = false;
 var myDropzone = '';
 let fileaddedDropzone = 0;
+ var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 // var addedFile = '';
 //   var view_table = $("#task-table").DataTable({
 //     pagingType: "full_numbers",
@@ -275,7 +276,7 @@ let fileaddedDropzone = 0;
 
     $('#add-comment').click(function(){
       let taskId = $(this).attr('data-taskid');
-      var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+     
       $.ajax({
           url : '/admin/add-comment/'+taskId,
           method : 'POST',
@@ -289,12 +290,28 @@ let fileaddedDropzone = 0;
             $("#edit-task-modal").html(resp);
             $('#edit-task-modal').modal('show');
           },
- });
+       });
     });
-    // $('#edit-task').click(function(){
-    //   alert("Hello World");
-    // });
-
+   
+     $('.edit-comment').click(function(){
+      alert("edit comment task blade");
+      let commentId = $(this).attr('data-comment-id');
+        $.ajax({
+          url : '/admin/edit-comment/',
+          method : 'POST',
+          dataType : 'text',
+          data : {
+            _token: CSRF_TOKEN,
+            comment_id : commentId,
+            },
+          success:function(resp)
+          {
+             
+            $("#edit-task-modal").html(resp);
+             $('#edit-task-modal').modal('show');
+          },
+        });
+      });
 });
 
 

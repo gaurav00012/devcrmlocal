@@ -474,4 +474,70 @@ class TaskController extends Controller
             }
           return response()->json($result);
     }
+
+     public function downloadCommentfile($fileName)
+     {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try{
+            $pathToFile= public_path()."/files/comment_attachment/".$fileName;
+            return response()->download($pathToFile);   
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+     }
+
+      public function editComment(Request $request)
+      {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try{
+            $user = Auth::user();
+            $commentData = MasterTaskComment::where('id','=',$request->post()['comment_id'])
+                                            ->where('created_by','=',$user->id)
+                                            ->get();
+
+            //$commentData->isEmpty();     
+            //$commentData = $commentData->isEmpty() ? $commentData : $commentData[0]; 
+            return view('admin.tasks.edit-comment',['commentData'=> $commentData]);
+        } catch(\Exception $e){
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+     }
+
+     public function updatecomment(Request $request,$id)
+    {
+        $result['success'] = true;
+
+        try{
+            $user = Auth::user();
+            $post = $request->post();
+            $commentData = MasterTaskComment::where('id','=',$id)
+                                            ->where('created_by','=',$user->id)
+                                            ->get();
+                
+            $commentData[0]->task_comments = $post['comment'];
+            $commentData[0]->edit_count = $commentData[0]->edit_count + 1;
+            $commentData[0]->updated_by = $user->id;
+            
+            if($commentData[0]->save())
+                $result['comment_id'] = $commentData[0]->id;$result['task_id'] = $commentData[0]->task_id;
+            
+        } catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+        return response()->json($result);
+    }
+
+
+
 }

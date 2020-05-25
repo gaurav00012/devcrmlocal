@@ -65,7 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('admin/update-task/{id}','Admin\TaskController@updateTask');
 	Route::post('admin/add-comment/{taskId}','Admin\TaskController@addComment');
 	Route::post('admin/save-comment/{taskId}','Admin\TaskController@saveComment');
-	
+	Route::get('admin/download-comment-file/{filename}','Admin\TaskController@downloadCommentfile');
+	Route::post('admin/edit-comment/','Admin\TaskController@editComment');
+	Route::post('admin/update-comment/{commentid}','Admin\TaskController@updateComment');
 
 	Route::get('client/home','Client\IndexController@index')->middleware('isClient');
 	Route::post('client/edit-task','Client\IndexController@editTask')->middleware('isClient');
@@ -79,8 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('/developer/edit-task','Developer\IndexController@editTask')->middleware('isDeveloper');
 	Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile')->middleware('isDeveloper');
 	Route::post('developer/add-comment/{taskId}','Developer\IndexController@addComment')->middleware('isDeveloper');
-	Route::post('developer/edit-comment/','Developer\IndexController@editComment');
-	Route::post('developer/update-comment/{commentid}','Developer\IndexController@updateComment');
+	Route::post('developer/edit-comment/','Developer\IndexController@editComment')->middleware('isDeveloper');
+	Route::post('developer/update-comment/{commentid}','Developer\IndexController@updateComment')->middleware('isDeveloper');
 	//Route::get('admin/dashboard','Admin\DashboardController@index');
 	//Route::get('admin/create-shopkeeper','Admin\ShopkeeperController@create')->middleware('is_admin');
 	//Route::get('admin/get-shopkeeper','Admin\ShopkeeperController@getallshopkeeper')->middleware('is_admin');
