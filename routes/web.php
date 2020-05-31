@@ -20,10 +20,13 @@ Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/home','Admin\IndexController@index')->middleware('auth','isClient');
 //Route::post('/get-project','Admin\IndexController@getCompany');
-Route::get('/test','User\HomeController@index');
+//Route::get('/test','User\HomeController@index');
 
 
 Route::group(['middleware' => 'auth'], function () {
+	// Route::get('/', function () {
+ //        return view('login');
+ //   });
 	Route::get('/admin/home','Admin\IndexController@index');
 	Route::post('admin/get-project','Admin\IndexController@getCompany');
 	Route::get('/admin/manage-user','Admin\UserController@index');
