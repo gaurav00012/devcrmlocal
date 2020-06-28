@@ -22,7 +22,7 @@ Auth::routes();
 //Route::post('/get-project','Admin\IndexController@getCompany');
 //Route::get('/test','User\HomeController@index');
 
-
+Route::get('/test-json','TestController@index');
 Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/', function () {
  //        return view('login');
