@@ -88,4 +88,24 @@ class TaskTimelog extends Model
                                
        }
      }
+
+     public function getPauseTask()
+     {
+          $user = Auth::user();
+          $pauseTask = Self::where('user_id','=',$user->id)
+                           ->where('end_time','=',NULL)
+                           ->get();
+
+          return $pauseTask;                   
+     }
+
+     public static function getLogs($taskId)
+     {
+         $user = Auth::user();
+         
+         return Self::where('task_id','=',$taskId)
+                          ->where('user_id','=',$user->id)
+                          ->get();
+                                                    
+     }
 }

@@ -26,10 +26,15 @@ class IndexController extends Controller
      */
     public function index()
     {
-        
+
         $user = Auth::user();
-      
+        $timeLog = new TaskTimelog;
+        $onGoingTask = $timeLog->getPauseTask();
+        //dd($onGoingTask);
         $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' ORDER BY mt.position asc');
+        $completeTask = MasterTask::getCompletedTask();
+        $taskTimeLog = TaskTimelog::All();
+        
         foreach($tasks as $key => $task)
         {
             
@@ -39,7 +44,7 @@ class IndexController extends Controller
             $task->companyname = $company->company_name;
 
         }
-        return view('developer.index.index',['tasks'=>$tasks]);
+        return view('developer.index.index',['tasks'=>$tasks,'onGoingTask'=>$onGoingTask,'taskTimeLog'=>$taskTimeLog]);
     }
 
     /**
@@ -309,9 +314,8 @@ class IndexController extends Controller
                                       ->where('assignee','=',$user->id)
                                       ->get();
 
-           // if($timeLog->checkTask() === false)
-           //    throw new \ErrorException('Cannot Start new Task');
-         
+        //  $getPauseTask = $timeLog->getPauseTask();
+        //  dd($getPauseTask);
           $saveStartTime = $timeLog->saveStartTime($taskId,$taskStatus); 
        //   $getTaskTimeLog = $timeLog->getTaskTimeLog($id);
           if($saveStartTime)
@@ -329,6 +333,27 @@ class IndexController extends Controller
         }
         return $result;
     }
+
+     public function getTimeLog(Request $request)
+     {
+         $result['success'] = true;
+         $result['exception_message'] = '';
+        try{
+          $user = Auth::user();
+          $post = $request->post();
+          //$timeLog = new TaskTimelog;
+          $taskTimeLogs = TaskTimelog::getLogs($post['taskid']);
+          // foreach($taskTimeLogs as $key => $taskTimeLog)
+          // {
+          //   echo $taskTimeLog->start_time;
+          // }
+          return view('developer.index.get-time-log',['taskTimeLogs'=>$taskTimeLogs]);
+        }
+        catch(\Exception $e){
+          $result['success'] = false;   
+          $result['exception_message'] = $e->getMessage();
+        }
+     }
 
      private function fileupload($file,$fileDestination,$taskId,$commentId)
      {

@@ -4,8 +4,19 @@
   <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
  
   </div>
-
-<table class="table table-striped" id="task-table">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All Task</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Completed Task</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <div class="col-sm-12">
+      <br>
+    <table class="table table-striped" id="task-table">
     <thead>
       <tr>
       <th hidden>position</th>
@@ -14,8 +25,6 @@
         <th>Company</th>
         <th>Assigne</th>
         <th>Due Date</th>
-        <!-- <th>Task Progress</th>
-        <th>Priority</th> -->
         <th>Action</th>
       </tr>
     </thead>
@@ -28,19 +37,83 @@
         <td>{{$projectask->companyname}}</td>
         <td>{{$projectask->assigneename}}</td>
         <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
-        <!-- <td>{{$projectask->task_progress}}</td>
-         <td>{{$projectask->task_progress}}</td> -->
-          <td><a class="btn green-btn loader_{{$projectask->task_id}}" type="button" hidden disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>  <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Start</a> | <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}" class="btn green-btn edit-task">Edit</a> </td>
+       
+          <td><a class="btn green-btn loader_{{$projectask->task_id}}" type="button" hidden disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>  
+          @if(!$onGoingTask->isEmpty()) 
+            @foreach($onGoingTask as $onKey => $ongoingTask)
+              @if($ongoingTask->task_id ==  $projectask->task_id)
+              <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Pause</a> 
+              @else
+              <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Start</a> 
+              @endif
+            @endforeach
+            @else
+             <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Start</a> 
+            @endif
+            | <button type="button" class="btn green-btn view-log" data-taskid="{{$projectask->task_id}}">Timelog</button>
+            | <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}" class="btn green-btn edit-task">Edit</a> </td>
       </tr>
      @endforeach
     </tbody>
   </table>
+</div>
+  </div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+</div>
+
+<!-- <table class="table table-striped" id="task-table">
+    <thead>
+      <tr>
+      <th hidden>position</th>
+      <th>#</th>
+        <th>Task Name</th>
+        <th>Company</th>
+        <th>Assigne</th>
+        <th>Due Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+       @foreach ($tasks as $key => $projectask)
+      <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
+          <td>{{$key+1}}</td>
+         <td hidden>{{$projectask->position}}</td>
+        <td>{{$projectask->task_name}}</td>
+        <td>{{$projectask->companyname}}</td>
+        <td>{{$projectask->assigneename}}</td>
+        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
+       
+          <td><a class="btn green-btn loader_{{$projectask->task_id}}" type="button" hidden disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>  
+          @if(!$onGoingTask->isEmpty()) 
+            @foreach($onGoingTask as $onKey => $ongoingTask)
+              @if($ongoingTask->task_id ==  $projectask->task_id)
+              <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Pause</a> 
+              @else
+              <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Start</a> 
+              @endif
+            @endforeach
+            @else
+             <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Start</a> 
+            @endif
+            | <button type="button" class="btn green-btn view-log" data-taskid="{{$projectask->task_id}}">Timelog</button>
+            | <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}" class="btn green-btn edit-task">Edit</a> </td>
+      </tr>
+     @endforeach
+    </tbody>
+  </table> -->
 
 @endsection
 @section('vuejs')
 <!--         -->
 
 <script type="text/javascript">
+//  $(document).ready(function(){
+//  $('.testtooltip').tooltip({
+//   sanitize: false
+// }).tooltip('show')
+
+// });
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var view_table = $("#task-table").DataTable({
     pagingType: "full_numbers",
@@ -66,7 +139,7 @@
 
     let taskId = $(this).attr('data-taskid');
     $('.loader_'+taskId).show();
-   $('.loader_'+taskId).removeAttr("hidden");
+    $('.loader_'+taskId).removeAttr("hidden");
     let button = $(this);
     button.hide();
     let btnText = button.text();
@@ -106,6 +179,27 @@
         },
        });   
  });
+
+ $('#task-table').on('click','.view-log',function(event){
+    let taskId = $(this).attr('data-taskid');
+    $.ajax({
+      url : '/developer/get-time-log',
+      method : 'POST',
+      dataType : 'text',
+      data : {
+        _token: CSRF_TOKEN,
+        taskid : taskId 
+        },
+      success:function(resp)
+      {
+        $("#edit-task-modal").html(resp);
+        $('#edit-task-modal').modal('show');
+        //alert(resp);
+        //$("#edit-task-modal").html(resp);
+        //$('#edit-task-modal').modal('show');
+      },
+     });
+  });
 
  function getEditTaskModel(id)
  {

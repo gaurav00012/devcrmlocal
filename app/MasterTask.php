@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Auth;
+use DB;
 
 class MasterTask extends Model
 {
@@ -30,5 +32,11 @@ class MasterTask extends Model
 
     public function getTaskStatus(){
         return $this->hasOne('App\MasterDropDowns','id','task_status');
+    }
+
+    public static function getCompletedTask()
+    {
+        $user = Auth::user();
+        $completeTask = DB::select('SELECT mt.*, mta.* FROM master_tasks mt INNER JOIN mas_task_assignee mta ON mt.task_id = mta.`task_id` WHERE task_status = 3 AND mta.assignee = 2');
     }
 }
