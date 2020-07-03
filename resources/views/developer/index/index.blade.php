@@ -30,7 +30,7 @@
         <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
         <!-- <td>{{$projectask->task_progress}}</td>
          <td>{{$projectask->task_progress}}</td> -->
-          <td><a href="javascript:void(0)" data-taskid={{$projectask->task_id}}  class="btn green-btn edit-task">Edit</a> </td>
+          <td><a class="btn green-btn loader_{{$projectask->task_id}}" type="button" hidden disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>  <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn start-task">Start</a> | <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}" class="btn green-btn edit-task">Edit</a> </td>
       </tr>
      @endforeach
     </tbody>
@@ -58,7 +58,53 @@
 
  $('#task-table').on('click','.edit-task',function(event){
   // $(this).attr('data-taskid');
-  getEditTaskModel($(this).attr('data-taskid'))
+  getEditTaskModel($(this).attr('data-taskid'));
+ });
+
+
+ $('#task-table').on('click','.start-task',function(event){
+
+    let taskId = $(this).attr('data-taskid');
+    $('.loader_'+taskId).show();
+   $('.loader_'+taskId).removeAttr("hidden");
+    let button = $(this);
+    button.hide();
+    let btnText = button.text();
+    let changeBtn = btnText == 'Start' ? 'Pause' : 'Start';
+    //console.log(button.text());
+      // if(btnText == 'Start')
+      // {
+
+      // }
+
+     $.ajax({
+        url : '/developer/start-task/'+taskId,
+        method : 'POST',
+        dataType : 'text',
+        data : {
+          _token: CSRF_TOKEN,
+          taskid : taskId,
+          task_status : btnText,
+          },
+        success:function(resp)
+        {
+         // console.log(resp);
+          let jsonesp = JSON.parse(resp);
+          if(jsonesp.success === true)
+          {
+            $(button).text(changeBtn);  
+            $('.loader_'+taskId).attr("hidden", "hidden");
+            $(button).show();
+          }
+          else
+          {
+            alert(jsonesp.exception_message);
+            $('.loader_'+taskId).attr("hidden", "hidden");
+            $(button).show();
+          }
+          
+        },
+       });   
  });
 
  function getEditTaskModel(id)

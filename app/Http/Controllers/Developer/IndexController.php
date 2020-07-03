@@ -12,6 +12,7 @@ use App\MasterTaskComment;
 use App\MasterTaskCommentAttachment;
 use App\MasterDropDowns;
 use App\MasterTaskAttachments;
+use App\TaskTimelog;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -289,6 +290,44 @@ class IndexController extends Controller
             return $result;
         }
         return response()->json($result);
+    }
+
+    public function startTask(Request $request, $id)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+
+        try{
+          $user = Auth::user();
+          $post = $request->post();
+          $taskId = $post['taskid'];
+          $taskStatus = $post['task_status'];
+
+          $timeLog = new TaskTimelog;
+
+          $taskAssignee = TaskAssignee::where('task_id','=',$taskId)
+                                      ->where('assignee','=',$user->id)
+                                      ->get();
+
+           // if($timeLog->checkTask() === false)
+           //    throw new \ErrorException('Cannot Start new Task');
+         
+          $saveStartTime = $timeLog->saveStartTime($taskId,$taskStatus); 
+       //   $getTaskTimeLog = $timeLog->getTaskTimeLog($id);
+          if($saveStartTime)
+          {
+            $result['success'] = true;
+            $result['task_id'] = $id;
+          }                       
+          
+        }
+        catch(\Exception $e)
+        {
+          $result['success'] = false;   
+          $result['exception_message'] = $e->getMessage();
+          
+        }
+        return $result;
     }
 
      private function fileupload($file,$fileDestination,$taskId,$commentId)

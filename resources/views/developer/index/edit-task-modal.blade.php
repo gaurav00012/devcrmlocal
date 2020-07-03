@@ -175,9 +175,8 @@
 
     $('.edit-comment').click(function(){
       let commentId = $(this).attr('data-comment-id');
-      
       $.ajax({
-        url : '/developer/edit-comment/',
+        url : '/developer/edit-comment',
         method : 'POST',
         dataType : 'text',
         data : {
