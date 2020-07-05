@@ -67,7 +67,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item preview-item">
                   <div class="preview-thumbnail">
-                    <img src="{{asset('images/faces/face1.jpg')}}" alt="image" class="img-sm profile-pic"> </div>
+                    <img src="{{url(Auth::user()->profile_picture == '' ? 'images/user-profile/user-avatar.png' : 'user-profile/'. Auth::user()->profile_picture)}}" alt="image" class="img-sm profile-pic"> </div>
                   <div class="preview-item-content flex-grow py-2">
                     <p class="preview-subject ellipsis font-weight-medium text-dark">{{ Auth::user()->name }} </p>
                     <p class="font-weight-light small-text"> The meeting is cancelled </p>
@@ -75,7 +75,7 @@
                 </a>
                 <a class="dropdown-item preview-item">
                   <div class="preview-thumbnail">
-                    <img src="{{asset('images/faces/face2.jpg')}}" alt="image" class="img-sm profile-pic"> </div>
+                    <img src="{{url(Auth::user()->profile_picture == '' ? 'images/user-profile/user-avatar.png' : 'user-profile/'. Auth::user()->profile_picture)}}" alt="image" class="img-sm profile-pic"> </div>
                   <div class="preview-item-content flex-grow py-2">
                     <p class="preview-subject ellipsis font-weight-medium text-dark">David Grey </p>
                     <p class="font-weight-light small-text"> The meeting is cancelled </p>
@@ -83,7 +83,7 @@
                 </a>
                 <a class="dropdown-item preview-item">
                   <div class="preview-thumbnail">
-                    <img src="{{asset('images/faces/face3.jpg')}}" alt="image" class="img-sm profile-pic"> </div>
+                    <img src="{{url(Auth::user()->profile_picture == '' ? 'images/user-profile/user-avatar.png' : 'user-profile/'. Auth::user()->profile_picture)}}" alt="image" class="img-sm profile-pic"> </div>
                   <div class="preview-item-content flex-grow py-2">
                     <p class="preview-subject ellipsis font-weight-medium text-dark">Travis Jenkins </p>
                     <p class="font-weight-light small-text"> The meeting is cancelled </p>
@@ -94,14 +94,14 @@
            
             <li class="nav-item dropdown d-none d-xl-inline-flex user-dropdown">
               <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                <img class="img-xs rounded-circle ml-2" src="{{asset('images/faces/face1.jpg')}}" alt="Profile image"> <span class="font-weight-normal"> {{ Auth::user()->name }} </span></a>
+                <img class="img-xs rounded-circle ml-2" src="{{url(Auth::user()->profile_picture == '' ? 'images/user-profile/user-avatar.png' : 'user-profile/'. Auth::user()->profile_picture)}}" alt="Profile image"> <span class="font-weight-normal"> {{ Auth::user()->name }} </span></a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                 <div class="dropdown-header text-center">
-                  <img class="img-md rounded-circle" src="{{asset('images/faces/face1.jpg')}}" alt="Profile image">
+                  <img class="img-md rounded-circle" src="{{url(Auth::user()->profile_picture == '' ? 'images/user-profile/user-avatar.png' : 'user-profile/'. Auth::user()->profile_picture)}}" alt="Profile image" width="100" height="100">
                   <p class="mb-1 mt-3">{{ Auth::user()->name }}</p>
                   <p class="font-weight-light text-muted mb-0">{{ Auth::user()->email }}</p>
                 </div>
-                <a class="dropdown-item"><i class="dropdown-item-icon icon-user text-primary"></i> My Profile <span class="badge badge-pill badge-danger">1</span></a>
+                <a href="/profile" class="dropdown-item"><i class="dropdown-item-icon icon-user text-primary"></i> My Profile <span class="badge badge-pill badge-danger">1</span></a>
                 <a class="dropdown-item"><i class="dropdown-item-icon icon-speech text-primary"></i> Messages</a>
                 <a class="dropdown-item"><i class="dropdown-item-icon icon-energy text-primary"></i> Activity</a>
                 <a class="dropdown-item"><i class="dropdown-item-icon icon-question text-primary"></i> FAQ</a>

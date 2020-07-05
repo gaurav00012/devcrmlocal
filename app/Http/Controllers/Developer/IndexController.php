@@ -31,10 +31,10 @@ class IndexController extends Controller
         $timeLog = new TaskTimelog;
         $onGoingTask = $timeLog->getPauseTask();
         //dd($onGoingTask);
-        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' ORDER BY mt.position asc');
+        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' AND mt.`task_status` != 3 ORDER BY mt.position asc');
         $completeTask = MasterTask::getCompletedTask();
         $taskTimeLog = TaskTimelog::All();
-        
+       
         foreach($tasks as $key => $task)
         {
             
@@ -44,7 +44,7 @@ class IndexController extends Controller
             $task->companyname = $company->company_name;
 
         }
-        return view('developer.index.index',['tasks'=>$tasks,'onGoingTask'=>$onGoingTask,'taskTimeLog'=>$taskTimeLog]);
+        return view('developer.index.index',['tasks'=>$tasks,'onGoingTask'=>$onGoingTask,'taskTimeLog'=>$taskTimeLog,'completeTask'=>$completeTask]);
     }
 
     /**

@@ -27,4 +27,6 @@ class HomeController extends Controller
       //  $allCompany = MasterCompany::all();
         return view('home');
     }
+
+    
 }

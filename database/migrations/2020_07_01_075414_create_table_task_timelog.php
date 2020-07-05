@@ -14,7 +14,7 @@ class CreateTableTaskTimelog extends Migration
     public function up()
     {
          DB::statement("
-       CREATE TABLE `devcrm`.`mas_task_time_log`(  
+       CREATE TABLE `mas_task_time_log`(  
           `id` INT(25) NOT NULL AUTO_INCREMENT,
           `task_id` INT(25),
           `user_id` BIGINT(20) UNSIGNED NOT NULL,
@@ -26,8 +26,8 @@ class CreateTableTaskTimelog extends Migration
           `updated_at` DATETIME,
           `updated_by` BIGINT(20) NOT NULL,
           PRIMARY KEY (`id`),
-          FOREIGN KEY (`task_id`) REFERENCES `devcrm`.`master_tasks`(`task_id`),
-          FOREIGN KEY (`user_id`) REFERENCES `devcrm`.`users`(`id`)
+          FOREIGN KEY (`task_id`) REFERENCES `master_tasks`(`task_id`),
+          FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
         );
            
         ");

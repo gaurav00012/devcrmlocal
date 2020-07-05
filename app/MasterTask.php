@@ -37,6 +37,8 @@ class MasterTask extends Model
     public static function getCompletedTask()
     {
         $user = Auth::user();
-        $completeTask = DB::select('SELECT mt.*, mta.* FROM master_tasks mt INNER JOIN mas_task_assignee mta ON mt.task_id = mta.`task_id` WHERE task_status = 3 AND mta.assignee = 2');
+        //$completeTask = DB::select('SELECT mt.*, mta.* FROM master_tasks mt INNER JOIN mas_task_assignee mta ON mt.task_id = mta.`task_id` WHERE task_status = 3 AND mta.assignee = 2');
+        return DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' AND mt.`task_status` = 3 ORDER BY mt.position ASC');
+
     }
 }

@@ -88,6 +88,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('developer/update-comment/{commentid}','Developer\IndexController@updateComment')->middleware('isDeveloper');
 	Route::post('developer/start-task/{taskId}','Developer\IndexController@startTask')->middleware('isDeveloper');
 	Route::post('/developer/get-time-log','Developer\IndexController@getTimeLog')->middleware('isDeveloper');
+	Route::get('profile','Common\ProfileController@index');
+	Route::post('profile','Common\ProfileController@saveprofile');
 	//Route::get('admin/dashboard','Admin\DashboardController@index');
 	//Route::get('admin/create-shopkeeper','Admin\ShopkeeperController@create')->middleware('is_admin');
 	//Route::get('admin/get-shopkeeper','Admin\ShopkeeperController@getallshopkeeper')->middleware('is_admin');

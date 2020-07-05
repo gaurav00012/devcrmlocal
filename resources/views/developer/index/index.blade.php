@@ -1,3 +1,7 @@
+<?php
+use App\MasterCompany;
+use App\User;
+ ?>
 @extends('layouts.admin.main')
 
 @section('content')
@@ -16,7 +20,7 @@
   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
     <div class="col-sm-12">
       <br>
-    <table class="table table-striped" id="task-table">
+    <table class="table table-striped task-table" id="task-table">
     <thead>
       <tr>
       <th hidden>position</th>
@@ -58,7 +62,39 @@
   </table>
 </div>
   </div>
-  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+     <div class="col-sm-12">
+      <br>
+    <table class="table table-striped task-table" id="task-table">
+    <thead>
+      <tr>
+      <th hidden>position</th>
+      <th>#</th>
+        <th>Task Name</th>
+        <th>Company</th>
+        <th>Due Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+       @foreach ($completeTask as $key => $projectask )
+      <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
+          <td>{{$key+1}}</td>
+         <td hidden>{{$projectask->position}}</td>
+        <td>{{$projectask->task_name}}</td>
+        <td>{{MasterCompany::find($projectask->company_id)->company_name}}</td>
+       
+        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
+       
+          <td><a class="btn green-btn loader_{{$projectask->task_id}}" type="button" hidden disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>  
+             <button type="button" class="btn green-btn view-log" data-taskid="{{$projectask->task_id}}">Timelog</button>
+            | <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}" class="btn green-btn edit-task">Edit</a> </td>
+      </tr>
+     @endforeach
+    </tbody>
+  </table>
+</div>
+  </div>
   <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
 </div>
 
@@ -115,7 +151,7 @@
 
 // });
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-  var view_table = $("#task-table").DataTable({
+  var view_table = $(".task-table").DataTable({
     pagingType: "full_numbers",
     //columns: columns_operation,
   });
@@ -123,19 +159,19 @@
   $(".dataTables_length").addClass("bs-select");
 
   //To remove unwanted class from pagination drop-down
-  if ($("#task-table_length > label > select")[0])
-    $("#task-table_length > label > select").removeClass(
+  if ($(".task-table_length > label > select")[0])
+    $(".task-table_length > label > select").removeClass(
       "custom-select-sm form-control form-control-sm"
     );
 
 
- $('#task-table').on('click','.edit-task',function(event){
+ $('.task-table').on('click','.edit-task',function(event){
   // $(this).attr('data-taskid');
   getEditTaskModel($(this).attr('data-taskid'));
  });
 
 
- $('#task-table').on('click','.start-task',function(event){
+ $('.task-table').on('click','.start-task',function(event){
 
     let taskId = $(this).attr('data-taskid');
     $('.loader_'+taskId).show();
@@ -180,7 +216,7 @@
        });   
  });
 
- $('#task-table').on('click','.view-log',function(event){
+ $('.task-table').on('click','.view-log',function(event){
     let taskId = $(this).attr('data-taskid');
     $.ajax({
       url : '/developer/get-time-log',
