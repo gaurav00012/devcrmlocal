@@ -1,28 +1,28 @@
-
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 	<head>
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 		<meta name="viewport" content="width=device-width, initial-scale=1"> 
-		<title>Elder monk gets started</title>
+		<title>One Look</title>
 		<meta name="description" content="Fullscreen Form Interface: A distraction-free form concept with fancy animations" />
 		<meta name="keywords" content="fullscreen form, css animations, distraction-free, web design" />
 		<meta name="author" content="Codrops" />
 		<link rel="shortcut icon" href="../favicon.ico">
-		<link rel="stylesheet" type="text/css" href="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/css/demo.css" />
-		<link rel="stylesheet" type="text/css" href="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/css/component.css" />
-		<link rel="stylesheet" type="text/css" href="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/css/cs-select.css" />
-		<link rel="stylesheet" type="text/css" href="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/css/cs-skin-boxes.css" />
-		<script src="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/js/modernizr.custom.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="{{asset('css/emf/normalize.css')}}" />
+		<link rel="stylesheet" type="text/css" href="{{asset('css/emf/demo.css')}}" />
+		<link rel="stylesheet" type="text/css" href="{{asset('css/emf/component.css')}}" />
+		<link rel="stylesheet" type="text/css" href="{{asset('css/emf/cs-select.css')}}" />
+		<link rel="stylesheet" type="text/css" href="{{asset('css/emf/cs-skin-boxes.css')}}" />
+		<script src="{{asset('js/emf/modernizr.custom.js')}}"></script>
 	</head>
 	<body>
-				<div class="container">
+		<div class="container">
 
 			<div class="fs-form-wrap" id="fs-form-wrap">
 				<div class="fs-title">
-					<h1>Elder monk</h1>
+					<h1>One Look</h1>
 					
 				</div>
 				<form id="myform" class="fs-form fs-form-full" autocomplete="off" method="POST" enctype="multipart/form-data">
@@ -159,11 +159,23 @@
 				</form><!-- /fs-form -->
 			</div><!-- /fs-form-wrap -->
 
-			
+			<!-- Related demos -->
+			<div class="related">
+				<p>If you enjoyed this demo you might also like:</p>
+				<a href="http://tympanus.net/Development/MinimalForm/">
+					<img src="img/relatedposts/minimalform1-300x162.png" />
+					<h3>Minimal Form Interface</h3>
+				</a>
+				<a href="http://tympanus.net/Development/ButtonComponentMorph/">
+					<img src="img/relatedposts/MorphingButtons-300x162.png" />
+					<h3>Morphing Buttons Concept</h3>
+				</a>
+			</div>
+
 		</div><!-- /container -->
-		<script src="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/js/classie.js"></script>
-		<script src="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/js/selectFx.js"></script>
-		<script src="http://www.eldermonk.com/wp-content/themes/elder-monk/new_css/js/fullscreenForm.js"></script>
+		<script src="{{asset('js/emf/classie.js')}}"></script>
+		<script src="{{asset('js/emf/selectFx.js')}}"></script>
+		<script src="{{asset('js/emf/fullscreenForm.js')}}"></script>
 		<script>
 			(function() {
 				var formWrap = document.getElementById( 'fs-form-wrap' );
@@ -186,5 +198,3 @@
 		</script>
 	</body>
 </html>
-
-
