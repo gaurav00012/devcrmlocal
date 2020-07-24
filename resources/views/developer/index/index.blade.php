@@ -65,7 +65,7 @@ use App\User;
   <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
      <div class="col-sm-12">
       <br>
-    <table class="table table-striped task-table" id="task-table">
+    <table class="table table-striped complete-task-table" id="task-table">
     <thead>
       <tr>
       <th hidden>position</th>
@@ -170,6 +170,7 @@ use App\User;
   getEditTaskModel($(this).attr('data-taskid'));
  });
 
+$('.complete-task-table').DataTable();
 
  $('.task-table').on('click','.start-task',function(event){
 

@@ -19,6 +19,10 @@ class isDeveloper
         {
           return $next($request);    
         }
+        if(auth()->user()->user_role == 3)
+        {
+            return redirect('/'.auth()->user()->slug);
+        }
         return redirect('home')->with('error',"You don't have admin access.");
         //return $next($request);
     }

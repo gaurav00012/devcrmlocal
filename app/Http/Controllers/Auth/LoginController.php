@@ -52,7 +52,7 @@ class LoginController extends Controller
         return 'developer/home';
     }
     elseif($role === 3) {
-        return 'client/home';
+        return Auth::user()->slug;
     }
 
 

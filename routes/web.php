@@ -21,7 +21,7 @@ Auth::routes();
 //Route::get('/home','Admin\IndexController@index')->middleware('auth','isClient');
 //Route::post('/get-project','Admin\IndexController@getCompany');
 //Route::get('/test','User\HomeController@index');
-
+Route::get('/','Frontend\WebController@index');
 
 Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/', function () {
@@ -72,7 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('admin/edit-comment/','Admin\TaskController@editComment');
 	Route::post('admin/update-comment/{commentid}','Admin\TaskController@updateComment');
 
-	Route::get('client/home','Client\IndexController@index')->middleware('isClient');
+	//Route::get('client/home','Client\IndexController@index')->middleware('isClient');
+	Route::get('/{slug}','Client\IndexController@index')->middleware('isClient');
 	Route::post('client/edit-task','Client\IndexController@editTask')->middleware('isClient');
 	Route::post('client/add-comment/{taskId}','Client\IndexController@addComment')->middleware('isClient');
 	Route::post('client/edit-comment/','Client\IndexController@editComment')->middleware('isClient');
