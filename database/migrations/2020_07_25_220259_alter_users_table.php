@@ -13,7 +13,7 @@ class AlterUsersTable extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `devcrm`.`users`   
+        DB::statement("ALTER TABLE `users`   
                        ADD COLUMN `c_id` BIGINT(20) UNSIGNED DEFAULT 0  NOT NULL AFTER `slug`;
                      ");
     }
