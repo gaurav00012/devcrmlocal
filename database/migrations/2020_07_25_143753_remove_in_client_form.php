@@ -13,7 +13,7 @@ class RemoveInClientForm extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `devcrm`.`client_form`   
+        DB::statement("ALTER TABLE `client_form`   
                           DROP COLUMN `created_by`, 
                           DROP COLUMN `updated_by`;");
     }
