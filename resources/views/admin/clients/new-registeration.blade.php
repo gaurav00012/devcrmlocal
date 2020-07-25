@@ -54,5 +54,27 @@ New Registerations
 		    },
 		});
 	});
+
+	$('.approve-client').click(function(){
+		let clientId = $(this).attr('data-id');
+		$.ajax({
+			url : '/admin/approve-client',
+		    method : 'POST',
+		    dataType : 'text',
+		    data : {
+		      _token: CSRF_TOKEN,
+		      clientid : clientId 
+		      },
+		    success:function(resp)
+		    {
+		      let jsonresp = JSON.parse(resp);
+		      if(jsonresp.success === true)
+		      {
+		      	alert("Client Approved Successfully");
+		      	location.reload();
+		      } 
+		    },
+		});
+	});
 </script>
 @endsection

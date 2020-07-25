@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/admin/delete-client/{id}','Admin\ClientController@destroy');
 	Route::get('admin/new-registerations','Admin\ClientController@newRegisteration');
 	Route::post('admin/get-new-client','Admin\ClientController@getNewClient');
+	Route::post('admin/approve-client','Admin\ClientController@approveClient');
 
 	Route::get('admin/manage-team','Admin\TeamController@index');
 	Route::get('/admin/create-team','Admin\TeamController@create');

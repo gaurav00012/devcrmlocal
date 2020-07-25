@@ -8,6 +8,7 @@ use App\User;
 use App\MasterProject;
 use App\MasterCompany;
 use App\ClientForm;
+use Auth;
 
 class ClientController extends Controller
 {
@@ -143,7 +144,7 @@ class ClientController extends Controller
         $result['exception_message'] = '';
 
         try{
-            $newRegisterations = ClientForm::all();
+            $newRegisterations = ClientForm::where('is_approved','=',0)->get();
             return view('admin.clients.new-registeration',['newRegisterations'=>$newRegisterations]);
 
         }
@@ -165,6 +166,48 @@ class ClientController extends Controller
             $post = $request->post();
             $clientDetail = ClientForm::find($post['clientid']);
             return view('admin.clients.get-new-client',['clientDetail'=>$clientDetail]);
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;
+            $result['error'] = $e->getMessage();
+            return $result;
+        }
+    }
+
+    public function approveClient(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+
+        try
+        {
+            //$user = Auth::user();
+            $post = $request->post();
+            $clientDetail = ClientForm::find($post['clientid']); 
+            $clientDetail->is_approved = 1;
+            $clientDetail->save();
+            $user['name'] = $clientDetail->company_name;
+            $user['email'] = $clientDetail->email;
+            $user['user_role'] = 3;
+            $user['password'] = bcrypt('test12345');
+            $user['text_password'] = 'test12345';
+            $user['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $clientDetail->company_name)));
+            $user['c_id'] = $clientDetail->id;
+
+             $user = User::create($user);
+
+             $client['user_id'] = $user->id;
+             $client['company_name'] = $clientDetail->company_name;
+             $client['description'] = $clientDetail->about_business;
+             $client['created_by'] = Auth::user()->id;
+            // MasterCompany::create($client);
+             if(MasterCompany::create($client))
+             {
+                $result['user_id'] = $user->id;
+                return $result;
+             }
+
         }
         catch(\Exception $e)
         {

@@ -33,7 +33,7 @@
               </a>
         </li> -->
         <li class="nav-item">
-              <a class="nav-link"  href="{{ url('admin/manage-projects') }}" aria-expanded="false" aria-controls="auth">
+              <a class="nav-link"  href="{{ url('admin/new-registerations') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage New Registrations</span>
                 <i class="icon-user menu-icon"></i>
               </a>
