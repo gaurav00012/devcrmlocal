@@ -26,9 +26,15 @@
              <span class="nav-link"><?php echo Form::select('projects', array(''=>'Select Projects'), null, array('class' => 'form-control projects'));?></span>
           </li> -->
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-projects') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Projects</span>
+                <i class="icon-user menu-icon"></i>
+              </a>
+        </li> -->
+        <li class="nav-item">
+              <a class="nav-link"  href="{{ url('admin/manage-projects') }}" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">Manage New Registrations</span>
                 <i class="icon-user menu-icon"></i>
               </a>
         </li>

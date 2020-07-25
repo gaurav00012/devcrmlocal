@@ -103,18 +103,18 @@ $('#task-table').on('click','.radio-btn',function(){
   let taskId = $(this).attr('data-key');
  
    $.ajax({
-  url : '/admin/task-show-to-client/'+taskId,
-  method : 'POST',
-  dataType : 'text',
-  data : {
-    _token: CSRF_TOKEN,
-    is_checked : isChecked 
+    url : '/admin/task-show-to-client/'+taskId,
+    method : 'POST',
+    dataType : 'text',
+    data : {
+      _token: CSRF_TOKEN,
+      is_checked : isChecked 
+      },
+    success:function(resp)
+    {
+      console.log(resp);
     },
-  success:function(resp)
-  {
-    console.log(resp);
-  },
- });
+  });
 
 
 

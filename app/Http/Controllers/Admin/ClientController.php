@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\MasterProject;
 use App\MasterCompany;
+use App\ClientForm;
 
 class ClientController extends Controller
 {
@@ -134,5 +135,42 @@ class ClientController extends Controller
         $user = User::find($id);
         $user->delete();
         return redirect('/admin/manage-client');
+    }
+
+    public function newRegisteration()
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+
+        try{
+            $newRegisterations = ClientForm::all();
+            return view('admin.clients.new-registeration',['newRegisterations'=>$newRegisterations]);
+
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;
+            $result['error'] = $e->getMessage();
+            return $result;
+        }
+    }
+
+    public function getNewClient(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+
+        try
+        {
+            $post = $request->post();
+            $clientDetail = ClientForm::find($post['clientid']);
+            return view('admin.clients.get-new-client',['clientDetail'=>$clientDetail]);
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;
+            $result['error'] = $e->getMessage();
+            return $result;
+        }
     }
 }

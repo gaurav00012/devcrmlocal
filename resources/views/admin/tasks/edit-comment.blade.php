@@ -53,7 +53,7 @@
    </div>
 </div>
 <script src="{{asset('js/ckeditor4/ckeditor.js')}}"></script>
-<script type= text/javascript>
+<script type= "text/javascript">
    $(document).ready(function() {
    
         let commentCkEditor =  CKEDITOR.replace('comment',{

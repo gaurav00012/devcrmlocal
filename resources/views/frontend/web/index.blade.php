@@ -23,16 +23,17 @@
 					<h1>One Look</h1>
 					
 				</div>
-				<form id="myform" class="fs-form fs-form-full" autocomplete="off" method="POST" enctype="multipart/form-data">
+				<form action={{url('/')}} id="myform" class="fs-form fs-form-full" autocomplete="off" method="POST" enctype="multipart/form-data">
+					@csrf
 					<ol class="fs-fields">
 						<li>
 							<label class="fs-field-label fs-anim-upper" for="q1">Company name:</label>
-							<input class="fs-anim-lower" id="q1" name="company" type="text" placeholder="Company name" required/>
+							<input class="fs-anim-lower" id="q1" name="company_name" type="text" placeholder="Company name" required/>
 						</li>
 						
 						<li>
 							<label class="fs-field-label fs-anim-upper" for="q1">Contact person:</label>
-							<input class="fs-anim-lower" id="q1" name="person" type="text" placeholder="Contact person" required/>
+							<input class="fs-anim-lower" id="q1" name="contact_person" type="text" placeholder="Contact person" required/>
 						</li>
 						
 						<li>
@@ -42,7 +43,7 @@
 						
 						<li>
 							<label class="fs-field-label fs-anim-upper" for="q4">Mailing address:</label>
-							<textarea class="fs-anim-lower" id="q4" name="mailing" placeholder="Mailing address"></textarea>
+							<textarea class="fs-anim-lower" id="q4" name="mailing_address" placeholder="Mailing address"></textarea>
 						</li>
 						
 						<li>
@@ -141,7 +142,7 @@
 						
 						<li>
 							<label class="fs-field-label fs-anim-upper" for="q1">Company Logo</label>
-							<input class="fs-anim-lower" id="q1" name="file[]" type="file" placeholder="placeholder="Pdf,Jpg,Png,Text"" required/>
+							<input class="fs-anim-lower" id="q1" name="company_logo" type="file" placeholder="placeholder="Pdf,Jpg,Png,Text""/>
 						</li>
 						
 						<li>
@@ -153,7 +154,7 @@
 						
 						
 					</ol><!-- /fs-fields -->
-					<button class="fs-submit" name="submit" type="submit">Send answers</button>
+					<button class="fs-submit" type="submit">Send answers</button>
 				</form><!-- /fs-form -->
 			</div><!-- /fs-form-wrap -->
 
@@ -165,7 +166,7 @@
 					<h3>Minimal Form Interface</h3>
 				</a>
 				<a href="http://tympanus.net/Development/ButtonComponentMorph/">
-					<img src="img/relatedposts/MorphingButtons-300x162.png" />
+					<img src="{{asset('images/emf/relatedposts/MorphingButtons-300x162.png')}}" />
 					<h3>Morphing Buttons Concept</h3>
 				</a>
 			</div>

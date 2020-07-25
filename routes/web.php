@@ -22,6 +22,7 @@ Auth::routes();
 //Route::post('/get-project','Admin\IndexController@getCompany');
 //Route::get('/test','User\HomeController@index');
 Route::get('/','Frontend\WebController@index');
+Route::post('/','Frontend\WebController@store');
 
 Route::group(['middleware' => 'auth'], function () {
 	// Route::get('/', function () {
@@ -44,6 +45,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/admin/edit-client/{id}','Admin\ClientController@edit');
 	Route::post('/admin/update-client/{id}','Admin\ClientController@update');
 	Route::get('/admin/delete-client/{id}','Admin\ClientController@destroy');
+	Route::get('admin/new-registerations','Admin\ClientController@newRegisteration');
+	Route::post('admin/get-new-client','Admin\ClientController@getNewClient');
 
 	Route::get('admin/manage-team','Admin\TeamController@index');
 	Route::get('/admin/create-team','Admin\TeamController@create');
