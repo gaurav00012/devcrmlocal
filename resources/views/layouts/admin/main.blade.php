@@ -15,7 +15,7 @@
 
         <div class="main-panel">
           <div class="content-wrapper">
-
+            
           <div class="row purchace-popup">
               <div class="col-12 stretch-card grid-margin">
                 <div class="card card-secondary chatbox">

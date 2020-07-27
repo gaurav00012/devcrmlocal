@@ -27,10 +27,36 @@ class IndexController extends Controller
             $company = $user->companyuser;
             // dd($company->id);
             $tasks = MasterTask::where('company_id', $company->id)
-                ->where('task_view_to_client', 1)
-                ->orderBy('position', 'asc')
-                ->get();
+                                ->where('task_view_to_client', 1)
+                                ->whereIn('task_status',array(1,2,4))
+                                ->orderBy('position', 'asc')
+                                ->get();
 
+            $completeTask = MasterTask::where('company_id', $company->id)
+                                ->where('task_view_to_client', 1)
+                                ->whereIn('task_status',array(3))
+                                ->orderBy('position', 'asc')
+                                ->get();      
+
+            $clientApprovalTasks = MasterTask::where('company_id', $company->id)
+                                ->where('task_view_to_client', 1)
+                                ->whereIn('task_status',array(5))
+                                ->orderBy('position', 'asc')
+                                ->get();
+
+            $appointmentWithClientTasks = MasterTask::where('company_id', $company->id)
+                                                    ->where('task_view_to_client', 1)
+                                                    ->whereIn('task_status',array(6))
+                                                    ->orderBy('position', 'asc')
+                                                    ->get();                    
+
+            $marketingApprovalTasks = MasterTask::where('company_id', $company->id)
+                                                    ->where('task_view_to_client', 1)
+                                                    ->whereIn('task_status',array(7))
+                                                    ->orderBy('position', 'asc')
+                                                    ->get(); 
+
+                                                                    
             //  $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' ORDER BY mt.position asc');
             // foreach($tasks as $key => $task)
             // {
@@ -40,7 +66,13 @@ class IndexController extends Controller
             //     $task->companyname = $company->company_name;
             // }
             //  dd($tasks);
-            return view('client.index.index', ['tasks' => $tasks]);
+            return view('client.index.index', [
+                                                'tasks' => $tasks,
+                                                'completeTask'=>$completeTask,
+                                                'clientApprovalTasks' => $clientApprovalTasks,
+                                                'appointmentWithClientTasks' => $appointmentWithClientTasks,
+                                                'marketingApprovalTasks' => $marketingApprovalTasks
+                                                ]);
         }
         catch(\Exception $e)
         {

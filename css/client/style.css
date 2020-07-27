@@ -1,0 +1,36 @@
+img {
+max-width: 100%;
+} 
+label {
+cursor: pointer;
+}
+.bg-color-1 {
+background-color: #2f2fa1;
+}
+.bg-color-2 {
+background-color: #f64c71;
+}
+.bg-color-3 {
+background-color: #242582;
+}
+.bg-color-4 {
+background-color: #eef1f5;
+}
+.bg-color-5 {
+}
+.text-color-1 {
+color: #f64c71;
+}
+.notifications a:hover{
+background-color: #f3345e;
+}
+.task-box {
+border-top: 3px solid #242582;
+}
+.custom-select {
+display: inline-block;
+width: auto;
+}
+.search-task {
+max-width: 200px;
+}
