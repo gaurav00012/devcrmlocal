@@ -28,7 +28,7 @@ class IndexController extends Controller
             // dd($company->id);
             $tasks = MasterTask::where('company_id', $company->id)
                                 ->where('task_view_to_client', 1)
-                                ->whereIn('task_status',array(1,2,4))
+                                //->whereIn('task_status',array(1,2,4))
                                 ->orderBy('position', 'asc')
                                 ->get();
 

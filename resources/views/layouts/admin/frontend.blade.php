@@ -22,7 +22,10 @@
          <div class="logo">
             <a href="#">
                <?php 
-                  $profile = Auth::user()->profile_picture == '' ? 'images/user-profile/user-avatar.png' : 'user-profile/'. Auth::user()->profile_picture ;
+                  // echo '<pre>';
+                  // print_r(Auth::user()->userclient->company_logo);
+                  // echo '</pre>';
+                  $profile = isset(Auth::user()->userclient->company_logo) == '' ? 'images/user-profile/user-avatar.png' : url('company_logo').'/'. Auth::user()->userclient->company_logo ;
                ?>
             <img src="{{$profile}}" alt="logo" width="150" height="50">
             </a>

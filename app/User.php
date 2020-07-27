@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\MasterCompany','user_id','id');
     }
+
+    public function userclient()
+    {
+        return $this->hasOne('App\ClientForm','id','c_id');
+    }
 }
