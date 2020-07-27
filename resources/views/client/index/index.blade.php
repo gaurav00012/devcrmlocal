@@ -12,7 +12,7 @@ Task List
                <div class="row">
                   <div class="col-md-6">
                      <div class="bg-white p-4 rounded task-box shadow-sm">
-                        <h4 class="mb-3 mt-n2">Here are your task:</h4>
+                        <h4 class="mb-3 mt-n2">Hi {{Auth::user()->name}} Here are your task:</h4>
                         @foreach($clientApprovalTasks as $key => $clientApprovalTask)
                         <div class="form-check mb-2">
                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
@@ -31,7 +31,7 @@ Task List
                         @foreach($appointmentWithClientTasks as $key => $appointmentWithClientTask)
                         <div class="form-check mb-2">
                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                           <label class="form-check-label" for="defaultCheck3">{{$appointmentWithClientTask->task_name}} <a href="#" class="text-decoration-none text-color-1">{{date('m/d/Y',strtotime($appointmentWithClientTask->due_date))}}</a></label>
+                           <label class="form-check-label" for="defaultCheck3">{{$appointmentWithClientTask->task_name}} <a href="#" class="text-decoration-none text-color-1">{{date('m-d-Y',strtotime($appointmentWithClientTask->due_date))}}</a></label>
                         </div>
                         @endforeach
                        <!--  <div class="form-check">
