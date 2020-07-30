@@ -35,6 +35,19 @@ New Registerations
 @endsection
 @section('vuejs')
 <script>
+	var view_table = $("#client-table").DataTable({
+    pagingType: "full_numbers",
+    //columns: columns_operation,
+  });
+
+  $(".dataTables_length").addClass("bs-select");
+
+  //To remove unwanted class from pagination drop-down
+  if ($("#client-table_length > label > select")[0])
+    $("#client-table_length > label > select").removeClass(
+      "custom-select-sm form-control form-control-sm"
+    );
+
 	 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 	$('.company_name').click(function(){
 		let clientId = $(this).attr('data-id')
