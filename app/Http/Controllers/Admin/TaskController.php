@@ -157,6 +157,7 @@ class TaskController extends Controller
             'task_description' => 'required',
             'task_status' => 'required',
           ]);
+
           try{
 
           $project = MasterProject::find($id);
@@ -165,8 +166,6 @@ class TaskController extends Controller
           
          $input = $request->post();
          $user = Auth::user();
-         
-         
          
          $task['task_name'] = $input['task_name'];
          $task['company_id'] = $project->company_id;
@@ -177,6 +176,8 @@ class TaskController extends Controller
          $task['created_by'] = $user->id;
 
          $taskSave = MasterTask::create($task);
+        // Session::flash('success', 'Task Created Successfully');
+         $request->session()->flash('success', 'Task Created Successfully');
          if(!empty($input['task_resource']))
          {
             $resourceArray = $input['task_resource'];
@@ -188,6 +189,7 @@ class TaskController extends Controller
                 $resourceSave = TaskAssignee::create($resource);    
             }
          }
+
          $result['taskid'] = $taskSave->task_id;
          $result['project_id'] = $taskSave->project_id;
         }

@@ -49,10 +49,7 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $result['success'] = true;
-        
-       
         try{
-
         $this->validate($request,[
             'company_name' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -71,9 +68,10 @@ class ClientController extends Controller
          $client['company_name'] = $input['company_name'];
          $client['description'] = $input['company_description'];
         
-         $client = MasterCompany::create($client);
-
-         return redirect('/admin/manage-client');
+         if(MasterCompany::create($client))
+         {
+            return redirect('/admin/manage-client')->with('success', 'Client added successfully');
+         }
         } catch(\Exception $e){
                 $result['success'] = false;   
                 $result['error'] = $e->getMessage();
@@ -120,8 +118,11 @@ class ClientController extends Controller
         $client->company_name = $request->post('company_name');
         $client->description = $request->post('company_description');
         
-        $client->save();
-        return redirect('/admin/manage-client');
+        if($client->save())
+        {
+            return redirect('/admin/manage-client')->with('success', 'Client updated successfully');    
+        }
+        
     }
 
     /**

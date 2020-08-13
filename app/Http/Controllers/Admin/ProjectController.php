@@ -80,13 +80,16 @@ class ProjectController extends Controller
             'project_description' => 'required',
             
          ]);
- $request->post('email');
+        $request->post('email');
         
          //$project = $input['project_name'];
          $project->description = $request->post('project_description');
        
-         $project->save();
-
+         if($project->save())
+         {
+            return redirect("/admin/manage-projects/$project->company_id")->with('success', 'Project updated successfully');       
+         }
+         
          //return redirect("/admin/manage-projects/$id");
         //dd($project);
     }
@@ -131,15 +134,18 @@ class ProjectController extends Controller
          $project['description'] = $input['project_description'];
          $project['company_id'] = $id;
         
-         $projectSave = MasterProject::create($project);
+          if(MasterProject::create($project))
+          {
+            return redirect("/admin/manage-projects/$id")->with('success', 'Project added successfully');
+          }
 
-         return redirect("/admin/manage-projects/$id");
     }
 
     public function editProject($id)
     {
         $projectdetail = MasterProject::find($id);
-        $company = MasterCompany::find($projectdetail->id);
+      //  dd($projectdetail->company_id);
+        $company = MasterCompany::find($projectdetail->company_id);
         $clientData = array();
         $clientData['clientId'] = $company->id;
         $clientData['clientName'] = $company->company_name;

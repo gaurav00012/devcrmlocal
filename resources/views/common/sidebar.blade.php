@@ -40,7 +40,7 @@
         </li>
           <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-user') }}" aria-expanded="false" aria-controls="auth">
-                <span class="menu-title">Manage User</span>
+                <span class="menu-title">Manage Admin's</span>
                 <i class="icon-user menu-icon"></i>
               </a>
             </li>
@@ -52,7 +52,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-team') }}" aria-expanded="false" aria-controls="auth">
-                <span class="menu-title">Manage Dev Team</span>
+                <span class="menu-title">Manage Team</span>
                 <i class="icon-user menu-icon"></i>
               </a>
             </li>

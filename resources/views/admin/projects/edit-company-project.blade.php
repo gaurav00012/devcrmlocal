@@ -1,6 +1,6 @@
 @extends('layouts.admin.main')
 @section('heading')
-Add Project for <b><?php echo $clientData['clientName']; ?></b>
+Edit Project for <b><?php echo $clientData['clientName']; ?></b>
 @endsection
 
 @section('content')

@@ -52,9 +52,13 @@ class TeamController extends Controller
          $user['email'] = $input['email'];
          $user['password'] = bcrypt($input['password']);
          $user['text_password'] = $input['password'];
-         $user = User::create($user);
+            
+        if(User::create($user))
+        {
+         return redirect('/admin/manage-team')->with('success', 'Team Member added successfully');   
+        }
 
-         return redirect('/admin/manage-team');
+         
     }
 
     /**
@@ -97,8 +101,13 @@ class TeamController extends Controller
        // $user->email = $request->post('email');
         $user->password = bcrypt($request->post('password'));
         $user->text_password = $request->post('password');
-        $user->save();
-        return redirect('/admin/manage-team');
+
+        if($user->save())
+        {
+            return redirect('/admin/manage-team')->with('success', 'Team Member updated successfully'); 
+        }
+
+        //return redirect('/admin/manage-team');
     }
 
     /**
@@ -111,7 +120,12 @@ class TeamController extends Controller
     {
         //
         $user = User::find($id);
-        $user->delete();
-        return redirect('/admin/manage-team');
+
+        if($user->delete())
+        {
+            return redirect('/admin/manage-team')->with('success', 'Team Member Deleted successfully'); 
+        }
+        
+        //return redirect('/admin/manage-team');
     }
 }
