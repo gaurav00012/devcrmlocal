@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\MasterProject;
 use App\MasterCompany;
+use App\Traits\Notification;
+use App\User;
+use Auth;
 
 class ProjectController extends Controller
 {
@@ -14,6 +17,8 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    use Notification;
+
     public function index()
     {
         // 
@@ -75,19 +80,25 @@ class ProjectController extends Controller
     {
         //
         $project = MasterProject::find($id);
+
          $this->validate($request,[
            // 'project_name' => 'required',
             'project_description' => 'required',
             
          ]);
-        $request->post('email');
-        
-         //$project = $input['project_name'];
-         $project->description = $request->post('project_description');
+         $input = $request->post();
+
+         $project->description = $input['project_description'];
        
          if($project->save())
          {
-            return redirect("/admin/manage-projects/$project->company_id")->with('success', 'Project updated successfully');       
+             $getClient = MasterCompany::find($project->company_id);
+             $from = Auth::user()->id;
+             $to = $getClient->user_id;
+             $subject = $project->project_name;
+             $message = $project->project_name.' updated successfully.';
+             $addNotification = $this->notification($from,$to,$subject,$message);
+             return redirect("/admin/manage-projects/$project->company_id")->with('success', 'Project updated successfully');       
          }
          
          //return redirect("/admin/manage-projects/$id");
@@ -118,6 +129,7 @@ class ProjectController extends Controller
       $clientData = array();
       $clientData['clientId'] = $company->id;
       $clientData['clientName'] = $company->company_name;
+
       return view('admin.projects.add-client-project',['clientData'=>$clientData]);
     }
 
@@ -128,15 +140,24 @@ class ProjectController extends Controller
             'project_description' => 'required',
             
          ]);
-
-         $input = $request->post();
+        //notification($from,$to,$subject);
+        $input = $request->post();
+       
+      
          $project['project_name'] = $input['project_name'];
          $project['description'] = $input['project_description'];
          $project['company_id'] = $id;
         
           if(MasterProject::create($project))
           {
-            return redirect("/admin/manage-projects/$id")->with('success', 'Project added successfully');
+             $getClient = MasterCompany::find($id);
+             $from = Auth::user()->id;
+             $to = $getClient->user_id;
+             $subject = $input['project_name'];
+             $message = $input['project_name'].' added successfully.';
+             $addNotification = $this->notification($from,$getClient->user_id,$subject,$message);
+
+             return redirect("/admin/manage-projects/$id")->with('success', 'Project added successfully');
           }
 
     }

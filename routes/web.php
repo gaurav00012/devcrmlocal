@@ -14,6 +14,7 @@
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::get("/email",'User\HomeController@email');
 
 Auth::routes();
 
@@ -83,7 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('client/edit-comment/','Client\IndexController@editComment')->middleware('isClient');
 	Route::post('client/update-comment/{commentid}','Client\IndexController@updateComment')->middleware('isClient');
 	Route::get('client/download-file/{filename}','Client\IndexController@downloadfile')->middleware('isClient');	
-	
+	Route::post('client/update-notification','Client\IndexController@updateNotification');
 
 	Route::get('/developer/home','Developer\IndexController@index')->middleware('isDeveloper');
 	Route::post('/developer/edit-task','Developer\IndexController@editTask')->middleware('isDeveloper');

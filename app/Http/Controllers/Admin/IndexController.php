@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\MasterCompany;
 use App\MasterProject;
+use App\Traits\Notification;
 
 class IndexController extends Controller
 {
@@ -14,9 +15,12 @@ class IndexController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    use Notification;
+
     public function index()
     {
         //
+        //$this->notification();
         $allCompanyData = array('' => 'Select Company');
         $allCompany = MasterCompany::All();
         foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;

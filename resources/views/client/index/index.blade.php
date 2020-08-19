@@ -2,6 +2,26 @@
 @section('heading')
 Task List
 @endsection
+
+@section('notificationCount')
+  {{$notificationCount}}
+@endsection
+
+@section('notification')
+
+@foreach($allNotification as $key => $notification)
+ <div class="notifications-msg small <?php echo $notification->status == 0 ? 'unread-msg' : '' ?>" notification-id="{{$notification->id}}">
+                  <a href="#">
+                     <div class="msg-content ">
+                        <label>{{$notification->subject}}</label>
+                        <p>{{$notification->message}}</p>
+                     </div>
+                  </a>
+               </div>
+@endforeach               
+
+@endsection
+
 @section('content')
 <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
  
@@ -87,7 +107,7 @@ Task List
         <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
          <td>{{$projectask->getTaskStatus->name}}</td>
         <!-- <td>{{$projectask->task_progress}}</td> -->
-          <td><a href="javascript:void(0)" data-taskid={{$projectask->task_id}}  class="btn green-btn edit-task">Edit</a> </td>
+          <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
       </tr>
      @endforeach
     </tbody>
@@ -127,7 +147,7 @@ Task List
                                               <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
                                                <td>{{$projectask->getTaskStatus->name}}</td>
                                               <!-- <td>{{$projectask->task_progress}}</td> -->
-                                                <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn edit-task">Edit</a> </td>
+                                                <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
                                             </tr>
                                            @endforeach
                                           </tbody>
@@ -186,7 +206,6 @@ Task List
 <!--         -->
 
 <script type="text/javascript">
- 
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var view_table = $("#task-table").DataTable({
     pagingType: "full_numbers",
@@ -228,6 +247,31 @@ Task List
  });
  }
 
+ $('.notify-link').click(function(){
+  let allUnreadMsg = $('.unread-msg');
+  let readNotification = [];
+  $('.unread-msg').each(function(){
+    // readNotification.push($(this).attr('notification-id'));
+    readNotification.push($(this).attr('notification-id'));
+    $(this).removeClass('unread-msg');
+  }); 
+  $.ajax({
+        url : 'client/update-notification',
+        method : 'POST',
+        dataType : 'text',
+        data : {
+          _token: CSRF_TOKEN,
+          notificationId : readNotification,
+          },
+        success:function(resp)
+        {
+            let jsonesp = JSON.parse(resp);
+  
+        },
+      });
+  
+ // console.log(result);
+ });
  
 
 </script>

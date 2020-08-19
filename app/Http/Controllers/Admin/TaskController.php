@@ -160,38 +160,39 @@ class TaskController extends Controller
 
           try{
 
-          $project = MasterProject::find($id);
-          $company = MasterCompany::find($project->company_id);
-         
-          
-         $input = $request->post();
-         $user = Auth::user();
-         
-         $task['task_name'] = $input['task_name'];
-         $task['company_id'] = $project->company_id;
-         $task['project_id'] = $id;
-         $task['task_status'] = $input['task_status'];
-         $task['task_description'] = $input['task_description']; 
-         $task['due_date'] = date("Y-m-d", strtotime($input['duedate']));
-         $task['created_by'] = $user->id;
+              $project = MasterProject::find($id);
+              $company = MasterCompany::find($project->company_id);
+             
+              
+             $input = $request->post();
+             
+             $user = Auth::user();
+             
+             $task['task_name'] = $input['task_name'];
+             $task['company_id'] = $project->company_id;
+             $task['project_id'] = $id;
+             $task['task_status'] = $input['task_status'];
+             $task['task_description'] = $input['task_description']; 
+             $task['due_date'] = date("Y-m-d", strtotime($input['duedate']));
+             $task['created_by'] = $user->id;
+             dd($task);
+             $taskSave = MasterTask::create($task);
+            // Session::flash('success', 'Task Created Successfully');
+             $request->session()->flash('success', 'Task Created Successfully');
+             if(!empty($input['task_resource']))
+             {
+                $resourceArray = $input['task_resource'];
+                foreach($resourceArray as $key => $resourceVal)
+                {
+                    $resource['task_id'] = $taskSave->task_id;
+                    $resource['assignee'] = $resourceVal;
+                    $resource['created_by'] = $user->id;
+                    $resourceSave = TaskAssignee::create($resource);    
+                }
+             }
 
-         $taskSave = MasterTask::create($task);
-        // Session::flash('success', 'Task Created Successfully');
-         $request->session()->flash('success', 'Task Created Successfully');
-         if(!empty($input['task_resource']))
-         {
-            $resourceArray = $input['task_resource'];
-            foreach($resourceArray as $key => $resourceVal)
-            {
-                $resource['task_id'] = $taskSave->task_id;
-                $resource['assignee'] = $resourceVal;
-                $resource['created_by'] = $user->id;
-                $resourceSave = TaskAssignee::create($resource);    
-            }
-         }
-
-         $result['taskid'] = $taskSave->task_id;
-         $result['project_id'] = $taskSave->project_id;
+             $result['taskid'] = $taskSave->task_id;
+             $result['project_id'] = $taskSave->project_id;
         }
         catch(\Exception $e){
             $result['success'] = false;

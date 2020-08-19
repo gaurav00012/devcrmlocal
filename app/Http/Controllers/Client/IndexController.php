@@ -12,6 +12,7 @@ use App\MasterTaskComment;
 use App\MasterTaskCommentAttachment;
 use App\MasterDropDowns;
 use App\MasterTaskAttachments;
+use App\Notifications;
 use Auth;
 use Carbon\Carbon;
 
@@ -22,6 +23,14 @@ class IndexController extends Controller
     {
         try
         {
+            $notifications = new Notifications;
+            $notificationCount = $notifications->getNotificationCount();
+            $allNotification = $notifications->getAllNotification();
+            
+              // $taskId = $request->post()['taskid'];
+              // $taskDetail = MasterTask::find($taskId);
+              // $taskComment = $taskDetail->getTaskComment;
+              
             $user = Auth::user();
             // echo $user->id;
             $company = $user->companyuser;
@@ -71,7 +80,9 @@ class IndexController extends Controller
                                                 'completeTask'=>$completeTask,
                                                 'clientApprovalTasks' => $clientApprovalTasks,
                                                 'appointmentWithClientTasks' => $appointmentWithClientTasks,
-                                                'marketingApprovalTasks' => $marketingApprovalTasks
+                                                'marketingApprovalTasks' => $marketingApprovalTasks,
+                                                'notificationCount' => $notificationCount,
+                                                'allNotification' => $allNotification
                                                 ]);
         }
         catch(\Exception $e)
@@ -294,8 +305,43 @@ class IndexController extends Controller
         $result['success'] = true;
         $result['exception_message'] = '';
         try{
-            $pathToFile= public_path()."/files/comment_attachment/".$fileName;
+            $pathToFile = public_path()."/files/comment_attachment/".$fileName;
             return response()->download($pathToFile);   
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+    }
+
+    public function updateNotification(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+
+        try
+        {
+            $userId = Auth::user()->id;
+            $post = $request->post();
+            $notificationIds = isset($post['notificationId']) ? $post['notificationId'] : array();
+
+
+            if(!empty($notificationIds))
+            {
+                foreach ($notificationIds as $key => $notificationId) 
+                {
+                    $getAllNotification =   Notifications::find($notificationId);
+                
+                    $getAllNotification->status = 1;
+                    $getAllNotification->save();
+                }
+            }
+
+            return $result;
+
+           
         }
         catch(\Exception $e)
         {
