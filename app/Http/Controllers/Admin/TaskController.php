@@ -175,7 +175,13 @@ class TaskController extends Controller
              $task['task_description'] = $input['task_description']; 
              $task['due_date'] = date("Y-m-d", strtotime($input['duedate']));
              $task['created_by'] = $user->id;
-             dd($task);
+             
+             foreach($task_resource as $key => $resource)
+             {
+                echo $resource;
+                echo '<br>';
+             }
+             dd();
              $taskSave = MasterTask::create($task);
             // Session::flash('success', 'Task Created Successfully');
              $request->session()->flash('success', 'Task Created Successfully');
