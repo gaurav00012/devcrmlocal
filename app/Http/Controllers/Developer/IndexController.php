@@ -13,6 +13,8 @@ use App\MasterTaskCommentAttachment;
 use App\MasterDropDowns;
 use App\MasterTaskAttachments;
 use App\TaskTimelog;
+use App\Notifications;
+use App\Traits\Notification;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -24,12 +26,22 @@ class IndexController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    use Notification;
+
     public function index()
     {
+        $user = Auth::user()->id;
 
+        $notifications = new Notifications;
+        $notificationCount = $notifications->getNotificationCount();
+        $allNotification = $notifications->getAllNotification();
+
+        
         $user = Auth::user();
         $timeLog = new TaskTimelog;
         $onGoingTask = $timeLog->getPauseTask();
+
         //dd($onGoingTask);
         $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' AND mt.`task_status` != 3 ORDER BY mt.position asc');
         $completeTask = MasterTask::getCompletedTask();
@@ -44,7 +56,14 @@ class IndexController extends Controller
             $task->companyname = $company->company_name;
 
         }
-        return view('developer.index.index',['tasks'=>$tasks,'onGoingTask'=>$onGoingTask,'taskTimeLog'=>$taskTimeLog,'completeTask'=>$completeTask]);
+        return view('developer.index.index',[
+                                              'tasks'=>$tasks,
+                                              'onGoingTask'=>$onGoingTask,
+                                              'taskTimeLog'=>$taskTimeLog,
+                                              'completeTask'=>$completeTask,
+                                              'notificationCount' => $notificationCount,
+                                              'allNotification' => $allNotification,
+                                            ]);
     }
 
     /**
@@ -223,6 +242,11 @@ class IndexController extends Controller
 
             $user = Auth::user();
             $taskDetail = TaskAssignee::where('task_id', '=', $id)->where('assignee', '=', $user->id)->get();
+            //$getTask
+           // $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
+            dd($taskDetail[0]->getTask);
+            dd($taskDetail[0]->getTask->company_id);
+
             
             if ($request->post()['task_status'] != '' || $request->post() ['task_status'] != null)
             {
@@ -354,6 +378,37 @@ class IndexController extends Controller
           $result['exception_message'] = $e->getMessage();
         }
      }
+
+     public function updateNotification(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+
+        try
+        {
+            $userId = Auth::user()->id;
+            $post = $request->post();
+            $notificationIds = isset($post['notificationId']) ? $post['notificationId'] : array();
+
+            if(!empty($notificationIds))
+            {
+                foreach ($notificationIds as $key => $notificationId) 
+                {
+                    $getAllNotification =   Notifications::find($notificationId);
+                
+                    $getAllNotification->status = 1;
+                    $getAllNotification->save();
+                }
+            }
+            return $result;
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+    }
 
      private function fileupload($file,$fileDestination,$taskId,$commentId)
      {

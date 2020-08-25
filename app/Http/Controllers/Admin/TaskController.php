@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use DB;
 use App\MasterTaskComment;
 use App\MasterTaskCommentAttachment;
+use App\Traits\Notification;
 
 class TaskController extends Controller
 {
@@ -24,6 +25,8 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    use Notification;
+
     public function index()
     {
         //
@@ -176,12 +179,15 @@ class TaskController extends Controller
              $task['due_date'] = date("Y-m-d", strtotime($input['duedate']));
              $task['created_by'] = $user->id;
              
-             foreach($task_resource as $key => $resource)
-             {
-                echo $resource;
-                echo '<br>';
-             }
-             dd();
+             // $getProject = MasterProject::find($id);
+             // $getClient = MasterCompany::find($getProject->company_id);
+             $subject = $input['task_name'];
+             $message = $input['task_name'].' assigned to you.';
+             $from = $user->id;
+             foreach($input['task_resource'] as $key => $resource)$addNotification = $this->notification($from,$resource,$subject,$message);
+             
+             $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
+             
              $taskSave = MasterTask::create($task);
             // Session::flash('success', 'Task Created Successfully');
              $request->session()->flash('success', 'Task Created Successfully');

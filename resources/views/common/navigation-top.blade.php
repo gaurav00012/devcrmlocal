@@ -17,26 +17,14 @@
             </form>           
             
             <li class="nav-item dropdown">
-              <a class="nav-link count-indicator message-dropdown" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link count-indicator message-dropdown notification-bell" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
                 <i class="icon-bell"></i>
-                <span class="count">7</span>
+                <span class="count">@yield('notification-count')</span>
               </a>
               <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list pb-0" aria-labelledby="messageDropdown">
-                <a class="dropdown-item py-3">
-                  <p class="mb-0 font-weight-medium float-left">You have 7 unread mails </p>
-                  <span class="badge badge-pill badge-primary float-right">View all</span>
-                </a>
+               
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <img src="{{asset('images/faces/face1.jpg')}}" alt="image" class="img-sm profile-pic"> </div>
-                  <div class="preview-item-content flex-grow py-2">
-                    <p class="preview-subject ellipsis font-weight-medium text-dark">{{ Auth::user()->name }}</p>
-                    <p class="font-weight-light small-text"> The meeting is cancelled </p>
-                  </div>
-                </a>
-               
-               
+                 @yield('notification-content')
               </div>
             </li>
 

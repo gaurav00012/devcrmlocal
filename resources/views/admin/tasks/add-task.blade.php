@@ -198,13 +198,13 @@ let fileaddedDropzone = 0;
           myDropzone.on("complete", function (file) {
              if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
                   //var idvar = '<?php $imgID; ?>';
-            window.location.replace("/admin/manage-task/"+ resp.project_id);
+           // window.location.replace("/admin/manage-task/"+ resp.project_id);
           alert("in compplere");
     }
   });
        }
        else{
-        window.location.href = '/admin/manage-task/'+resp.project_id;
+       // window.location.href = '/admin/manage-task/'+resp.project_id;
        }
       },
       error: function (err) {
