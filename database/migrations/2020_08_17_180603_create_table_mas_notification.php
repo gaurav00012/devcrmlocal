@@ -15,7 +15,7 @@ class CreateTableMasNotification extends Migration
     {
         
          DB::statement("
-                        CREATE TABLE `devcrm`.`mas_notification`(  
+                        CREATE TABLE `mas_notification`(  
                           `id` INT(25) NOT NULL AUTO_INCREMENT,
                           `from` BIGINT(20) UNSIGNED NOT NULL,
                           `to` BIGINT(20) UNSIGNED NOT NULL,
