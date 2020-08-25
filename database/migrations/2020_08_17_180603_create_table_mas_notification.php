@@ -27,10 +27,10 @@ class CreateTableMasNotification extends Migration
                           `updated_at` DATETIME,
                           `updated_by` BIGINT(20) UNSIGNED NOT NULL,
                           PRIMARY KEY (`id`),
-                          FOREIGN KEY (`from`) REFERENCES `devcrm`.`users`(`id`),
-                          FOREIGN KEY (`to`) REFERENCES `devcrm`.`users`(`id`),
-                          FOREIGN KEY (`created_by`) REFERENCES `devcrm`.`users`(`id`),
-                          FOREIGN KEY (`updated_by`) REFERENCES `devcrm`.`users`(`id`)
+                          FOREIGN KEY (`from`) REFERENCES `users`(`id`),
+                          FOREIGN KEY (`to`) REFERENCES `users`(`id`),
+                          FOREIGN KEY (`created_by`) REFERENCES `users`(`id`),
+                          FOREIGN KEY (`updated_by`) REFERENCES `users`(`id`)
                         );
 
                      ");
