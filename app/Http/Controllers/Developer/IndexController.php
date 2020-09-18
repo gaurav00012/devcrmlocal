@@ -242,16 +242,36 @@ class IndexController extends Controller
 
             $user = Auth::user();
             $taskDetail = TaskAssignee::where('task_id', '=', $id)->where('assignee', '=', $user->id)->get();
+            $getOtherTeamMember = TaskAssignee::where('task_id','=',$id)->where('assignee','!=', $user->id)->get();
+            $taskName = $taskDetail[0]->getTask->task_name;
+
+            //dd($taskDetail[0]->getTask);
+            // foreach($getOtherTeamMember as $teamKey => $teamMember)
+            // {
+            //   echo $teamMember->assignee;
+            //   echo '<br>';
+            // }
+            
+            //dd($getOtherTeamMember);
+            //dd($taskDetail);
             //$getTask
            // $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
-            dd($taskDetail[0]->getTask);
-            dd($taskDetail[0]->getTask->company_id);
+         //   dd($taskDetail[0]->getTask);
 
-            
+           // dd($taskDetail[0]->getTask->company_id);
+            // notification($from,$to,$subject,$message,$status = 0)
+
             if ($request->post()['task_status'] != '' || $request->post() ['task_status'] != null)
             {
 
                 $taskDetail[0]->getTask->task_status = $request->post() ['task_status'];
+               
+                $subject = $taskName;
+                $message = $taskName.' status changed.';
+                $from = $user->id;
+                foreach($getOtherTeamMember as $teamKey => $teamMember)
+                  $this->notification(Auth::user()->id,$teamMember->assignee,$subject,$message,$status = 0);
+            
                 $taskDetail[0]->getTask->save();
                 $result['task_id'] = $taskDetail[0]->getTask->task_id;
             }
@@ -261,6 +281,7 @@ class IndexController extends Controller
                 $comment['task_comments'] = $request->post() ['task_comment'];
                 $comment['created_by'] = $user->id;
                 $comment = MasterTaskComment::create($comment);
+
                 $result['comment_id'] = $comment->id;
                 $result['task_id'] = $taskDetail[0]->task_id;
 
@@ -269,9 +290,14 @@ class IndexController extends Controller
                      $fileDestination = 'files/comment_attachment';
                      $this->fileupload($request->file('attachment'),$fileDestination,$id,$comment->id);
                   }
+
+                $subject = $taskName;
+                $message = $taskName.' comment added by '.Auth::user()->name;
+                $from = $user->id;
+                foreach($getOtherTeamMember as $teamKey => $teamMember)
+                  $this->notification(Auth::user()->id,$teamMember->assignee,$subject,$message,$status = 0);
             }
 
-            
         }
         catch(\Exception $e)
         {

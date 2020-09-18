@@ -17,6 +17,7 @@ use DB;
 use App\MasterTaskComment;
 use App\MasterTaskCommentAttachment;
 use App\Traits\Notification;
+use App\Traits\Email;
 
 class TaskController extends Controller
 {

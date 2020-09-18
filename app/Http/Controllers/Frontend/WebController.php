@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\ClientForm;
 use App\Traits\StoreImageTrait;
+use App\Traits\Email;
 
 class WebController extends Controller
 {
     use StoreImageTrait;
+    use Email;
+
+    private $adminEmail = 'diwakarmishra1.0@gmail.com';
+
     /**
      * Display a listing of the resource.
      *
@@ -85,10 +90,19 @@ class WebController extends Controller
             $destinationPath = 'company_logo/';
             $image->move($destinationPath, $logoName);
             $form['company_logo'] = $logoName;
+
+            
+          
+            
+          //  return view('frontend.web.registermail',['form'=>$form]);
                
-             if(ClientForm::create($form)){
-                echo 'Data Inserted';
-                die();
+             if(ClientForm::create($form))
+             {
+                 $name = 'Gaurav';
+                 $subject = 'New Registertration - '.$form['company_name'];
+                 $body = view('frontend.web.registermail',['form'=>$form]);;
+                 $this->sendMail($this->adminEmail,$name,$subject,$body);
+                return redirect()->back()->with('success', 'Your data has been submitted. Team will reach out you soon.');      
              }
          }
          catch(\Exception $e)

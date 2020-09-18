@@ -9,6 +9,7 @@ use App\MasterCompany;
 use App\Traits\Notification;
 use App\User;
 use Auth;
+use App\Traits\Email;
 
 class ProjectController extends Controller
 {
@@ -18,6 +19,7 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     use Notification;
+    use Email;
 
     public function index()
     {
@@ -98,6 +100,10 @@ class ProjectController extends Controller
              $subject = $project->project_name;
              $message = $project->project_name.' updated successfully.';
              $addNotification = $this->notification($from,$to,$subject,$message);
+
+             $body = view('emails.client-edit-project',['getClient'=>$getClient,'project'=>$project]);
+             $this->sendMail($getClient->getUser->email,$getClient->getUser->name,$message,$body);
+
              return redirect("/admin/manage-projects/$project->company_id")->with('success', 'Project updated successfully');       
          }
          
@@ -156,6 +162,9 @@ class ProjectController extends Controller
              $subject = $input['project_name'];
              $message = $input['project_name'].' added successfully.';
              $addNotification = $this->notification($from,$getClient->user_id,$subject,$message);
+
+             $body = view('emails.client-new-project',['getClient'=>$getClient,'project'=>$project]);
+             $this->sendMail($getClient->getUser->email,$getClient->getUser->name,$message,$body);
 
              return redirect("/admin/manage-projects/$id")->with('success', 'Project added successfully');
           }

@@ -9,6 +9,8 @@ use App\MasterProject;
 use App\MasterCompany;
 use App\ClientForm;
 use Auth;
+use App\Traits\Email;
+// use Email;
 
 class ClientController extends Controller
 {
@@ -17,6 +19,7 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+     use Email;
     public function index()
     {
         //
@@ -196,16 +199,21 @@ class ClientController extends Controller
             $user['slug'] = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $clientDetail->company_name)));
             $user['c_id'] = $clientDetail->id;
 
-             $user = User::create($user);
+            $user = User::create($user);
 
              $client['user_id'] = $user->id;
              $client['company_name'] = $clientDetail->company_name;
              $client['description'] = $clientDetail->about_business;
              $client['created_by'] = Auth::user()->id;
             // MasterCompany::create($client);
-             if(MasterCompany::create($client))
-             {
+              if(MasterCompany::create($client))
+              {
+                 $name = 'Gaurav';
+                 $subject = 'You are now onboard with Onelook';
+                 $body = view('emails.client-welcome',['user'=>$user,'client'=>$client]);
+                 $this->sendMail($clientDetail->email,$name,$subject,$body);
                 $result['user_id'] = $user->id;
+               
                 return $result;
              }
 
