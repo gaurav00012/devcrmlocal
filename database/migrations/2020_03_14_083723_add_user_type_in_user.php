@@ -16,7 +16,7 @@ class AddUserTypeInUser extends Migration
          DB::statement("
                ALTER TABLE `users`   
                ADD COLUMN `user_role` INT(2) NULL AFTER `email`,
-                ADD FOREIGN KEY (`user_role`) REFERENCES `{d}crm`.`user_role`(`user_role_id`);
+                ADD FOREIGN KEY (`user_role`) REFERENCES `user_role`(`user_role_id`);
                     ");
     }
 
