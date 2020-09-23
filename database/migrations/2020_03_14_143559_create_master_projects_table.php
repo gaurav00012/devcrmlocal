@@ -23,7 +23,7 @@ class CreateMasterProjectsTable extends Migration
               `updated_by` VARCHAR(255),
               `updated` DATETIME,
               PRIMARY KEY (`id`),
-              FOREIGN KEY (`company_id`) REFERENCES `{d}crm`.`mas_companies`(`id`)
+              FOREIGN KEY (`company_id`) REFERENCES `mas_companies`(`id`)
             );
 
          ");

@@ -15,8 +15,8 @@ class AddForeignKeysInTaskTable extends Migration
     {
         DB::statement("
              ALTER TABLE `master_tasks`   
-              ADD FOREIGN KEY (`company_id`) REFERENCES `{d}crm`.`mas_companies`(`id`),
-              ADD FOREIGN KEY (`project_id`) REFERENCES `{d}crm`.`mas_projects`(`id`);
+              ADD FOREIGN KEY (`company_id`) REFERENCES `mas_companies`(`id`),
+              ADD FOREIGN KEY (`project_id`) REFERENCES `mas_projects`(`id`);
              ");
     }
 
