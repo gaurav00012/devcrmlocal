@@ -14,7 +14,7 @@ class CreateMasterCompaniesTable extends Migration
     public function up()
     {
         DB::statement("
-              CREATE TABLE `{d}crm`.`mas_companies`(  
+              CREATE TABLE `mas_companies`(  
               `id` INT(25) NOT NULL AUTO_INCREMENT,
               `company_name` VARCHAR(255),
               `created_by` VARCHAR(255),

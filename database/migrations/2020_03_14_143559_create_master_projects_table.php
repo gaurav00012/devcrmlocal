@@ -14,7 +14,7 @@ class CreateMasterProjectsTable extends Migration
     public function up()
     {
          DB::statement("
-             CREATE TABLE `{d}crm`.`mas_projects`(  
+             CREATE TABLE `mas_projects`(  
               `id` INT(25) NOT NULL AUTO_INCREMENT,
               `project_name` VARCHAR(255),
               `company_id` INT(25),
