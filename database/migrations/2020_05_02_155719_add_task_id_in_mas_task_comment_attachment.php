@@ -14,9 +14,9 @@ class AddTaskIdInMasTaskCommentAttachment extends Migration
     public function up()
     {
         DB::statement("
-        ALTER TABLE `devcrm`.`mas_task_comment_attachment`   
+        ALTER TABLE `mas_task_comment_attachment`   
         ADD COLUMN `task_id` INT(25) NULL AFTER `id`,
-        ADD FOREIGN KEY (`task_id`) REFERENCES `devcrm`.`master_tasks`(`task_id`);
+        ADD FOREIGN KEY (`task_id`) REFERENCES `master_tasks`(`task_id`);
      ");
     }
 
