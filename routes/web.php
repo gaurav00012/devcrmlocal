@@ -11,18 +11,19 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 Route::get("/email",'User\HomeController@email');
 
-Auth::routes();
+Auth::routes(['register' => false]);
+//Auth::routes(['register' => false]);
 
 // Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/home','Admin\IndexController@index')->middleware('auth','isClient');
 //Route::post('/get-project','Admin\IndexController@getCompany');
 //Route::get('/test','User\HomeController@index');
-Route::get('/','Frontend\WebController@index');
+Route::get('/get-started','Frontend\WebController@index');
 Route::post('/','Frontend\WebController@store');
 
 Route::group(['middleware' => 'auth'], function () {
