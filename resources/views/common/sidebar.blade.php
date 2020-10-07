@@ -19,9 +19,7 @@
               </a>
             </li>
             @if(Auth::user()->user_role === 1)
-            <!-- <li class="nav-item nav-category">
-           <span class="nav-link"> <?php echo Form::select('size', $companyData, null, array('class' => 'form-control company-list'));?> <span class="nav-link">
-          </li>
+            <!-- 
             <li class="nav-item nav-category">
              <span class="nav-link"><?php echo Form::select('projects', array(''=>'Select Projects'), null, array('class' => 'form-control projects'));?></span>
           </li> -->
