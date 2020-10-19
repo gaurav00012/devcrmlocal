@@ -32,3 +32,4 @@ class AddUserTypeInUser extends Migration
         });
     }
 }
+2020_03_14_143559_create_master_projects_table

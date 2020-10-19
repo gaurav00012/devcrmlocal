@@ -21,4 +21,9 @@ class MasterCompany extends Model
     {
     	return $this->belongsTo('App\User','user_id','id');
     }
+
+    public function getClients()
+    {
+        return $this->hasMany('App\Clients', 'company_id', 'id');
+    }
 }

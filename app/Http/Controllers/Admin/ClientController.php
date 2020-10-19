@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\MasterProject;
 use App\MasterCompany;
+use App\Clients;
 use App\ClientForm;
 use Auth;
 use App\Traits\Email;
@@ -22,14 +23,16 @@ class ClientController extends Controller
      use Email;
     public function index()
     {
-        //
-       // $allUser = User::where('user_role','=',3)->get();
-       // dd(MasterProject::all());
-        //return view('admin.user.user-listing',['allUser'=> $allUser]);
-        $allClient = MasterCompany::all();
-        $clientProject = new MasterCompany;
+        $user = Auth::user();
+        //dd($user->companyuser->id);
+         $companyId = $user->companyuser->id;
+         $clients =  $user->companyuser->getClients;
+         //dd($clients);
+        //$allClient = Clients::;
+        //$clientProject = new MasterCompany;
        
-        return view('admin/clients/index',['allClient'=> $allClient]);
+       //return view('admin/clients/index',['allCompanies'=> $allCompanies]);
+        return view('admin/clients/index');
     }
 
     /**
@@ -54,24 +57,26 @@ class ClientController extends Controller
         $result['success'] = true;
         try{
         $this->validate($request,[
-            'company_name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'company_description' => 'required',
+            'client_name' => 'required',
+            'client_email' => 'required|email|unique:users,email',
+            'client_description' => 'required',
             
          ]);
+        $User = Auth::user();
          $input = $request->post();
-         $user['name'] = $input['company_name'];
-         $user['email'] = $input['email'];
+         $user['name'] = $input['client_name'];
+         $user['email'] = $input['client_email'];
          $user['user_role'] = 3;
          $user['password'] = bcrypt('test12345');
          $user['text_password'] = 'test12345';
          $user = User::create($user);
 
          $client['user_id'] = $user->id;
-         $client['company_name'] = $input['company_name'];
-         $client['description'] = $input['company_description'];
+         //$client['company_name'] = $input['company_name'];
+         $client['company_id'] = $User->companyuser->id;
+         $client['client_description'] = $input['client_description'];
         
-         if(MasterCompany::create($client))
+         if(Clients::create($client))
          {
             return redirect('/admin/manage-client')->with('success', 'Client added successfully');
          }
@@ -101,8 +106,7 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
-        //
-        $client = MasterCompany::find($id);
+        $client = Clients::find($id);
         return view('admin/clients/editclient',['client'=>$client]);
     }
 

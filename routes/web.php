@@ -27,9 +27,7 @@ Route::get('/get-started','Frontend\WebController@index');
 Route::post('/','Frontend\WebController@store');
 
 Route::group(['middleware' => 'auth'], function () {
-	// Route::get('/', function () {
- //        return view('login');
- //   });
+	
 	Route::get('/admin/home','Admin\IndexController@index');
 	Route::post('admin/get-project','Admin\IndexController@getCompany');
 	Route::get('/admin/manage-user','Admin\UserController@index');
@@ -61,9 +59,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/manage-projects','Admin\ProjectController@index');
 	Route::get('admin/manage-projects/{id}','Admin\ProjectController@getCompanyProject');
 	Route::get('admin/add-project/{id}','Admin\ProjectController@addProject');
+
+	Route::post('admin/add-project/{id}','Admin\ProjectController@addClientProject');
+
 	Route::get('admin/edit-project/{id}','Admin\ProjectController@editProject');
 	Route::post('admin/edit-save-project/{id}','Admin\ProjectController@update');
+	
 	Route::post('admin/add-client-project/{id}','Admin\ProjectController@addClientProject');
+
 	Route::get('admin/manage-task/{id}','Admin\TaskController@getTaskList');
 	Route::get('admin/add-task/{id}','Admin\TaskController@addTaskInProject');
 	Route::post('admin/add-task/{id}','Admin\TaskController@saveProjectTask');
@@ -103,4 +106,10 @@ Route::group(['middleware' => 'auth'], function () {
 	//Route::get('admin/get-shopkeeper','Admin\ShopkeeperController@getallshopkeeper')->middleware('is_admin');
 	//Route::post('admin/create-shopkeeper','Admin\ShopkeeperController@store')->middleware('is_admin');
     
+    Route::get('/super-admin/home','SuperAdmin\IndexController@index');
+    Route::get('super-admin/manage-client','SuperAdmin\ClientController@index');
+    Route::get('/super-admin/create-client','SuperAdmin\ClientController@create');
+	Route::post('/super-admin/create-client','SuperAdmin\ClientController@store');
+	Route::get('/super-admin/edit-client/{id}','SuperAdmin\ClientController@edit');
+   
 });

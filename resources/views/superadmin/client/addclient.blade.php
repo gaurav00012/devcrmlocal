@@ -1,35 +1,31 @@
-<?php
-use App\User;
-?>
-
 @extends('layouts.admin.main')
 @section('heading')
-Edit Client
+Add Company
 @endsection
 
 @section('content')
 <div class="col-xs-6" style="display:flex;justify-content:flex-end">
-    <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
+    <a href="{!! url('super-admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div><br>
-{!! Form::open(['url' => ['admin/update-client',$client->id],'method' => 'post']) !!}
+{!! Form::open(['method' => 'post']) !!}
         <div class="form-group">
         <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('company_name',  user::find($client->user_id)->name,['class' => 'form-control','placeholder'=>'Enter Company name']);?>
-        @if($errors->has('name'))
+        <?php echo Form::text('company_name', '',['class' => 'form-control','placeholder'=>'Enter Company name']);?>
+        @if($errors->has('company_name'))
             <div class="error">{{ $errors->first('company_name') }}</div>
         @endif
         </div>
         <div class="form-group">
-        <?php //echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
-        <?php echo Form::textarea('company_email', User::find($client->user_id)->email,['class' => 'form-control','placeholder'=>'Enter Company email']);?>
-        @if($errors->has('email'))
-            <div class="error">{{ $errors->first('company_description') }}</div>
+        <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
+        <?php echo Form::text('email', '',['class' => 'form-control','placeholder'=>'Enter Company email']);?>
+        @if($errors->has('company_email'))
+            <div class="error">{{ $errors->first('company_email') }}</div>
         @endif
         </div>
         <div class="form-group">
         <?php //echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
-        <?php echo Form::textarea('company_description', $client->client_description,['class' => 'form-control','placeholder'=>'Enter Company description']);?>
-        @if($errors->has('email'))
+        <?php echo Form::textarea('company_description', '',['class' => 'form-control','placeholder'=>'Enter Company description']);?>
+        @if($errors->has('company_description'))
             <div class="error">{{ $errors->first('company_description') }}</div>
         @endif
         </div>

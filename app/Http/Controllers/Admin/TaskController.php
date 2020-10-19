@@ -13,6 +13,7 @@ use App\MasterTaskAttachments;
 use App\TaskAssignee;
 use Auth;
 use Carbon\Carbon;
+use App\Clients;
 use DB;
 use App\MasterTaskComment;
 use App\MasterTaskCommentAttachment;
@@ -112,14 +113,14 @@ class TaskController extends Controller
     {
         $getProject = MasterProject::find($id);
         
-        $allProject = MasterProject::where('company_id','=',$getProject->company_id)->get();
-        $allCompany = MasterCompany::all();
-        $getCompany = MasterCompany::find($getProject->company_id);
+        $allProject = MasterProject::where('client_id','=',$getProject->client_id)->get();
+        $allCompany = Clients::all();
+        $getCompany = Clients::find($getProject->client_id);
         $resource = User::where('user_role','=',2)->get();
         $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
       
         
-      
+     
         $companyArray = array(
             '' => 'Please select Client'
         );
@@ -139,7 +140,7 @@ class TaskController extends Controller
    
      
        return view('admin/tasks/add-task',[
-            'project' => $project,
+           // 'project' => $project,
             'allProject' => $projectArray,
             'allCompany' => $companyArray,
             'company' => $company,

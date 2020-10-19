@@ -8,6 +8,7 @@ use App\MasterProject;
 use App\MasterCompany;
 use App\Traits\Notification;
 use App\User;
+use App\Clients;
 use Auth;
 use App\Traits\Email;
 
@@ -23,7 +24,7 @@ class ProjectController extends Controller
 
     public function index()
     {
-        // 
+        // echo
         return view('admin/projects/index');
         
     }
@@ -124,19 +125,25 @@ class ProjectController extends Controller
 
     public function getCompanyProject($companyId)
     {
-       $companyprojects = MasterProject::where('company_id',$companyId)->get();
+       $companyprojects = MasterProject::where('client_id',$companyId)->get();
        
        return view('admin.projects.manage-company-project',['companyprojects'=>$companyprojects,'companyId'=>$companyId]);
     }
 
     public function addProject($id)
     {
-      $company = MasterCompany::find($id);
+
+      $User = Auth::user();     
+     // $companyId = $User->companyuser->id;
+     // $clients =  $User->companyuser->getClients;
+      $client = Clients::find($id);
       $clientData = array();
-      $clientData['clientId'] = $company->id;
-      $clientData['clientName'] = $company->company_name;
+      $clientData['clientId'] = $client->id;
+      $clientData['clientName'] = User::find($client->user_id)->name;
 
       return view('admin.projects.add-client-project',['clientData'=>$clientData]);
+      //return view('admin.projects.add-client-project');
+
     }
 
     public function addClientProject(Request $request, $id)
@@ -152,19 +159,19 @@ class ProjectController extends Controller
       
          $project['project_name'] = $input['project_name'];
          $project['description'] = $input['project_description'];
-         $project['company_id'] = $id;
+         $project['client_id'] = $id;
         
           if(MasterProject::create($project))
           {
-             $getClient = MasterCompany::find($id);
-             $from = Auth::user()->id;
-             $to = $getClient->user_id;
-             $subject = $input['project_name'];
-             $message = $input['project_name'].' added successfully.';
-             $addNotification = $this->notification($from,$getClient->user_id,$subject,$message);
+             //$getClient = MasterCompany::find($id);
+             //$from = Auth::user()->id;
+           //  $to = $getClient->user_id;
+             //$subject = $input['project_name'];
+             //$message = $input['project_name'].' added successfully.';
+             //$addNotification = $this->notification($from,$getClient->user_id,$subject,$message);
 
-             $body = view('emails.client-new-project',['getClient'=>$getClient,'project'=>$project]);
-             $this->sendMail($getClient->getUser->email,$getClient->getUser->name,$message,$body);
+            // $body = view('emails.client-new-project',['getClient'=>$getClient,'project'=>$project]);
+             //$this->sendMail($getClient->getUser->email,$getClient->getUser->name,$message,$body);
 
              return redirect("/admin/manage-projects/$id")->with('success', 'Project added successfully');
           }

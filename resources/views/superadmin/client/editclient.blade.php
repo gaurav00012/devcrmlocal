@@ -1,7 +1,3 @@
-<?php
-use App\User;
-?>
-
 @extends('layouts.admin.main')
 @section('heading')
 Edit Client
@@ -14,21 +10,14 @@ Edit Client
 {!! Form::open(['url' => ['admin/update-client',$client->id],'method' => 'post']) !!}
         <div class="form-group">
         <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('company_name',  user::find($client->user_id)->name,['class' => 'form-control','placeholder'=>'Enter Company name']);?>
+        <?php echo Form::text('company_name',  $client->company_name,['class' => 'form-control','placeholder'=>'Enter Company name']);?>
         @if($errors->has('name'))
             <div class="error">{{ $errors->first('company_name') }}</div>
         @endif
         </div>
         <div class="form-group">
         <?php //echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
-        <?php echo Form::textarea('company_email', User::find($client->user_id)->email,['class' => 'form-control','placeholder'=>'Enter Company email']);?>
-        @if($errors->has('email'))
-            <div class="error">{{ $errors->first('company_description') }}</div>
-        @endif
-        </div>
-        <div class="form-group">
-        <?php //echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
-        <?php echo Form::textarea('company_description', $client->client_description,['class' => 'form-control','placeholder'=>'Enter Company description']);?>
+        <?php echo Form::textarea('company_description', $client->description,['class' => 'form-control','placeholder'=>'Enter Company description']);?>
         @if($errors->has('email'))
             <div class="error">{{ $errors->first('company_description') }}</div>
         @endif

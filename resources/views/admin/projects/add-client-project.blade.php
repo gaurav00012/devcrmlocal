@@ -7,7 +7,7 @@ Add Project for <b><?php echo $clientData['clientName']; ?></b>
 <div class="col-xs-6" style="display:flex;justify-content:flex-end">
     <a href="{!! url('admin/add-project');!!}"  class="btn btn-primary pull-right">Back</a>
 </div><br>
-{!! Form::open(['url' => ['/admin/add-client-project',$clientData['clientId']],'method' => 'post']) !!}
+{!! Form::open(['method' => 'post']) !!}
 <div class="form-group">
         <?php //echo Form::label('project_name', 'Project Name', ['class' => 'form-control']); ?>
         <?php echo Form::text('project_name', '',['class' => 'form-control','placeholder'=>'Enter project name']);?>

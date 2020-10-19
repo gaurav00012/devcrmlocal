@@ -18,7 +18,7 @@
                 </div>
               </a>
             </li>
-            @if(Auth::user()->user_role === 1)
+            @if(Auth::user()->user_role === 4)
             <!-- 
             <li class="nav-item nav-category">
              <span class="nav-link"><?php echo Form::select('projects', array(''=>'Select Projects'), null, array('class' => 'form-control projects'));?></span>
@@ -43,17 +43,28 @@
               </a>
             </li>
            <li class="nav-item">
-              <a class="nav-link" href="{{ url('admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
-                <span class="menu-title">Manage Clients</span>
+              <a class="nav-link" href="{{ url('super-admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">Manage Companies</span>
                 <i class="icon-user menu-icon"></i>
               </a>
             </li>
+            
+            @endif
+            @if(Auth::user()->user_role === 1)
+             <li class="nav-item">
+              <a class="nav-link"  href="{{ url('admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">Manage Client</span>
+                <i class="icon-user menu-icon"></i>
+              </a>
+            </li>
+            
             <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-team') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Team</span>
                 <i class="icon-user menu-icon"></i>
               </a>
             </li>
+            
             @endif
             @if(Auth::user()->user_role === 3)
              <li class="nav-item nav-category">
