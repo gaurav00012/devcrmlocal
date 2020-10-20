@@ -13,9 +13,9 @@ class AddForeignKeyMasProject extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `mas_projects`  
-                      ADD FOREIGN KEY (`client_id`) REFERENCES `mas_client`(`id`);
-                    ");
+        // DB::statement("ALTER TABLE `mas_projects`  
+        //               ADD FOREIGN KEY (`client_id`) REFERENCES `mas_client`(`id`);
+        //             ");
     }
 
     /**
