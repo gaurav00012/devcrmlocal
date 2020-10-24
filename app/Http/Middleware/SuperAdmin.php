@@ -15,6 +15,11 @@ class SuperAdmin
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+         if(auth()->user()->user_role == 4)
+        {
+          return $next($request);    
+        }
+        return redirect('home')->with('error',"Oops Something went wrong.");
+        //return $next($request);
     }
 }

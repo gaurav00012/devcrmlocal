@@ -1,3 +1,30 @@
+@if(Auth::check())
+<?php
+
+        $role = Auth::user()->user_role;
+        
+        if($role == '1')
+        { 
+            
+            echo '<script>window.location.href = "admin/home";</script>';
+        }
+        elseif($role == '2')
+        {
+            echo '<script>window.location.href = "developer/home";</script>';
+        }
+        elseif($role == '3')
+        {
+            echo '<script>window.location.href = "client/home";</script>';
+        }
+        elseif($role == '4')
+        {
+            echo '<script>window.location.href = "super-admin/home";</script>';
+        }
+      
+
+?>
+@endif
+
 @extends('layouts.app')
 
 @section('content')

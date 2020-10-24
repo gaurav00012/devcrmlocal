@@ -54,6 +54,10 @@ class LoginController extends Controller
     elseif($role === 3) {
         return Auth::user()->slug;
     }
+    elseif($role === 4)
+    {
+        return 'super-admin/home';
+    }
 
 
     // Check user role

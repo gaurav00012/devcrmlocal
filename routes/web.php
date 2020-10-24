@@ -19,7 +19,7 @@ Route::get("/email",'User\HomeController@email');
 Auth::routes(['register' => false]);
 //Auth::routes(['register' => false]);
 
-// Route::get('/home', 'HomeController@index')->name('home');
+ Route::get('/home', 'HomeController@index')->name('home');
 //Route::get('/home','Admin\IndexController@index')->middleware('auth','isClient');
 //Route::post('/get-project','Admin\IndexController@getCompany');
 //Route::get('/test','User\HomeController@index');
@@ -90,26 +90,29 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('client/download-file/{filename}','Client\IndexController@downloadfile')->middleware('isClient');	
 	Route::post('client/update-notification','Client\IndexController@updateNotification');
 
-	Route::get('/developer/home','Developer\IndexController@index')->middleware('isDeveloper');
-	Route::post('/developer/edit-task','Developer\IndexController@editTask')->middleware('isDeveloper');
-	Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile')->middleware('isDeveloper');
-	Route::post('developer/add-comment/{taskId}','Developer\IndexController@addComment')->middleware('isDeveloper');
-	Route::post('developer/edit-comment','Developer\IndexController@editComment')->middleware('isDeveloper');
-	Route::post('developer/update-comment/{commentid}','Developer\IndexController@updateComment')->middleware('isDeveloper');
-	Route::post('developer/start-task/{taskId}','Developer\IndexController@startTask')->middleware('isDeveloper');
-	Route::post('/developer/get-time-log','Developer\IndexController@getTimeLog')->middleware('isDeveloper');
-	Route::post('/developer/update-notification','Developer\IndexController@updateNotification')->middleware('isDeveloper');
+	Route::group(['middleware' => 'isDeveloper'], function () {
+	Route::get('/developer/home','Developer\IndexController@index');
+	Route::post('/developer/edit-task','Developer\IndexController@editTask');
+	Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile');
+	Route::post('developer/add-comment/{taskId}','Developer\IndexController@addComment');
+	Route::post('developer/edit-comment','Developer\IndexController@editComment');
+	Route::post('developer/update-comment/{commentid}','Developer\IndexController@updateComment');
+	Route::post('developer/start-task/{taskId}','Developer\IndexController@startTask');
+	Route::post('/developer/get-time-log','Developer\IndexController@getTimeLog');
+	Route::post('/developer/update-notification','Developer\IndexController@updateNotification');
+	});
 	Route::get('profile','Common\ProfileController@index');
 	Route::post('profile','Common\ProfileController@saveprofile');
 	//Route::get('admin/dashboard','Admin\DashboardController@index');
 	//Route::get('admin/create-shopkeeper','Admin\ShopkeeperController@create')->middleware('is_admin');
 	//Route::get('admin/get-shopkeeper','Admin\ShopkeeperController@getallshopkeeper')->middleware('is_admin');
 	//Route::post('admin/create-shopkeeper','Admin\ShopkeeperController@store')->middleware('is_admin');
-    
+    Route::group(['middleware' => 'isSuperAdmin'], function () {
     Route::get('/super-admin/home','SuperAdmin\IndexController@index');
     Route::get('super-admin/manage-client','SuperAdmin\ClientController@index');
     Route::get('/super-admin/create-client','SuperAdmin\ClientController@create');
 	Route::post('/super-admin/create-client','SuperAdmin\ClientController@store');
 	Route::get('/super-admin/edit-client/{id}','SuperAdmin\ClientController@edit');
+	});
    
 });
