@@ -30,18 +30,13 @@
                 <i class="icon-user menu-icon"></i>
               </a>
         </li> -->
-        <li class="nav-item">
-              <a class="nav-link"  href="{{ url('admin/new-registerations') }}" aria-expanded="false" aria-controls="auth">
-                <span class="menu-title">Manage New Registrations</span>
-                <i class="icon-user menu-icon"></i>
-              </a>
-        </li>
-          <li class="nav-item">
+       
+        <!--   <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-user') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Admin's</span>
                 <i class="icon-user menu-icon"></i>
               </a>
-            </li>
+            </li> -->
            <li class="nav-item">
               <a class="nav-link" href="{{ url('super-admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Companies</span>
@@ -51,6 +46,12 @@
             
             @endif
             @if(Auth::user()->user_role === 1)
+             <li class="nav-item">
+              <a class="nav-link"  href="{{ url('admin/new-registerations') }}" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">Manage New Registrations</span>
+                <i class="icon-user menu-icon"></i>
+              </a>
+        </li>
              <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Client</span>

@@ -27,7 +27,7 @@ class ClientController extends Controller
         //dd($user->companyuser->id);
          $companyId = $user->companyuser->id;
          $clients =  $user->companyuser->getClients;
-         //dd($clients);
+        // dd($clients);
         //$allClient = Clients::;
         //$clientProject = new MasterCompany;
        
@@ -107,7 +107,10 @@ class ClientController extends Controller
     public function edit($id)
     {
         $client = Clients::find($id);
-        return view('admin/clients/editclient',['client'=>$client]);
+        $clientUserDetail = $client->getUser;
+        $clientFormDetail = $client->getUser->userclient;
+        //dd($clientDetail);
+        return view('admin/clients/editclient',['client'=>$client,'clientFormDetail'=>$clientFormDetail]);
     }
 
     /**
@@ -190,7 +193,9 @@ class ClientController extends Controller
 
         try
         {
-            //$user = Auth::user();
+            $authUser = Auth::user();
+
+           //dd($user->companyuser->id);
             $post = $request->post();
             $clientDetail = ClientForm::find($post['clientid']); 
             $clientDetail->is_approved = 1;
@@ -205,17 +210,29 @@ class ClientController extends Controller
 
             $user = User::create($user);
 
+             $client['client_description'] = $clientDetail->about_business;
+             $client['company_id'] = $authUser->companyuser->id;
              $client['user_id'] = $user->id;
-             $client['company_name'] = $clientDetail->company_name;
-             $client['description'] = $clientDetail->about_business;
+            // $client['company_name'] = $clientDetail->company_name;
+             
              $client['created_by'] = Auth::user()->id;
             // MasterCompany::create($client);
-              if(MasterCompany::create($client))
+             //  if(MasterCompany::create($client))
+             //  {
+             //     $name = 'Gaurav';
+             //     $subject = 'You are now onboard with Onelook';
+             //     $body = view('emails.client-welcome',['user'=>$user,'client'=>$client]);
+             //     $this->sendMail($clientDetail->email,$name,$subject,$body);
+             //    $result['user_id'] = $user->id;
+               
+             //    return $result;
+             // }
+              if(Clients::create($client))
               {
-                 $name = 'Gaurav';
-                 $subject = 'You are now onboard with Onelook';
-                 $body = view('emails.client-welcome',['user'=>$user,'client'=>$client]);
-                 $this->sendMail($clientDetail->email,$name,$subject,$body);
+                 //$name = 'Gaurav';
+                 //$subject = 'You are now onboard with Onelook';
+                 //$body = view('emails.client-welcome',['user'=>$user,'client'=>$client]);
+                 //$this->sendMail($clientDetail->email,$name,$subject,$body);
                 $result['user_id'] = $user->id;
                
                 return $result;

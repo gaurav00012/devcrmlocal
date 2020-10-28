@@ -13,7 +13,7 @@ class WebController extends Controller
     use StoreImageTrait;
     use Email;
 
-    private $adminEmail = 'diwakarmishra1.0@gmail.com';
+    private $adminEmail = 'aggarwal.gaurav611@gmail.com';
 
     /**
      * Display a listing of the resource.
@@ -49,6 +49,7 @@ class WebController extends Controller
 
         try
         {
+           // dd($request->post());
              $this->validate($request,[
                 'company_name' => 'required',
                 'contact_person' => 'required',
@@ -85,15 +86,16 @@ class WebController extends Controller
              $form['reference'] = $post['reference'];
              $form['additional_notes'] = $post['additional'];
              $form['ip'] = $request->ip();
-             $image = $request->file('company_logo');
-            $logoName = 'company_logo_'.time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = 'company_logo/';
-            $image->move($destinationPath, $logoName);
-            $form['company_logo'] = $logoName;
 
-            
-          
-            
+             if($request->hasFile('company_logo'))
+            {
+                $image = $request->file('company_logo');
+                $logoName = 'company_logo_'.time().'.'.$image->getClientOriginalExtension();
+                $destinationPath = 'company_logo/';
+                $image->move($destinationPath, $logoName);
+                $form['company_logo'] = $logoName;
+             }
+
           //  return view('frontend.web.registermail',['form'=>$form]);
                
              if(ClientForm::create($form))
