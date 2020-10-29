@@ -13,7 +13,7 @@ class WebController extends Controller
     use StoreImageTrait;
     use Email;
 
-    private $adminEmail = 'aggarwal.gaurav611@gmail.com';
+    private $adminEmail = 'diwakarmishra1.0@gmail.com';
 
     /**
      * Display a listing of the resource.
