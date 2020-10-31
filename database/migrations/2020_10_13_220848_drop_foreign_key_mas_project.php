@@ -13,9 +13,9 @@ class DropForeignKeyMasProject extends Migration
      */
     public function up()
     {
-        DB::statement("
-            ALTER TABLE `mas_projects` DROP FOREIGN KEY `mas_projects_ibfk_1`;
-            ");
+        // DB::statement("
+        //     ALTER TABLE `mas_projects` DROP FOREIGN KEY `mas_projects_ibfk_1`;
+        //     ");
     }
 
     /**

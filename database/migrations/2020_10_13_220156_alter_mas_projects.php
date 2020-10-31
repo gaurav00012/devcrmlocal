@@ -13,10 +13,10 @@ class AlterMasProjects extends Migration
      */
     public function up()
     {
-        DB::statement("
-              ALTER TABLE `mas_projects`   
-              CHANGE `company_id` `client_id` INT(25) NULL;
-            ");
+        // DB::statement("
+        //       ALTER TABLE `mas_projects`   
+        //       CHANGE `company_id` `client_id` INT(25) NULL;
+        //     ");
     }
 
     /**
