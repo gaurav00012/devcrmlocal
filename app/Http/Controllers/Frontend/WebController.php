@@ -14,6 +14,8 @@ class WebController extends Controller
     use Email;
 
     private $adminEmail = 'diwakarmishra1.0@gmail.com';
+    // private $adminEmail = 'aggarwal.gaurav611@gmail.com';
+
 
     /**
      * Display a listing of the resource.

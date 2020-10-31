@@ -16,6 +16,15 @@
 		<script src="{{asset('js/emf/modernizr.custom.js')}}"></script>
 	</head>
 	<body>
+		@if (Session::has('success'))
+
+
+<script>
+	alert("Thank you...!!! Data Submitted");
+	location.reload();
+</script>
+
+@else
 		<div class="container">
 
 			<div class="fs-form-wrap" id="fs-form-wrap">
@@ -185,5 +194,6 @@
 				} );
 			})();
 		</script>
+		@endif
 	</body>
 </html>
