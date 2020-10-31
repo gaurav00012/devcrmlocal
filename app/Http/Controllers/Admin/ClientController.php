@@ -24,9 +24,9 @@ class ClientController extends Controller
     public function index()
     {
         $user = Auth::user();
-        //dd($user->companyuser->id);
-         $companyId = $user->companyuser->id;
-         $clients =  $user->companyuser->getClients;
+       // dd($user->companyuser);
+         //$companyId = $user->companyuser->id;
+       //  $clients =  $user->companyuser->getClients;
         // dd($clients);
         //$allClient = Clients::;
         //$clientProject = new MasterCompany;

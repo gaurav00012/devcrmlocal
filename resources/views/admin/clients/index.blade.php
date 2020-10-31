@@ -7,10 +7,11 @@ Manage Clients
 @endsection
 
 @section('content')
-<div class="col-xs-6" style="display:flex;justify-content:flex-end">
+<!-- <div class="col-xs-6" style="display:flex;justify-content:flex-end">
     <a href="{!! url('admin/create-client');!!}"  class="btn btn-primary pull-right">Add Client</a>
-</div>
+</div> -->
 <p></p>
+@if(!Auth::user()->companyuser->getClients->isEmpty())
 <table class="table admin-client-table" id="client-table">
         <thead>
             <tr>
@@ -35,6 +36,10 @@ Manage Clients
            
         </tbody>
 </table>
+@else
+<p>No Records found</p>
+@endif
+
 @endsection
 @section('vuejs')
 <!-- <script  src="{{URL::asset('js/admin/user.js')}}"></script> -->
