@@ -34,7 +34,7 @@ class IndexController extends Controller
             $user = Auth::user();
             //echo $user->id;
            
-            $company = $user->companyuser;
+            $company = $user->clientUser;
            
             $tasks = MasterTask::where('company_id', $company->id)
                                 ->where('task_view_to_client', 1)

@@ -39,6 +39,11 @@ class User extends Authenticatable
 
     public function companyuser()
     {
+        return $this->hasOne('App\MasterCompany','user_id','id');
+    }
+
+    public function clientUser()
+    {
         return $this->hasOne('App\Clients','user_id','id');
     }
 
