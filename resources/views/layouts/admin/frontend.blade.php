@@ -79,9 +79,9 @@
                   $profile = isset(Auth::user()->userclient->company_logo) == '' ? 'images/user-profile/user-avatar.png' : url('company_logo').'/'. Auth::user()->userclient->company_logo ;
                ?>
          <li class="profile-img ml-3">
-            <a href="javaScript:void(0)" id="profile" class="rounded text-white py-1 px-2 text-decoration-none small"><img src="{{$profile}}" class="rounded-circle" width="25"> Gaurav <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+            <a href="javaScript:void(0)" id="profile" class="rounded text-white py-1 px-2 text-decoration-none small"><img src="{{$profile}}" class="rounded-circle" width="25"> {{Auth::user()->name}} <i class="fa fa-angle-down" aria-hidden="true"></i></a>
             <div class="profile-links" style="display: none;">
-               <div class="user-img text-center mb-2"><img src="{{$profile}}" class="rounded-circle mb-3" width="95" ><span class="u-name mb-1">Gaurav</span><span class="u-email"><a href="mailto:abc@mysite.com">abc@mysite.com</a></span></div>
+               <div class="user-img text-center mb-2"><img src="{{$profile}}" class="rounded-circle mb-3" width="95" ><span class="u-name mb-1">{{Auth::user()->name}}</span><span class="u-email"><a href="mailto:abc@mysite.com">{{Auth::user()->email}}</a></span></div>
                <div class="pro-links">
                   <ul class="list-unstyled">
                      <li><a href=""><i class="fa fa-user-o" aria-hidden="true"></i>My Profile</a></li>
