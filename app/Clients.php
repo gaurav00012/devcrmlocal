@@ -15,4 +15,24 @@ class Clients extends Model
     {
     	return $this->belongsTo('App\User','user_id','id');
     }
+
+    public static function updateClientsDetails($id,$post)
+    {
+   		try{
+    		$getClientDetail = Self::find($id);
+    		$getClientDetail->client_description = $post['client_description'];
+    		
+    		
+    		if($getClientDetail->save())
+    		{
+    			return true;
+    		}
+    	}
+    	 catch(\Exception $e)
+        {
+            $result['success'] = false;
+            $result['error'] = $e->getMessage();
+            return $result;
+        }
+    }
 }

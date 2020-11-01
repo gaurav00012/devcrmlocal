@@ -122,17 +122,21 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-        $client = MasterCompany::find($id);
-       
-        $client->company_name = $request->post('company_name');
-        $client->description = $request->post('company_description');
+        $client = Clients::find($id);
+        $userDetailId = $client->getUser->id;
+        $registertionDetail = $client->getUser->userclient->id;
+
+        $updateregistertionDetail = ClientForm::updateClientDetail($registertionDetail,$request->post());
+        $updateClientDetail = Clients::updateClientsDetails($id,$request->post());
+        $updateUserDetail = User::updateUser($id,$request->post());
+        // $client->company_name = $request->post('company_name');
+        // $client->description = $request->post('company_description');
         
-        if($client->save())
-        {
-            return redirect('/admin/manage-client')->with('success', 'Client updated successfully');    
-        }
-        
+        // if($client->save())
+        // {
+        //     return redirect('/admin/manage-client')->with('success', 'Client updated successfully');    
+        // }
+         return redirect('/admin/manage-client')->with('success', 'Client updated successfully');    
     }
 
     /**

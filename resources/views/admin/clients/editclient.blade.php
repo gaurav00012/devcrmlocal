@@ -25,7 +25,7 @@ Edit Client
         <div class="col-md-6">
             <div class="form-group">
             <?php echo Form::label('company_description', 'E-Mail'); ?>
-            <?php echo Form::text('company_email', User::find($client->user_id)->email,['class' => 'form-control','placeholder'=>'Enter Company email']);?>
+            <?php echo Form::text('company_email', User::find($client->user_id)->email,['class' => 'form-control','placeholder'=>'Enter Company email','disabled'=>'disabled']);?>
             @if($errors->has('email'))
                 <div class="error">{{ $errors->first('company_description') }}</div>
             @endif

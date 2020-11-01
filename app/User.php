@@ -52,5 +52,23 @@ class User extends Authenticatable
         return $this->hasOne('App\ClientForm','id','c_id');
     }
 
+    public static function updateUser($id,$post)
+    {
+        try{
+            $getUserDetail = Self::find($id);
+            $getUserDetail->name = $post['company_name'];
+
+            if($getClientDetail->save())
+            {
+                return true;
+            }
+        }
+         catch(\Exception $e)
+        {
+            $result['success'] = false;
+            $result['error'] = $e->getMessage();
+            return $result;
+        }
+    }
    
 }
