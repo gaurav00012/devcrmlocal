@@ -32,9 +32,10 @@ class IndexController extends Controller
               // $taskComment = $taskDetail->getTaskComment;
               
             $user = Auth::user();
-            // echo $user->id;
+            //echo $user->id;
+           
             $company = $user->companyuser;
-            // dd($company->id);
+           
             $tasks = MasterTask::where('company_id', $company->id)
                                 ->where('task_view_to_client', 1)
                                 //->whereIn('task_status',array(1,2,4))
