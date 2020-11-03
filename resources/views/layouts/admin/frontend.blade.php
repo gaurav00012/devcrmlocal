@@ -84,11 +84,16 @@
                <div class="user-img text-center mb-2"><img src="{{$profile}}" class="rounded-circle mb-3" width="95" ><span class="u-name mb-1">{{Auth::user()->name}}</span><span class="u-email"><a href="mailto:abc@mysite.com">{{Auth::user()->email}}</a></span></div>
                <div class="pro-links">
                   <ul class="list-unstyled">
-                     <li><a href=""><i class="fa fa-user-o" aria-hidden="true"></i>My Profile</a></li>
-                     <li><a href=""><i class="fa fa-envelope-o"></i>Messages</a></li>
-                     <li><a href=""><i class="fa fa-bolt" aria-hidden="true"></i>Activity</a></li>
-                     <li><a href=""><i class="fa fa-question-circle-o" aria-hidden="true"></i>FAQs</a></li>
-                     <li><a href=""><i class="fa fa-power-off" aria-hidden="true"></i>Logout</a></li>
+                     <li><a href=""><i class="fa fa-user-o" aria-hidden="true"></i>My Profile</a></li>   
+                     <li><a href="{{ route('logout') }}" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();"><i class="fa fa-power-off" aria-hidden="true">
+                                         </i>{{ __('Logout') }}</a>
+
+                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                      </li>
                   </ul>
                </div>
             </div>
