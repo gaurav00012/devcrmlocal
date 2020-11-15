@@ -241,10 +241,17 @@ Edit Client
         @endif
         </div>
     </div>
-
-   
-   
+     <div class="col-md-6">
+        <div class="form-group">
+        <?php echo Form::label('additional_notes', 'Company Logo'); ?>
+        <img src="/company_logo/{{$clientFormDetail->company_logo}}" alt="{{$clientFormDetail->company_logo}}" width="" height="">
+        @if($errors->has('additional_notes'))
+            <div class="error">{{ $errors->first('additional_notes') }}</div>
+        @endif
+        </div>
     </div>
+    </div>
+
        
         <div class="form-group">
             <?php echo Form::submit('Submit',['class'=>'btn btn-primary']);?>
