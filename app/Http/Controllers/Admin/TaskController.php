@@ -166,8 +166,11 @@ class TaskController extends Controller
           try{
 
               $project = MasterProject::find($id);
-              $company = MasterCompany::find($project->company_id);
-             
+              $company = MasterCompany::find($project->client_id);
+              
+              echo $project->client_id;
+              
+              die();  
               
              $input = $request->post();
              

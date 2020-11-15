@@ -28,7 +28,7 @@ Manage Team
             <td>{{ User::find($user->user_id)->name }}</td>
             <td>{{ User::find($user->user_id)->email }}</td>
             <!-- <td>{{ $user->user_role }}</td> -->
-            <td><a href="{!! url('admin/edit-team');!!}/{{ $user->id }}"  class="btn btn-info green-btn">Edit</a> | <a href="{!! url('admin/delete-team');!!}/{{ $user->id }}"  class="btn btn-info green-btn">Delete</a> </td>
+            <td><a href="{!! url('admin/edit-team');!!}/{{ $user->user_id }}"  class="btn btn-info green-btn">Edit</a> | <a href="{!! url('admin/delete-team');!!}/{{ $user->id }}"  class="btn btn-info green-btn">Delete</a> </td>
             </tr>
         @endforeach
            
