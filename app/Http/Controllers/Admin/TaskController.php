@@ -164,7 +164,7 @@ class TaskController extends Controller
             'task_status' => 'required',
           ]);
 
-        //  try{
+          try{
 
               $project = MasterProject::find($id);
               $company = MasterCompany::find($project->client_id);
@@ -216,11 +216,11 @@ class TaskController extends Controller
 
              $result['taskid'] = $taskSave->task_id;
              $result['project_id'] = $taskSave['project_id'];
-        // }
-        // catch(\Exception $e){
-        //     $result['success'] = false;
-        //     $result['exception_message'] = $e->getMessage();
-        // }
+        }
+        catch(\Exception $e){
+            $result['success'] = false;
+            $result['exception_message'] = $e->getMessage();
+        }
 
         return response()->json($result);
         
@@ -314,7 +314,7 @@ class TaskController extends Controller
             
                 $getProject = MasterProject::find($taskDetail->project_id);
             
-                $allProject = MasterProject::where('company_id','=',$taskDetail->company_id)->get();
+                $allProject = MasterProject::where('client_id','=',$taskDetail->company_id)->get();
                 $allCompany = MasterCompany::all();
                 $getCompany = MasterCompany::find($getProject->company_id);
                 $resource = User::where('user_role','=',2)->get();
