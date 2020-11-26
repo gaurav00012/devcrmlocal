@@ -182,7 +182,7 @@ let fileaddedDropzone = 0;
       success : function(resp){
         let taskId = resp.taskid;
         console.log(taskId);
-        alert("in success");
+        alert("Task Created Successfully");
        if(fileaddedDropzone == '1')
        {
         uploadFile(taskId);
@@ -204,7 +204,7 @@ let fileaddedDropzone = 0;
   });
        }
        else{
-       // window.location.href = '/admin/manage-task/'+resp.project_id;
+        window.location.href = '/admin/manage-task/'+resp.project_id;
        }
       },
       error: function (err) {

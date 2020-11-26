@@ -16,7 +16,7 @@ Manage Tasks
       <th hidden>position</th>
       <th>Client Can See</th>
         <th>Task Name</th>
-        <th>Assigne</th>
+       <!--  <th>Assigne</th> -->
         <th>Due Date</th>
         <!-- <th>Task Progress</th>
         <th>Priority</th> -->
@@ -35,7 +35,7 @@ Manage Tasks
 </div></td>
          <td hidden>{{$projectask->position}}</td>
         <td>{{$projectask->task_name}}</td>
-        <td>{{$projectask->task_name}}</td>
+       <!--  <td>{{$projectask->task_name}}</td> -->
         <td>{{$projectask->due_date}}</td>
         <!-- <td>{{$projectask->task_progress}}</td>
          <td>{{$projectask->task_progress}}</td> -->

@@ -118,7 +118,7 @@ class TaskController extends Controller
         $getCompany = Clients::find($getProject->client_id);
         $resource = User::where('user_role','=',2)->get();
         $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
-      
+     // dd($getProject);
         
      
         $companyArray = array(
@@ -153,6 +153,7 @@ class TaskController extends Controller
 
     public function saveProjectTask(Request $request,$id)
     {
+       // dd($request->post());
         $result['success'] = true;
         $result['exception_message'] = '';
 
@@ -163,14 +164,14 @@ class TaskController extends Controller
             'task_status' => 'required',
           ]);
 
-          try{
+        //  try{
 
               $project = MasterProject::find($id);
               $company = MasterCompany::find($project->client_id);
+             // dd($project);
+             // echo $project->client_id;
               
-              echo $project->client_id;
-              
-              die();  
+              //die();  
               
              $input = $request->post();
              
@@ -191,16 +192,21 @@ class TaskController extends Controller
              $from = $user->id;
              foreach($input['task_resource'] as $key => $resource)$addNotification = $this->notification($from,$resource,$subject,$message);
              
-             $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
+           //  $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
              
              $taskSave = MasterTask::create($task);
+
+             //dd($taskSave->task_id);
             // Session::flash('success', 'Task Created Successfully');
              $request->session()->flash('success', 'Task Created Successfully');
              if(!empty($input['task_resource']))
              {
                 $resourceArray = $input['task_resource'];
+                $resource = array();
                 foreach($resourceArray as $key => $resourceVal)
                 {
+                    // echo $resourceVal;
+                    // echo '<br>';
                     $resource['task_id'] = $taskSave->task_id;
                     $resource['assignee'] = $resourceVal;
                     $resource['created_by'] = $user->id;
@@ -209,12 +215,12 @@ class TaskController extends Controller
              }
 
              $result['taskid'] = $taskSave->task_id;
-             $result['project_id'] = $taskSave->project_id;
-        }
-        catch(\Exception $e){
-            $result['success'] = false;
-            $result['exception_message'] = $e->getMessage();
-        }
+             $result['project_id'] = $taskSave['project_id'];
+        // }
+        // catch(\Exception $e){
+        //     $result['success'] = false;
+        //     $result['exception_message'] = $e->getMessage();
+        // }
 
         return response()->json($result);
         
