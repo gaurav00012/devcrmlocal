@@ -178,7 +178,7 @@ class TaskController extends Controller
              $user = Auth::user();
              
              $task['task_name'] = $input['task_name'];
-             $task['company_id'] = $project->company_id;
+             $task['company_id'] = $project->client_id;
              $task['project_id'] = $id;
              $task['task_status'] = $input['task_status'];
              $task['task_description'] = $input['task_description']; 
@@ -307,14 +307,18 @@ class TaskController extends Controller
 
     public function editProjectTask($id)
     {
-        try{   
+        //try{   
                 $taskDetail = MasterTask::find($id);
                 $taskAssignee = TaskAssignee::where('task_id','=',$id)->get();
                 $taskAttachment = MasterTaskAttachments::where('task_id','=',$id)->get();
-            
+                
                 $getProject = MasterProject::find($taskDetail->project_id);
-            
+                    
                 $allProject = MasterProject::where('client_id','=',$taskDetail->company_id)->get();
+                echo '<pre>';
+                print_r($taskDetail);
+                echo '</pre>';
+                dd($getProject);
                 $allCompany = MasterCompany::all();
                 $getCompany = MasterCompany::find($getProject->company_id);
                 $resource = User::where('user_role','=',2)->get();
@@ -344,7 +348,7 @@ class TaskController extends Controller
                     array_push($taskAssigneeArray,$assignee->assignee);
                 }
             return view('admin/tasks/edit-task',[
-                    'project' => $project,
+                    //'project' => $project,
                     'allProject' => $projectArray,
                     'allCompany' => $companyArray,
                     'company' => $company,
@@ -357,10 +361,10 @@ class TaskController extends Controller
                     'taskAssigneeArray' => $taskAssigneeArray,
                     'taskAttachment' => $taskAttachment
             ]);
-        }
-        catch(\Exception $e){
-            return $e->getMessage();
-        }
+        // }
+        // catch(\Exception $e){
+        //     return $e->getMessage();
+        // }
     }
 
     public function showTaskToClient(Request $request,$id)

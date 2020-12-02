@@ -25,6 +25,7 @@ Auth::routes(['register' => false]);
 //Route::get('/test','User\HomeController@index');
 Route::get('/get-started','Frontend\WebController@index');
 Route::post('/','Frontend\WebController@store');
+Route::get('/test-zoho','Frontend\WebController@testZoho');
 
 Route::group(['middleware' => 'auth'], function () {
 	
