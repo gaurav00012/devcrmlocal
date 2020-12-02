@@ -168,6 +168,7 @@ class WebController extends Controller
     public function testZoho()
     {
          $mail = new PHPMailer(true);
+         echo phpinfo();
 
           try {
             //Server settings
