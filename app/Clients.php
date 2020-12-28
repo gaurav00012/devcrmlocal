@@ -16,6 +16,11 @@ class Clients extends Model
     	return $this->belongsTo('App\User','user_id','id');
     }
 
+    public function getInvoice()
+    {
+        return $this->hasMany('App\MasInvoice','client_id','id');
+    }
+
     public static function updateClientsDetails($id,$post)
     {
    		try{

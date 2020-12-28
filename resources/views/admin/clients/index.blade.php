@@ -30,7 +30,12 @@ Manage Clients
             <td>{{ User::find($client->user_id)->email }}</td>
              <td>{{ substr($client->client_description,0,40).'...' }}</td>
             
-            <td><a href="{!! url('admin/manage-projects');!!}/{{ $client->id }}"  class="btn  green-btn">View Project</a>  <a href="{!! url('admin/edit-client');!!}/{{ $client->id }}"  class="btn  green-btn">Edit</a>  <a href="{!! url('admin/delete-client');!!}/{{ $client->id }}"  class="btn  green-btn">Delete</a> </td>
+            <td>
+                <a href="{!! url('admin/manage-invoice');!!}/{{ $client->id }}"  class="btn  green-btn">Manage Invoice</a>  
+                <a href="{!! url('admin/manage-projects');!!}/{{ $client->id }}"  class="btn  green-btn">View Project</a>  
+                <a href="{!! url('admin/edit-client');!!}/{{ $client->id }}"  class="btn  green-btn">Edit</a>  
+                <a href="{!! url('admin/delete-client');!!}/{{ $client->id }}"  class="btn  green-btn">Delete</a> 
+            </td>
             </tr>
         @endforeach
            
