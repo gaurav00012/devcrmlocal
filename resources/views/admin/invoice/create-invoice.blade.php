@@ -43,7 +43,7 @@ Create Invoice for {{$client->getUser->name}}
 		
 		</div>
 		
-		<table id="items">
+		<table id="items" class="table-responsive-sm">
 		
 		  <tr>
 		      <th>Item</th>
