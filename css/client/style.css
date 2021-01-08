@@ -160,4 +160,10 @@ max-width: 200px;
 .up .fa:before {
 	content: "\f106";
 }
+
+.iframe-content iframe{
+width: 100%;
+border: 1px solid #ccc;
+height: 450px; 
+}
 /* Profile */
