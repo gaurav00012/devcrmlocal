@@ -15,6 +15,10 @@ use App\MasterTaskAttachments;
 use App\Notifications;
 use Auth;
 use Carbon\Carbon;
+use App\MasInvoice;
+use App\MasInvoiceItemDetail;
+use App\MasInvoiceItemTotal;
+
 
 class IndexController extends Controller
 {
@@ -27,9 +31,7 @@ class IndexController extends Controller
             $notificationCount = $notifications->getNotificationCount();
             $allNotification = $notifications->getAllNotification();
             
-              // $taskId = $request->post()['taskid'];
-              // $taskDetail = MasterTask::find($taskId);
-              // $taskComment = $taskDetail->getTaskComment;
+           
               
             $user = Auth::user();
             //echo $user->id;
@@ -66,16 +68,9 @@ class IndexController extends Controller
                                                     ->orderBy('position', 'asc')
                                                     ->get(); 
 
-                                                                    
-            //  $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' ORDER BY mt.position asc');
-            // foreach($tasks as $key => $task)
-            // {
-            //     $assignee = User::find($task->assignee);
-            //     $company = MasterCompany::find($task->company_id);
-            //     $task->assigneename = $assignee->name;
-            //     $task->companyname = $company->company_name;
-            // }
-            //  dd($tasks);
+             $masInvoice =  MasInvoice::Where('client_id',$company->id)->get();
+             
+  
             return view('client.index.index', [
                                                 'tasks' => $tasks,
                                                 'completeTask'=>$completeTask,
@@ -83,7 +78,8 @@ class IndexController extends Controller
                                                 'appointmentWithClientTasks' => $appointmentWithClientTasks,
                                                 'marketingApprovalTasks' => $marketingApprovalTasks,
                                                 'notificationCount' => $notificationCount,
-                                                'allNotification' => $allNotification
+                                                'allNotification' => $allNotification,
+                                                'masInvoice' => $masInvoice,
                                                 ]);
         }
         catch(\Exception $e)
@@ -343,6 +339,28 @@ class IndexController extends Controller
             return $result;
 
            
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+    }
+
+    public function viewInvoice($invoiceId)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try
+        {   
+            // use App\MasInvoice;
+            // use App\MasInvoiceItemDetail;
+            // use App\MasInvoiceItemTotal;
+            $invoiceItemDetail = MasInvoiceItemDetail::where('invoice_id','=',$invoiceId)->get();
+            $invoiceItemTotal = MasInvoiceItemTotal::where('invoice_id','=',$invoiceId)->get();
+
+            return view('client.print-invoice',['invoiceItemDetail'=>$invoiceItemDetail,'invoiceItemTotal'=>$invoiceItemTotal]);
         }
         catch(\Exception $e)
         {

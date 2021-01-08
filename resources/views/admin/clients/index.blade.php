@@ -1,5 +1,6 @@
 <?php
 use App\User;
+//dd(Auth::user()->companyuser);
 ?>
 @extends('layouts.admin.main')
 @section('heading')

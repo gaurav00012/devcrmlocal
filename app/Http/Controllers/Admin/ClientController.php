@@ -32,6 +32,7 @@ class ClientController extends Controller
         //$clientProject = new MasterCompany;
        
        //return view('admin/clients/index',['allCompanies'=> $allCompanies]);
+        
         return view('admin/clients/index');
     }
 
@@ -194,6 +195,10 @@ class ClientController extends Controller
     {
         $result['success'] = true;
         $result['exception_message'] = '';
+
+        // echo '<pre>';
+
+        // exit;
 
         try
         {

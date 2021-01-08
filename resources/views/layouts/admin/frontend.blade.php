@@ -52,7 +52,7 @@
       </a>
    </div>
    <div class="notifications">
-      <p class="mb-0 text-white small">Welcome Phonenix Solar, to your personalized One Look page. You have</p>
+      <p class="mb-0 text-white small">Welcome {{Auth()->user()->name}}, to your personalized One Look page. You have</p>
    </div>
    <div class="notifications-right">
       <ul class="list-unstyled mb-0 ml-3 d-flex">

@@ -7,15 +7,12 @@ Create Invoice for {{$client->getUser->name}}
 @section('content')
 
 <div id="page-wrap">
-
+	<form method="post">
+		@csrf
 		<textarea id="header">INVOICE</textarea>
 		
 		<div id="identity">
-		
-            <textarea id="address">Deverybody</textarea>
-
-           
-		
+            <img src="{{asset('images/em-crm-logo.png')}}" height="100" width="200">
 		</div>
 		
 		<div style="clear:both"></div>
@@ -27,12 +24,12 @@ Create Invoice for {{$client->getUser->name}}
             <table id="meta">
                 <tr>
                     <td class="meta-head">Invoice #</td>
-                    <td><textarea></textarea></td>
+                    <td><textarea name="invoice_number">{{mt_rand(100000,999999)}}</textarea></td>
                 </tr>
                 <tr>
 
                     <td class="meta-head">Date</td>
-                    <td><textarea id="date"></textarea></td>
+                    <td><textarea id="date" name="date"></textarea></td>
                 </tr>
               <!--   <tr>
                     <td class="meta-head">Amount Due</td>
@@ -54,11 +51,12 @@ Create Invoice for {{$client->getUser->name}}
 		  </tr>
 		  
 		  <tr class="item-row">
-		      <td class="item-name"><div class="delete-wpr"><textarea></textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
-		      <td class="description"><textarea></textarea></td>
-		      <td><textarea class="cost"></textarea></td>
-		      <td><textarea class="qty"></textarea></td>
-		      <td><span class="price"></span></td>
+		      <td class="item-name">
+		      	<div class="delete-wpr"><textarea name="item_name[]"></textarea><a class="delete" href="javascript:;" title="Remove row">X</a></div></td>
+		      <td class="description"><textarea name="invoice_description[]"></textarea></td>
+		      <td><textarea class="cost" name="cost[]"></textarea></td>
+		      <td><textarea class="qty" name="quantity[]"></textarea></td>
+		      <td><span class="price" name="price[]"></span></td>
 		  </tr>
 		  
 		 
@@ -70,7 +68,7 @@ Create Invoice for {{$client->getUser->name}}
 		  <tr>
 		      <td colspan="2" class="blank"> </td>
 		      <td colspan="2" class="total-line">Subtotal</td>
-		      <td class="total-value"><div id="subtotal"></div></td>
+		      <td class="total-value" ><div id="subtotal"></div></td>
 		  </tr>
 		  <tr>
 
@@ -96,7 +94,8 @@ Create Invoice for {{$client->getUser->name}}
 		  <!-- <h5>Terms</h5> -->
 		  <!-- <textarea>NET 30 Days. Finance Charge of 1.5% will be made on unpaid balances after 30 days.</textarea> -->
 		</div>
-	
+		<button class="btn btn-primary" type="submit">Create</button>
+		</form>
 	</div>
 
 @endsection

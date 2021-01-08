@@ -131,6 +131,8 @@ else{
 curl_close($ch);
 });
 
+Route::get('view-invoice/{invoiceId}','Client\IndexController@viewInvoice');
+
 Route::group(['middleware' => 'auth'], function () {
 	
 	Route::get('/admin/home','Admin\IndexController@index');
@@ -153,6 +155,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/new-registerations','Admin\ClientController@newRegisteration');
 	Route::post('admin/get-new-client','Admin\ClientController@getNewClient');
 	Route::post('admin/approve-client','Admin\ClientController@approveClient');
+
+	// Route::post('admin/approve-client',function(){
+	// 	echo 'hello wrld';
+	// });
 
 	Route::get('admin/manage-team','Admin\TeamController@index');
 	Route::get('/admin/create-team','Admin\TeamController@create');
@@ -187,6 +193,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('admin/update-comment/{commentid}','Admin\TaskController@updateComment');
 	Route::get('admin/manage-invoice/{companyId}','Admin\InvoiceController@getAllInvoice');
 	Route::get('admin/create-invoice/{companyId}','Admin\InvoiceController@create');
+	Route::post('admin/create-invoice/{companyId}','Admin\InvoiceController@store');
+	Route::get('admin/view-invoice/{invoiceid}','Admin\InvoiceController@viewInvoice');
 
 	//Route::get('client/home','Client\IndexController@index')->middleware('isClient');
 	Route::get('/{slug}','Client\IndexController@index')->middleware('isClient');
@@ -196,6 +204,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('client/update-comment/{commentid}','Client\IndexController@updateComment')->middleware('isClient');
 	Route::get('client/download-file/{filename}','Client\IndexController@downloadfile')->middleware('isClient');	
 	Route::post('client/update-notification','Client\IndexController@updateNotification');
+	Route::get('view-invoice/{invoiceId}','Client\IndexController@viewInvoice');
 
 	Route::group(['middleware' => 'isDeveloper'], function () {
 	Route::get('/developer/home','Developer\IndexController@index');
