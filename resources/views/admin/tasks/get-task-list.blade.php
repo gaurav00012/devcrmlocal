@@ -10,7 +10,7 @@ Manage Tasks
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div>
 <p></p>
-<table class="table table-striped" id="task-table">
+<table class="table table-striped table-responsive-sm" id="task-table">
     <thead>
       <tr>
       <th hidden>position</th>

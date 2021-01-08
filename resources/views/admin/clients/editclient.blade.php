@@ -11,8 +11,9 @@ Edit Client
 <div class="col-xs-6" style="display:flex;justify-content:flex-end">
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div><br>
+<div class="col-12 p-0"> 
 {!! Form::open(['url' => ['admin/update-client',$client->id],'method' => 'post']) !!}
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
         <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('company_name', 'Name'); ?>
@@ -34,7 +35,7 @@ Edit Client
 
     </div>
    
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('client_description', 'Description'); ?>
@@ -55,7 +56,7 @@ Edit Client
         </div>
     </div>
     </div>
-    <div class="col-md-12" style="display:flex">
+    <div class="row" >
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('about_business', 'About Business'); ?>
@@ -76,7 +77,7 @@ Edit Client
         </div>
     </div>
     </div>
-     <div class="col-md-12" style="display:flex">
+     <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('hosting_access', 'Hosting Access'); ?>
@@ -98,7 +99,7 @@ Edit Client
     </div>
 
     </div>
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('content', 'Content'); ?>
@@ -120,7 +121,7 @@ Edit Client
     </div>
    
     </div>
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('primary_goal', 'Primary Goal'); ?>
@@ -142,7 +143,7 @@ Edit Client
     </div>
    
     </div>
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('target_audience', 'Target Audience'); ?>
@@ -164,7 +165,7 @@ Edit Client
     </div>
    
     </div>
-     <div class="col-md-12" style="display:flex">
+     <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('describe_word_2', 'Describe one word 2'); ?>
@@ -186,7 +187,7 @@ Edit Client
     </div>
    
     </div>
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('company_colors', 'Company Colors'); ?>
@@ -209,7 +210,7 @@ Edit Client
    
     </div>
 
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('reference', 'Reference'); ?>
@@ -231,7 +232,7 @@ Edit Client
     </div>
    
     </div>
-    <div class="col-md-12" style="display:flex">
+    <div class="row">
     <div class="col-md-6">
         <div class="form-group">
         <?php echo Form::label('additional_notes', 'Additional Notes'); ?>
@@ -243,8 +244,8 @@ Edit Client
     </div>
      <div class="col-md-6">
         <div class="form-group">
-        <?php echo Form::label('additional_notes', 'Company Logo'); ?>
-        <img src="/company_logo/{{$clientFormDetail->company_logo}}" alt="{{$clientFormDetail->company_logo}}" width="" height="">
+        <?php echo Form::label('additional_notes', 'Company Logo'); ?><br/>
+        <img src="/company_logo/{{$clientFormDetail->company_logo}}" alt="{{$clientFormDetail->company_logo}}" width="200" height="">
         @if($errors->has('additional_notes'))
             <div class="error">{{ $errors->first('additional_notes') }}</div>
         @endif
@@ -252,12 +253,15 @@ Edit Client
     </div>
     </div>
 
-       
+       <div class="row">
+        <div class="col-md-12">
         <div class="form-group">
             <?php echo Form::submit('Submit',['class'=>'btn btn-primary']);?>
         </div>
+    </div>
+    </div>
         {!! Form::close() !!}
-        
+        </div>
 @endsection
 @section('vuejs')
 <script  src="{{URL::asset('js/admin/user.js')}}"></script>

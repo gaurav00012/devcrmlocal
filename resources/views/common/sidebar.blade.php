@@ -1,23 +1,28 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
           
           <ul class="nav">
+            <!--
             <li class="nav-item nav-profile">
               <a href="#" class="nav-link">
 
-               <!--  <div class="profile-image">
+               <div class="profile-image">
                  <img src="images/em-crm-logo.png" alt="dev-crm" style="width:70%"/>
                   <div class="dot-indicator bg-success"></div>
-                </div> -->
+                </div> 
+            
                 <div class="text-wrapper">
-                  <p class="profile-name">{{ Auth::user()->name }}</p>
-                  <!-- <p class="designation">Administrator</p> -->
+                  <p class="profile-name mb-0">{{ Auth::user()->name }}</p>
+            <p class="designation">Administrator</p> 
                 </div>
+          
                 <div class="icon-container">
                   <i class="icon-bubbles"></i>
                   <div class="dot-indicator bg-danger"></div>
                 </div>
+          
               </a>
-            </li>
+            </li>-->
+
             @if(Auth::user()->user_role === 4)
             <!-- 
             <li class="nav-item nav-category">
@@ -37,7 +42,8 @@
                 <i class="icon-user menu-icon"></i>
               </a>
             </li> -->
-           <li class="nav-item">
+
+           <li class="nav-item ">
               <a class="nav-link" href="{{ url('super-admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Companies</span>
                 <i class="icon-user menu-icon"></i>
@@ -46,23 +52,24 @@
             
             @endif
             @if(Auth::user()->user_role === 1)
+            <div class="py-3"></div>
              <li class="nav-item">
-              <a class="nav-link"  href="{{ url('admin/new-registerations') }}" aria-expanded="false" aria-controls="auth">
+              <a class="nav-link"  style="border-top:0px;"  href="{{ url('admin/new-registerations') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage New Registrations</span>
                 <i class="icon-user menu-icon"></i>
               </a>
         </li>
              <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-client') }}" aria-expanded="false" aria-controls="auth">
-                <span class="menu-title">Manage Client</span>
-                <i class="icon-user menu-icon"></i>
+                <span class="menu-title">Manage Clients</span>
+                <i class="icon-mustache menu-icon"></i>
               </a>
             </li>
             
             <li class="nav-item">
               <a class="nav-link"  href="{{ url('admin/manage-team') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage Team</span>
-                <i class="icon-user menu-icon"></i>
+                <i class="icon-people menu-icon"></i>
               </a>
             </li>
             

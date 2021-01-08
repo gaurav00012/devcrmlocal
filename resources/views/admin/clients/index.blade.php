@@ -13,7 +13,7 @@ Manage Clients
 </div> -->
 <p></p>
 @if(!Auth::user()->companyuser->getClients->isEmpty())
-<table class="table admin-client-table" id="client-table">
+<table class="table admin-client-table table-responsive-xl" id="client-table">
         <thead>
             <tr>
             <th scope="col">#</th>
@@ -32,10 +32,10 @@ Manage Clients
              <td>{{ substr($client->client_description,0,40).'...' }}</td>
             
             <td>
-                <a href="{!! url('admin/manage-invoice');!!}/{{ $client->id }}"  class="btn  green-btn">Manage Invoice</a>  
-                <a href="{!! url('admin/manage-projects');!!}/{{ $client->id }}"  class="btn  green-btn">View Project</a>  
-                <a href="{!! url('admin/edit-client');!!}/{{ $client->id }}"  class="btn  green-btn">Edit</a>  
-                <a href="{!! url('admin/delete-client');!!}/{{ $client->id }}"  class="btn  green-btn">Delete</a> 
+                <a href="{!! url('admin/manage-invoice');!!}/{{ $client->id }}"  class="btn green-btn invoice-btn mr-1" title="Manage Invoice"><i class="fa fa-files-o"></i></a>  
+                <a href="{!! url('admin/manage-projects');!!}/{{ $client->id }}"  class="btn  green-btn view-btn mr-1" title="View Project"><i class="icon-eye"></i></a>  
+                <a href="{!! url('admin/edit-client');!!}/{{ $client->id }}"  class="btn  green-btn edit-btn mr-1" title="Edit"><i class="icon-pencil"></i></a>  
+                <a href="{!! url('admin/delete-client');!!}/{{ $client->id }}"  class="btn  green-btn delete-btn" title="Delete"><i class="icon-trash"></i></a> 
             </td>
             </tr>
         @endforeach

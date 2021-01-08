@@ -9,7 +9,7 @@ Manage Projects
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div>
 <p></p>
-<table class="table" id="project-list">
+<table class="table table-responsive-sm" id="project-list">
         <thead>
             <tr>
             <th >#</th>
@@ -24,7 +24,7 @@ Manage Projects
             <th scope="row">{{$key+1}}</th>
             <td>{{ $companyproject->project_name }}</td>
             <td>{{ substr($companyproject->description,0,40).'...' }}</td>
-            <td><a href="{!! url('admin/manage-task');!!}/{{ $companyproject->id }}"  class="btn  green-btn">View Task</a>  <a href="{!! url('admin/edit-project');!!}/{{ $companyproject->id }}"  class="btn  green-btn">Edit</a>  <!-- <a href="{!! url('admin/delete-client');!!}/{{ $companyproject->id }}"  class="btn  green-btn">Delete</a> --> </td>
+            <td><a href="{!! url('admin/manage-task');!!}/{{ $companyproject->id }}"  class="btn  green-btn view-btn mr-1" title="View Task"><i class="icon-eye"></i></a>  <a href="{!! url('admin/edit-project');!!}/{{ $companyproject->id }}"  class="btn  green-btn edit-btn" title="Edit"><i class="icon-pencil"></i></a>  <!-- <a href="{!! url('admin/delete-client');!!}/{{ $companyproject->id }}"  class="btn  green-btn">Delete</a> --> </td>
             </tr>
         @endforeach
            
