@@ -10,23 +10,23 @@ Add Client
 {!! Form::open(['url' => '/admin/add-client','method' => 'post']) !!}
         <div class="form-group">
         <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('company_name', '',['class' => 'form-control','placeholder'=>'Enter Company name']);?>
-        @if($errors->has('company_name'))
-            <div class="error">{{ $errors->first('company_name') }}</div>
+        <?php echo Form::text('client_name', '',['class' => 'form-control','placeholder'=>'Enter Client name']);?>
+        @if($errors->has('client_name'))
+            <div class="error">{{ $errors->first('client_name') }}</div>
         @endif
         </div>
         <div class="form-group">
         <?php //echo Form::label('company_name', 'Company Name', ['class' => 'form-control']); ?>
-        <?php echo Form::text('email', '',['class' => 'form-control','placeholder'=>'Enter Company email']);?>
-        @if($errors->has('company_email'))
-            <div class="error">{{ $errors->first('company_email') }}</div>
+        <?php echo Form::text('client_email', '',['class' => 'form-control','placeholder'=>'Enter client email']);?>
+        @if($errors->has('client_email'))
+            <div class="error">{{ $errors->first('client_email') }}</div>
         @endif
         </div>
         <div class="form-group">
         <?php //echo Form::label('company_description', 'Company Description', ['class' => 'form-control']); ?>
-        <?php echo Form::textarea('company_description', '',['class' => 'form-control','placeholder'=>'Enter Company description']);?>
-        @if($errors->has('company_description'))
-            <div class="error">{{ $errors->first('company_description') }}</div>
+        <?php echo Form::textarea('client_description', '',['class' => 'form-control','placeholder'=>'Enter client description']);?>
+        @if($errors->has('client_description'))
+            <div class="error">{{ $errors->first('client_description') }}</div>
         @endif
         </div>
        

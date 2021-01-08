@@ -14,7 +14,7 @@ class CreateMasTaskAssignee extends Migration
     public function up()
     {
           DB::statement("
-        CREATE TABLE `{d}crm`.`mas_task_assignee`(  
+        CREATE TABLE `mas_task_assignee`(  
   `id` INT(11),
   `task_id` INT(25),
   `assignee` BIGINT(25),

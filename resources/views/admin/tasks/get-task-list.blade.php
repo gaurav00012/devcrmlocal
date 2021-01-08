@@ -10,13 +10,13 @@ Manage Tasks
     <a href="{!! url('admin/manage-client');!!}"  class="btn btn-primary pull-right">Back</a>
 </div>
 <p></p>
-<table class="table table-striped" id="task-table">
+<table class="table table-striped table-responsive-sm" id="task-table">
     <thead>
       <tr>
       <th hidden>position</th>
       <th>Client Can See</th>
         <th>Task Name</th>
-        <th>Assigne</th>
+       <!--  <th>Assigne</th> -->
         <th>Due Date</th>
         <!-- <th>Task Progress</th>
         <th>Priority</th> -->
@@ -35,7 +35,7 @@ Manage Tasks
 </div></td>
          <td hidden>{{$projectask->position}}</td>
         <td>{{$projectask->task_name}}</td>
-        <td>{{$projectask->task_name}}</td>
+       <!--  <td>{{$projectask->task_name}}</td> -->
         <td>{{$projectask->due_date}}</td>
         <!-- <td>{{$projectask->task_progress}}</td>
          <td>{{$projectask->task_progress}}</td> -->

@@ -6,10 +6,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\ClientForm;
 use App\Traits\StoreImageTrait;
+use App\Traits\Email;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class WebController extends Controller
 {
     use StoreImageTrait;
+    use Email;
+
+    private $adminEmail = 'diwakarmishra1.0@gmail.com';
+    // private $adminEmail = 'aggarwal.gaurav611@gmail.com';
+
+
     /**
      * Display a listing of the resource.
      *
@@ -44,6 +54,7 @@ class WebController extends Controller
 
         try
         {
+           // dd($request->post());
              $this->validate($request,[
                 'company_name' => 'required',
                 'contact_person' => 'required',
@@ -80,15 +91,25 @@ class WebController extends Controller
              $form['reference'] = $post['reference'];
              $form['additional_notes'] = $post['additional'];
              $form['ip'] = $request->ip();
-             $image = $request->file('company_logo');
-            $logoName = 'company_logo_'.time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = 'company_logo/';
-            $image->move($destinationPath, $logoName);
-            $form['company_logo'] = $logoName;
+
+             if($request->hasFile('company_logo'))
+            {
+                $image = $request->file('company_logo');
+                $logoName = 'company_logo_'.time().'.'.$image->getClientOriginalExtension();
+                $destinationPath = 'company_logo/';
+                $image->move($destinationPath, $logoName);
+                $form['company_logo'] = $logoName;
+             }
+
+          //  return view('frontend.web.registermail',['form'=>$form]);
                
-             if(ClientForm::create($form)){
-                echo 'Data Inserted';
-                die();
+             if(ClientForm::create($form))
+             {
+                 $name = 'Gaurav';
+                 $subject = 'New Registertration - '.$form['company_name'];
+                 $body = view('frontend.web.registermail',['form'=>$form]);;
+                 $this->sendMail($this->adminEmail,$name,$subject,$body);
+                return redirect()->back()->with('success', 'Your data has been submitted. Team will reach out you soon.');      
              }
          }
          catch(\Exception $e)
@@ -142,5 +163,59 @@ class WebController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function testZoho()
+    {
+         $mail = new PHPMailer(true);
+         echo phpinfo();
+
+          try {
+            //Server settings
+            $mail->isSMTP();                                            // Send using SMTP
+            //$mail->Mailer = "smtp";
+            $mail->SMTPDebug = 1;
+            $mail->Host       = 'smtp.zoho.com';                    // Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+
+            $mail->Username   = 'actfirst@proxcel.in';                     // SMTP username
+            $mail->Password   = 'Act@2021';                               // SMTP password
+           // $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+            $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+           // $mail->ssl = true;
+           // $mail->SMTPSecure = 'tsl';
+
+            //Recipients
+            $actFirst = "ACTfirst";
+            $mail->setFrom('actfirst@proxcel.in', $actFirst);
+            $mail->addAddress('gaurav.aggarwal@proxcel.in', 'Gaurav');     // Add a recipient
+            //$mail->addAddress('aggarwal.gaurav611@gmail.com', 'Gaurav');     // Add a recipient
+           // $mail->addAddress('ellen@example.com');               // Name is optional
+            //$mail->addReplyTo('info@example.com', 'Information');
+            if(!empty($cc))
+                foreach($cc as $ccemail)$mail->addCC($ccemail);
+             
+            
+              //$mail->addBCC('aggarwal.gaurav611@gmail.com');
+            
+
+            // Attachments
+          //  $mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
+          //  $mail->addAttachment('/tmp/image.jpg', 'new.jpg');    // Optional name
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = 'test zoho seven subject';
+            $mail->Body    = 'This is seven  html';
+           // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+            $mail->send();
+            //return true;
+        } 
+        catch (Exception $e) 
+        {
+          dd($e);
+          echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
     }
 }

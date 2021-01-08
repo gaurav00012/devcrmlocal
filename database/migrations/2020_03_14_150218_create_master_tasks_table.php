@@ -14,7 +14,7 @@ class CreateMasterTasksTable extends Migration
     public function up()
     {
        DB::statement("
-             CREATE TABLE `{d}crm`.`master_tasks`(  
+             CREATE TABLE `master_tasks`(  
               `task_id` INT(25) NOT NULL AUTO_INCREMENT,
               `task_name` VARCHAR(255),
               `user_id` INT(20),

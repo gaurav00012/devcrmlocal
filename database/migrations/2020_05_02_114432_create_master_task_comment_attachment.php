@@ -14,7 +14,7 @@ class CreateMasterTaskCommentAttachment extends Migration
     public function up()
     {
         DB::statement("
-        CREATE TABLE `devcrm`.`mas_task_comment_attachment`(  
+        CREATE TABLE `mas_task_comment_attachment`(  
             `id` INT(25) NOT NULL AUTO_INCREMENT,
             `task_comment_id` INT(2),
             `attachment_name` VARCHAR(255),
@@ -23,7 +23,7 @@ class CreateMasterTaskCommentAttachment extends Migration
             `updated_at` DATETIME,
             `updated_by` BIGINT(20),
             PRIMARY KEY (`id`),
-            FOREIGN KEY (`task_comment_id`) REFERENCES `devcrm`.`mas_task_comment`(`id`)
+            FOREIGN KEY (`task_comment_id`) REFERENCES `mas_task_comment`(`id`)
           );
      ");
     }

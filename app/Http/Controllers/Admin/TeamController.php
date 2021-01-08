@@ -5,6 +5,9 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\TeamMember;
+use App\MasterCompany;
+use Auth;
 
 class TeamController extends Controller
 {
@@ -16,9 +19,16 @@ class TeamController extends Controller
     public function index()
     {
         //
-        $allUser = User::where('user_role','=',2)->get();
+        //$allUser = User::where('user_role','=',2)->get();
+        //$
+        $user = Auth::user();
+       // dd($user);
+        $getCompanyId = MasterCompany::where('user_id','=',$user->id)->get();
+       // dd($getCompanyId);
+         $allTeam = TeamMember::where('company_id','=',$getCompanyId[0]->id)->get();
+        // dd($allTeam);
         
-        return view('admin/team/index',['allUser'=> $allUser]);
+         return view('admin/team/index',['allTeam'=> $allTeam]);
     }
 
     /**
@@ -41,20 +51,33 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         //
+        $authUser = Auth::user();
         $this->validate($request,[
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
          ]);
+         $getCompanyId = MasterCompany::where('user_id','=',$authUser->id)->get();
+      //   dd($getCompanyId[0]->id);
+
          $input = $request->post();
          $user['name'] = $input['name'];
          $user['user_role'] = 2;
          $user['email'] = $input['email'];
          $user['password'] = bcrypt($input['password']);
          $user['text_password'] = $input['password'];
-         $user = User::create($user);
+         $newUser = User::create($user);
 
-         return redirect('/admin/manage-team');
+         $teamMember['user_id'] = $newUser->id;
+         $teamMember['company_id'] = $getCompanyId[0]->id;
+         //$newTeamMember = TeamMember::create($teamMember);
+
+        if(TeamMember::create($teamMember))
+        {
+         return redirect('/admin/manage-team')->with('success', 'Team Member added successfully');   
+        }
+
+         
     }
 
     /**
@@ -97,8 +120,13 @@ class TeamController extends Controller
        // $user->email = $request->post('email');
         $user->password = bcrypt($request->post('password'));
         $user->text_password = $request->post('password');
-        $user->save();
-        return redirect('/admin/manage-team');
+
+        if($user->save())
+        {
+            return redirect('/admin/manage-team')->with('success', 'Team Member updated successfully'); 
+        }
+
+        //return redirect('/admin/manage-team');
     }
 
     /**
@@ -111,7 +139,12 @@ class TeamController extends Controller
     {
         //
         $user = User::find($id);
-        $user->delete();
-        return redirect('/admin/manage-team');
+
+        if($user->delete())
+        {
+            return redirect('/admin/manage-team')->with('success', 'Team Member Deleted successfully'); 
+        }
+        
+        //return redirect('/admin/manage-team');
     }
 }

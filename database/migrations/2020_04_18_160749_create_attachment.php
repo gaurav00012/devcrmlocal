@@ -14,7 +14,7 @@ class CreateAttachment extends Migration
     public function up()
     {
         DB::statement("
-        CREATE TABLE `devcrm`.`mas_task_attachments`(  
+        CREATE TABLE `mas_task_attachments`(  
             `id` INT(25) NOT NULL AUTO_INCREMENT,
             `task_id` INT(25),
             `file_name` VARCHAR(255),
@@ -23,7 +23,7 @@ class CreateAttachment extends Migration
             `updated_at` DATETIME,
             `updated_by` BIGINT(25),
             PRIMARY KEY (`id`),
-            FOREIGN KEY (`task_id`) REFERENCES `devcrm`.`master_tasks`(`task_id`)
+            FOREIGN KEY (`task_id`) REFERENCES `master_tasks`(`task_id`)
           );
           
           

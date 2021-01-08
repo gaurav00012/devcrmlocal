@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traits\Email;
+// use App\Traits\StoreImageTrait;
 
 class HomeController extends Controller
 {
@@ -12,6 +14,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     use Email;
+
     public function index()
     {
         //
@@ -83,5 +88,14 @@ class HomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function email()
+    {
+        $emailId = 'aggarwal.gaurav611@gmail.com';
+        $name = 'Gaurav';
+        $subject = 'Test Mail';
+        $body = 'Welcome Mail . You are now register on platform thanks';
+        $this->sendMail($emailId,$name,$subject,$body);
     }
 }

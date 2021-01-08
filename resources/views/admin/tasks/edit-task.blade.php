@@ -28,7 +28,7 @@ Edit Task
     <?php echo Form::select('project', $allProject, $getProject->id, array('class' => 'form-control project-list','disabled'=>'disabled','id'=>'project'));?>
   </div>
   <div class="col-md-6 col-sm-6">
-    <?php echo Form::select('client', $allCompany, $getCompany->id, array('class' => 'form-control client-list','disabled'=>'disabled'));?>
+    <?php //echo Form::select('client', $allCompany, $getCompany->id, array('class' => 'form-control client-list','disabled'=>'disabled'));?>
   </div>
 </div>
 <p></p>

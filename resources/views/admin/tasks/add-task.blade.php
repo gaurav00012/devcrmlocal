@@ -10,8 +10,13 @@ Add Task
 <?php echo Form::hidden('project_id', $getProject->id,['class' => 'form-control','id'=>'project_id']);?>
   <div class="col-md-6 col-sm-6">
     <?php echo Form::text('task_name', '',['class' => 'form-control','placeholder'=>'Enter Task Name','id'=>'task_name']);?>
+    <div id="err_task_name">
+       <span class="err_task_name text-danger error"></span>
+    </div>
   </div>
+  
 
+ 
  
 </div>
 <p></p>
@@ -31,15 +36,24 @@ Add Task
   </div>
   <div class="col-md-6 col-sm-6">
   <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date">
+    <div id="err_duedate">
+       <span class="err_duedate text-danger error"></span>
+    </div>
   </div>
 </div>
 <p></p>
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <div class="col-md-6 col-sm-6">
 <?php echo Form::textarea('task_description', '',['class' => 'form-control','placeholder'=>'Enter Task description','id'=>'task_description']);?>
+    <div id="err_task_description">
+       <span class="err_task_description text-danger error"></span>
+    </div>
   </div>
   <div class="col-md-6 col-sm-6">
    <?php echo Form::select('task_status', $taskstatus, null, array('class' => 'form-control task-status','id'=>'task_status'));?>
+   <div id="err_task_status">
+       <span class="err_task_status text-danger error"></span>
+    </div>
   </div>
 </div>
 <p></p>
@@ -168,6 +182,7 @@ let fileaddedDropzone = 0;
       success : function(resp){
         let taskId = resp.taskid;
         console.log(taskId);
+        alert("Task Created Successfully");
        if(fileaddedDropzone == '1')
        {
         uploadFile(taskId);
@@ -180,14 +195,37 @@ let fileaddedDropzone = 0;
           });
       
           myDropzone.processQueue();
+          myDropzone.on("complete", function (file) {
+             if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
+                  //var idvar = '<?php $imgID; ?>';
+           // window.location.replace("/admin/manage-task/"+ resp.project_id);
+          alert("in compplere");
+    }
+  });
        }
        else{
         window.location.href = '/admin/manage-task/'+resp.project_id;
        }
       },
-      error: function (textStatus, errorThrown) {
-           console.log(errorThrown);
-        }      
+      error: function (err) {
+        // alert("error bhaut saare")
+        //    console.log(errorThrown);
+          console.log(err.responseJSON.errors)
+          $('.error').html("")
+          //if (err.responseJSON.errors.includes("task_name")) {
+              // found element
+              for (let k in err.responseJSON.errors) 
+              {
+                // if (obj[k] === "test1") {
+                //     return true;
+                // }
+                //console.log(k);
+                //console.log(err.responseJSON.errors[k][0])
+                $('.err_'+k).html(err.responseJSON.errors[k][0])
+              }
+         // }
+
+         }      
 
      });
     });

@@ -14,7 +14,7 @@ class CreateMasterTaskComment extends Migration
     public function up()
     {
         DB::statement("
-        CREATE TABLE `devcrm`.`mas_task_comment`(  
+        CREATE TABLE `mas_task_comment`(  
         `id` INT(2) NOT NULL AUTO_INCREMENT,
         `task_id` INT(25),
         `task_comments` TEXT,
@@ -23,7 +23,7 @@ class CreateMasterTaskComment extends Migration
         `updated_by` BIGINT(20),
         `updated_at` DATETIME,
         PRIMARY KEY (`id`),
-        FOREIGN KEY (`task_id`) REFERENCES `devcrm`.`master_tasks`(`task_id`)
+        FOREIGN KEY (`task_id`) REFERENCES `master_tasks`(`task_id`)
         );
      ");
     }

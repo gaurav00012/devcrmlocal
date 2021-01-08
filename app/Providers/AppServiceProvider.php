@@ -25,16 +25,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->sideBarMenu();        
+        //$this->sideBarMenu();        
     }
 
-    public function sideBarMenu(){
-        $allCompanyData = array('' => 'Select Company');
-        $allCompany = MasterCompany::All();
-        foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
+    // public function sideBarMenu(){
+    //     $allCompanyData = array('' => 'Select Company');
+    //     $allCompany = MasterCompany::All();
+    //     foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
        
-        return View::share('companyData', $allCompanyData);
+    //     return View::share('companyData', $allCompanyData);
         
-    }
+    // }
 
 }

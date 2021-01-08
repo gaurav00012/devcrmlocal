@@ -15,7 +15,7 @@ class AlterUserTabletextpassword extends Migration
     {
         //
         DB::statement("
-        ALTER TABLE `{d}crm`.`users`   
+        ALTER TABLE `users`   
         ADD COLUMN `text_password` VARCHAR(255) NULL AFTER `password`;
         ");
     }

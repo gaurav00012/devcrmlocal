@@ -2,6 +2,26 @@
 @section('heading')
 Task List
 @endsection
+
+@section('notificationCount')
+  {{$notificationCount}}
+@endsection
+
+@section('notification')
+
+@foreach($allNotification as $key => $notification)
+ <div class="notifications-msg small <?php echo $notification->status == 0 ? 'unread-msg' : '' ?>" notification-id="{{$notification->id}}">
+                  <a href="#">
+                     <div class="msg-content ">
+                        <label>{{$notification->subject}}</label>
+                        <p>{{$notification->message}}</p>
+                     </div>
+                  </a>
+               </div>
+@endforeach               
+
+@endsection
+
 @section('content')
 <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
  
@@ -12,7 +32,7 @@ Task List
                <div class="row">
                   <div class="col-md-6">
                      <div class="bg-white p-4 rounded task-box shadow-sm">
-                        <h4 class="mb-3 mt-n2">Here are your task:</h4>
+                        <h4 class="mb-3 mt-n2">Hi {{Auth::user()->name}} Here are your task:</h4>
                         @foreach($clientApprovalTasks as $key => $clientApprovalTask)
                         <div class="form-check mb-2">
                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
@@ -31,7 +51,7 @@ Task List
                         @foreach($appointmentWithClientTasks as $key => $appointmentWithClientTask)
                         <div class="form-check mb-2">
                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                           <label class="form-check-label" for="defaultCheck3">{{$appointmentWithClientTask->task_name}} <a href="#" class="text-decoration-none text-color-1">{{date('m/d/Y',strtotime($appointmentWithClientTask->due_date))}}</a></label>
+                           <label class="form-check-label" for="defaultCheck3">{{$appointmentWithClientTask->task_name}} <a href="#" class="text-decoration-none text-color-1">{{date('m-d-Y',strtotime($appointmentWithClientTask->due_date))}}</a></label>
                         </div>
                         @endforeach
                        <!--  <div class="form-check">
@@ -43,6 +63,44 @@ Task List
                </div>
             </div>
          </section>
+
+         <section class="mt-4">
+            <div class="container">
+               <div class="projects-overview bg-white p-4 rounded task-box shadow-sm">
+                  <h4 class="mb-3 mt-n2">Invoice:</h4>
+                  <div class="">
+                     <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
+                     </div>
+                   <table class="table admin-client-table" id="client-table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Invoice Number</th> 
+            <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+          @foreach($masInvoice as $key => $invoiceDetail)
+          <tr>
+            <td>{{$key+1}}</td>
+            <td>{{$invoiceDetail->invoice_id}}</td>
+            <td><a href="#" onclick='window.open("/view-invoice/{{$invoiceDetail->invoice_id}}", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=700,left=500,width=800,height=600")'><button class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+  <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+  <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+</svg></button></a></td>
+          </tr>
+
+          @endforeach
+       
+           
+        </tbody>
+</table>
+                    
+               </div>
+            </div>
+         </section>
+
          <section class="mt-4">
             <div class="container">
                <div class="projects-overview bg-white p-4 rounded task-box shadow-sm">
@@ -87,7 +145,7 @@ Task List
         <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
          <td>{{$projectask->getTaskStatus->name}}</td>
         <!-- <td>{{$projectask->task_progress}}</td> -->
-          <td><a href="javascript:void(0)" data-taskid={{$projectask->task_id}}  class="btn green-btn edit-task">Edit</a> </td>
+          <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
       </tr>
      @endforeach
     </tbody>
@@ -127,7 +185,7 @@ Task List
                                               <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
                                                <td>{{$projectask->getTaskStatus->name}}</td>
                                               <!-- <td>{{$projectask->task_progress}}</td> -->
-                                                <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn green-btn edit-task">Edit</a> </td>
+                                                <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
                                             </tr>
                                            @endforeach
                                           </tbody>
@@ -171,7 +229,7 @@ Task List
                      <div class="bg-white p-4 rounded task-box shadow-sm">
                         <h4 class="mb-3 mt-n2">Live look into your current Dev project:</h4>
                         <div class="iframe-content">
-                           <iframe src="https://www.streetkart.in/" width="100%" height="332px"></iframe>
+                           <iframe src="http://onelook.deverybody.com"></iframe>
                         </div>
                      </div>
                   </div>
@@ -186,7 +244,6 @@ Task List
 <!--         -->
 
 <script type="text/javascript">
- 
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
   var view_table = $("#task-table").DataTable({
     pagingType: "full_numbers",
@@ -228,6 +285,31 @@ Task List
  });
  }
 
+ $('.notify-link').click(function(){
+  let allUnreadMsg = $('.unread-msg');
+  let readNotification = [];
+  $('.unread-msg').each(function(){
+    // readNotification.push($(this).attr('notification-id'));
+    readNotification.push($(this).attr('notification-id'));
+    $(this).removeClass('unread-msg');
+  }); 
+  $.ajax({
+        url : 'client/update-notification',
+        method : 'POST',
+        dataType : 'text',
+        data : {
+          _token: CSRF_TOKEN,
+          notificationId : readNotification,
+          },
+        success:function(resp)
+        {
+            let jsonesp = JSON.parse(resp);
+  
+        },
+      });
+  
+ // console.log(result);
+ });
  
 
 </script>

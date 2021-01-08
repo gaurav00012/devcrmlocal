@@ -15,7 +15,7 @@ class AlterMasterTasks extends Migration
     {
         //
         DB::statement("
-             ALTER TABLE `{d}crm`.`master_tasks`   
+             ALTER TABLE `master_tasks`   
               CHANGE `user_id` `user_id` BIGINT(20) NULL,
               ADD COLUMN `project_id` INT(25) NULL AFTER `company_id`;
 

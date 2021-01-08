@@ -16,6 +16,15 @@
 		<script src="{{asset('js/emf/modernizr.custom.js')}}"></script>
 	</head>
 	<body>
+		@if (Session::has('success'))
+
+
+<script>
+	alert("Thank you...!!! Data Submitted");
+	location.reload();
+</script>
+
+@else
 		<div class="container">
 
 			<div class="fs-form-wrap" id="fs-form-wrap">
@@ -159,17 +168,7 @@
 			</div><!-- /fs-form-wrap -->
 
 			<!-- Related demos -->
-			<div class="related">
-				<p>If you enjoyed this demo you might also like:</p>
-				<a href="http://tympanus.net/Development/MinimalForm/">
-					<img src="img/relatedposts/minimalform1-300x162.png" />
-					<h3>Minimal Form Interface</h3>
-				</a>
-				<a href="http://tympanus.net/Development/ButtonComponentMorph/">
-					<img src="{{asset('images/emf/relatedposts/MorphingButtons-300x162.png')}}" />
-					<h3>Morphing Buttons Concept</h3>
-				</a>
-			</div>
+			
 
 		</div><!-- /container -->
 		<script src="{{asset('js/emf/classie.js')}}"></script>
@@ -195,5 +194,6 @@
 				} );
 			})();
 		</script>
+		@endif
 	</body>
 </html>

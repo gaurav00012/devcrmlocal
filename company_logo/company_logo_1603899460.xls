@@ -1,0 +1,10 @@
+S.No	Complaint ID	Company ID	Type of whistleblower	Type of incident	Date	Mode of Complaint	Status
+1	10036	10010	Employee	Violence / Health & safety hazards	25/10/2020	Online	Open	
+2	10035	10010	Vendor / Supplier	Violence / Health & safety hazards	25/10/2020	Online	Open	
+3	10033	10010	Employee	Fraud / Theft / embezzlement	25/10/2020	Online	Open	
+4	10031	10010	Vendor / Supplier	Fraud / Theft / embezzlement	23/10/2020	Online	Open	
+5	10029	10010	Employee	Fraud / Theft / embezzlement	23/10/2020	Online	Open	
+6	10022	10010	Ex-employee	Fraud / Theft / embezzlement, Violence / Health & safety hazards, Breach of confidentiality	23/10/2020	Online	Open	
+7	10021	10010	Ex-employee	Fraud / Theft / embezzlement, Violence / Health & safety hazards, Breach of confidentiality, Any Other	23/10/2020	Online	Open	
+8	10019	10010		Fraud / Theft / embezzlement	14/10/2020	Online	Open	
+9	10018	10010		Fraud / Theft / embezzlement	12/10/2020	Hotline	Open	

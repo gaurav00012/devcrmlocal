@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','user_role','text_password','profile_picture','slug','c_id',
+        'name', 'email', 'password','user_role','text_password','profile_picture','c_id','slug',
     ];
 
     /**
@@ -41,4 +41,34 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\MasterCompany','user_id','id');
     }
+
+    public function clientUser()
+    {
+        return $this->hasOne('App\Clients','user_id','id');
+    }
+
+    public function userclient()
+    {
+        return $this->hasOne('App\ClientForm','id','c_id');
+    }
+
+    public static function updateUser($id,$post)
+    {
+        try{
+            $getUserDetail = Self::find($id);
+            $getUserDetail->name = $post['company_name'];
+
+            if($getClientDetail->save())
+            {
+                return true;
+            }
+        }
+         catch(\Exception $e)
+        {
+            $result['success'] = false;
+            $result['error'] = $e->getMessage();
+            return $result;
+        }
+    }
+   
 }

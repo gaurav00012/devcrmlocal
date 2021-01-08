@@ -51,9 +51,12 @@ class UserController extends Controller
          $user['email'] = $input['email'];
          $user['password'] = bcrypt($input['password']);
          $user['text_password'] = $input['password'];
-         $user = User::create($user);
-
-         return redirect('/admin/manage-user');
+   //      $user = User::create($user);
+            if(User::create($user))
+            {
+                return redirect('/admin/manage-user')->with('success', 'User added successfully'); 
+            }
+       //  return redirect('/admin/manage-user');
     }
 
     /**
@@ -97,8 +100,12 @@ class UserController extends Controller
        // $user->email = $request->post('email');
         $user->password = bcrypt($request->post('password'));
         $user->text_password = $request->post('password');
-        $user->save();
-        return redirect('/admin/manage-user');
+        
+        if($user->save())
+        {
+          return redirect('/admin/manage-user')->with('success', 'User edited successfully'); 
+        }
+        //return redirect('/admin/manage-user');
         
     }
 

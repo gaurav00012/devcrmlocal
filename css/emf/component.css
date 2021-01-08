@@ -343,15 +343,15 @@ button.fs-continue,
 }
 
 .fs-fields .fs-radio-custom label.radio-mobile::after {
-	background-image: url(../img/mobile.svg);
+	background-image: url(/images/emf/mobile.svg);
 }
 
 .fs-fields .fs-radio-custom label.radio-social::after {
-	background-image: url(../img/social.svg);
+	background-image: url(/images/emf/social.svg);
 }
 
 .fs-fields .fs-radio-custom label.radio-conversion::after {
-	background-image: url(../img/conversion.svg);
+	background-image: url(/images/emf/conversion.svg);
 }
 
 .fs-fields .fs-radio-custom label:hover::after,

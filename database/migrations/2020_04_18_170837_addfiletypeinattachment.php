@@ -14,7 +14,7 @@ class Addfiletypeinattachment extends Migration
     public function up()
     {
         DB::statement("
-        ALTER TABLE `devcrm`.`mas_task_attachments`   
+        ALTER TABLE `mas_task_attachments`   
         ADD COLUMN `file_type` VARCHAR(25) NULL AFTER `file_name`;
         ");
     }

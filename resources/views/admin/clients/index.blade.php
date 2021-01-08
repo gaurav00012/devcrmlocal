@@ -1,35 +1,51 @@
+<?php
+use App\User;
+//dd(Auth::user()->companyuser);
+?>
 @extends('layouts.admin.main')
 @section('heading')
 Manage Clients
 @endsection
 
 @section('content')
-<div class="col-xs-6" style="display:flex;justify-content:flex-end">
+<!-- <div class="col-xs-6" style="display:flex;justify-content:flex-end">
     <a href="{!! url('admin/create-client');!!}"  class="btn btn-primary pull-right">Add Client</a>
-</div>
+</div> -->
 <p></p>
-<table class="table admin-client-table" id="client-table">
+@if(!Auth::user()->companyuser->getClients->isEmpty())
+<table class="table admin-client-table table-responsive-xl" id="client-table">
         <thead>
             <tr>
             <th scope="col">#</th>
             <th scope="col">Client Name</th>
+            <th scope="col">Client E-Mail</th>
             <th scope="col">Description</th> 
             <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody>
-        @foreach ($allClient as $key => $project)
+        @foreach (Auth::user()->companyuser->getClients as $key => $client)
             <tr>
             <th scope="row">{{$key+1}}</th>
-            <td>{{ $project->company_name }}</td>
-             <td>{{ substr($project->description,0,40).'...' }}</td>
+            <td>{{ User::find($client->user_id)->name }}</td>
+            <td>{{ User::find($client->user_id)->email }}</td>
+             <td>{{ substr($client->client_description,0,40).'...' }}</td>
             
-            <td><a href="{!! url('admin/manage-projects');!!}/{{ $project->id }}"  class="btn  green-btn">View Project</a>  <a href="{!! url('admin/edit-client');!!}/{{ $project->id }}"  class="btn  green-btn">Edit</a>  <a href="{!! url('admin/delete-client');!!}/{{ $project ->id }}"  class="btn  green-btn">Delete</a> </td>
+            <td>
+                <a href="{!! url('admin/manage-invoice');!!}/{{ $client->id }}"  class="btn green-btn invoice-btn mr-1" title="Manage Invoice"><i class="fa fa-files-o"></i></a>  
+                <a href="{!! url('admin/manage-projects');!!}/{{ $client->id }}"  class="btn  green-btn view-btn mr-1" title="View Project"><i class="icon-eye"></i></a>  
+                <a href="{!! url('admin/edit-client');!!}/{{ $client->id }}"  class="btn  green-btn edit-btn mr-1" title="Edit"><i class="icon-pencil"></i></a>  
+                <a href="{!! url('admin/delete-client');!!}/{{ $client->id }}"  class="btn  green-btn delete-btn" title="Delete"><i class="icon-trash"></i></a> 
+            </td>
             </tr>
         @endforeach
            
         </tbody>
 </table>
+@else
+<p>No Records found</p>
+@endif
+
 @endsection
 @section('vuejs')
 <!-- <script  src="{{URL::asset('js/admin/user.js')}}"></script> -->

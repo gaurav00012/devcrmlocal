@@ -4,6 +4,23 @@ use App\User;
  ?>
 @extends('layouts.admin.main')
 
+@section('notification-count')
+  {{$notificationCount}}
+@endsection
+
+@section('notification-content')
+  @foreach($allNotification as $key => $notification)
+  <a class="dropdown-item preview-item <?php echo $notification->status == 0 ? 'unread-msg' : '' ?>" notification-id="{{$notification->id}}">
+    <div class="preview-thumbnail">
+     <!--  <img src="{{asset('images/faces/face1.jpg')}}" alt="image" class="img-sm profile-pic"> --> </div>
+    <div class="preview-item-content flex-grow py-2">
+      <p class="preview-subject ellipsis font-weight-medium text-dark">{{ $notification->subject }}</p>
+      <p class="font-weight-light small-text"> {{ $notification->message }} </p>
+    </div>
+  </a>
+  @endforeach
+@endsection
+
 @section('content')
   <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
  
@@ -259,6 +276,37 @@ $('.complete-task-table').DataTable();
   },
  });
  }
+
+ $('.notification-bell').click(function(){
+  alert("Hello World");
+ });
+
+
+ $('.notification-bell').click(function(){
+  let allUnreadMsg = $('.unread-msg');
+  let readNotification = [];
+  $('.unread-msg').each(function(){
+    // readNotification.push($(this).attr('notification-id'));
+    readNotification.push($(this).attr('notification-id'));
+    $(this).removeClass('unread-msg');
+  }); 
+  $.ajax({
+        url : '/developer/update-notification',
+        method : 'POST',
+        dataType : 'text',
+        data : {
+          _token: CSRF_TOKEN,
+          notificationId : readNotification,
+          },
+        success:function(resp)
+        {
+            let jsonesp = JSON.parse(resp);
+  
+        },
+      });
+  
+ // console.log(result);
+ });
  
 
 </script>

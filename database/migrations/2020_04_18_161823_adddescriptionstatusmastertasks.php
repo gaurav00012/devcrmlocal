@@ -17,7 +17,7 @@ class Adddescriptionstatusmastertasks extends Migration
         ALTER TABLE `master_tasks`   
         ADD COLUMN `task_status` INT(11) NULL AFTER `project_id`,
         ADD COLUMN `task_description` TEXT NULL AFTER `task_status`,
-        ADD FOREIGN KEY (`task_status`) REFERENCES `devcrm`.`mas_dropdowns`(`id`);
+        ADD FOREIGN KEY (`task_status`) REFERENCES `mas_dropdowns`(`id`);
 
           ");
     }

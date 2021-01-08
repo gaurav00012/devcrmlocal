@@ -15,10 +15,10 @@ class AddForeignKeyMastaskassignee extends Migration
     {
         //
            DB::statement("
-       ALTER TABLE `{d}crm`.`mas_task_assignee`   
+       ALTER TABLE `mas_task_assignee`   
   CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT, 
   ADD PRIMARY KEY (`id`),
-  ADD FOREIGN KEY (`task_id`) REFERENCES `{d}crm`.`master_tasks`(`task_id`);
+  ADD FOREIGN KEY (`task_id`) REFERENCES `master_tasks`(`task_id`);
 
         ");
     }

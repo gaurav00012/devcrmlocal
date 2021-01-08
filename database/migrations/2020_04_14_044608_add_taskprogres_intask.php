@@ -15,7 +15,7 @@ class AddTaskprogresIntask extends Migration
     {
         //
          DB::statement("
-        ALTER TABLE `{d}crm`.`master_tasks`   
+        ALTER TABLE `master_tasks`   
   ADD COLUMN `task_progress` INT(11) NULL AFTER `project_id`;
         ");
     }

@@ -14,7 +14,7 @@ class CreateUserRoleTable extends Migration
     public function up()
     {
         DB::statement("
-                CREATE TABLE `{d}crm`.`user_role`(  
+                CREATE TABLE `user_role`(  
                 `user_role_id` INT(2) NOT NULL,
                 `user_type_name` VARCHAR(25),
                 PRIMARY KEY (`user_role_id`)
