@@ -121,7 +121,20 @@
             </div>
              
              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             <button class="btn btn-primary pull-right">Pay</button>
+               <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type='hidden' name='business' value='diwakarmishra1.0@gmail.com'> 
+            <input type='hidden' name='item_name' value='{{$invoiceItemDetail[0]->invoice_id}}'> 
+            <input type='hidden' name='item_number' value='{{$invoiceItemDetail[0]->invoice_id}}'> 
+            <input type='hidden' name='amount' value='{{$invoiceItemTotal[0]->total}}'> 
+            <input type='hidden' name='no_shipping' value='1'> 
+            <input type='hidden' name='currency_code' value='USD'> 
+            <input type='hidden' name='notify_url' value='http://localhost/paypal-php/notify.php'>
+            <input type='hidden' name='cancel_return' value='http://localhost/paypal-php/cancel.php'>
+            <input type='hidden' name='return' value='http://localhost/paypal-php/return.php'>
+            <input type="hidden" name="cmd" value="_xclick"> 
+            <input class="btn btn-primary pull-right" type="submit" name="pay_now" id="pay_now" Value="Pay Now">
+        </form>
+            <!--  <button class="btn btn-primary pull-right">Pay</button> -->
         </div>
     </div>
 </div>
