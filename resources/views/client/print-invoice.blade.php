@@ -129,7 +129,7 @@
             <input type='hidden' name='no_shipping' value='1'> 
             <input type='hidden' name='currency_code' value='USD'> 
             <input type='hidden' name='notify_url' value='http://localhost/paypal-php/notify.php'>
-            <input type='hidden' name='cancel_return' value='http://localhost/paypal-php/cancel.php'>
+            <input type='hidden' name='cancel_return' value="{{url('cancel-paypal')}}/{{$invoiceItemDetail[0]->invoice_id}}">
             <input type='hidden' name='return' value='http://localhost/paypal-php/return.php'>
             <input type="hidden" name="cmd" value="_xclick"> 
             <input class="btn btn-primary pull-right" type="submit" name="pay_now" id="pay_now" Value="Pay Now">

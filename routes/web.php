@@ -131,7 +131,9 @@ curl_close($ch);
 });
 
 Route::get('view-invoice/{invoiceId}','Client\IndexController@viewInvoice');
-
+Route::get('/cancel-paypal/{invoiceId}',function($id){
+	echo 'Payment of invoice '.$id.' is cancelled.';
+});
 Route::group(['middleware' => 'auth'], function () {
 	
 	Route::get('/admin/home','Admin\IndexController@index');
