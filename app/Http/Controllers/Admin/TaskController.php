@@ -236,9 +236,9 @@ class TaskController extends Controller
         if($request->hasFile('file')) {
             try{
             $taskId = $request->post('task_id');
+
             // Upload path
             $destinationPath = 'files/';
-     
             // Create directory if not exists
             if (!file_exists($destinationPath)) {
                mkdir($destinationPath, 0755, true);
@@ -258,7 +258,7 @@ class TaskController extends Controller
             $fileName = 'task_'.str_slug(Carbon::now()->toDayDateTimeString()).'.' . $extension;
      
               // Uploading file to given path
-              $request->file('file')->move($destinationPath, $fileName); 
+            $request->file('file')->move($destinationPath, $fileName); 
               
               $taskAttachment['task_id'] = $taskId;
               $taskAttachment['file_name'] = $fileName;

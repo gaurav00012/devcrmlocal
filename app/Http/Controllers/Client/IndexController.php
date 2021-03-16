@@ -378,18 +378,48 @@ class IndexController extends Controller
         $result['exception_message'] = '';
         try
         {
+            //  if($request->hasFile('tckt-file'))
+            // {
+            //      $destinationPath = 'ticket_attachment/';
+            //        if (!file_exists($destinationPath))
+            //        {
+            //            mkdir($destinationPath, 0755, true);
+            //         }
+            //     $extension = $request->file('tckt-file')->getClientOriginalExtension();
+            //     $validextensions = array("jpeg","jpg","png","pdf");
+            //     $fileName = 'ticket_'.str_slug(Carbon::now()->toDayDateTimeString()).'.' . $extension;
+            //     $request->file('tckt-file')->move($destinationPath, $fileName); 
+            //    // $clientTicket['attachment'] = $fileName;
+            // } 
+
+            //die();
+
             $post = $request->post();
-            // echo '<pre>'; print_r($post); echo '</pre>';
+        
              $user = Auth::user()->clientUser;
-            // echo '----------------------------here is description----------------------------';
-            // echo '<pre>'; print_r($user); echo '</pre>';
-            // die();
+         
             $clientTicket['user_id'] = $user->user_id;
             $clientTicket['client_id'] = $user->id;
             $clientTicket['company_id'] = $user->company_id;
             $clientTicket['subject'] = $post['tckt-subject'];
             $clientTicket['description'] = $post['tckt-descrption'];
             
+            if($request->hasFile('tckt-file'))
+            {
+
+                 $destinationPath = 'ticket_attachment/';
+                   if (!file_exists($destinationPath))
+                   {
+                       mkdir($destinationPath, 0755, true);
+                    }
+                $extension = $request->file('tckt-file')->getClientOriginalExtension();
+                $validextensions = array("jpeg","jpg","png","pdf");
+                $fileName = 'ticket_'.str_slug(Carbon::now()->toDayDateTimeString()).'.' . $extension;
+                $request->file('tckt-file')->move($destinationPath, $fileName); 
+                $clientTicket['attachment'] = $fileName;
+            }    
+
+
             if(ClientTicket::create($clientTicket))
             {
                 return redirect()->back()->with('message', 'Ticket Added Successfully');

@@ -58,7 +58,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{url('client/create-ticket')}}" method="post">
+        <form action="{{url('client/create-ticket')}}" method="post" enctype="multipart/form-data">
          @csrf
   <div class="form-group">
     <label for="exampleInputEmail1">Subject</label>
@@ -68,6 +68,10 @@
   <div class="form-group">
     <label for="exampleInputPassword1">Descrpption</label>
     <textarea type="text" class="form-control" name="tckt-descrption"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Upload File</label>
+    <input type="file" class="form-control" name="tckt-file">
   </div>
   <button type="submit" name="submit" class="btn btn-primary">Submit</button>
 </form>
