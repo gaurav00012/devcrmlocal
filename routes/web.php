@@ -204,6 +204,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('client/edit-comment/','Client\IndexController@editComment')->middleware('isClient');
 	Route::post('client/update-comment/{commentid}','Client\IndexController@updateComment')->middleware('isClient');
 	Route::get('client/download-file/{filename}','Client\IndexController@downloadfile')->middleware('isClient');	
+	Route::post('client/create-ticket','Client\IndexController@createTicket')->middleware('isClient');	
 	Route::post('client/update-notification','Client\IndexController@updateNotification');
 	Route::get('view-invoice/{invoiceId}','Client\IndexController@viewInvoice');
 

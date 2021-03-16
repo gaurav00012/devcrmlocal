@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use App\MasInvoice;
 use App\MasInvoiceItemDetail;
 use App\MasInvoiceItemTotal;
+use App\ClientTicket;
 
 
 class IndexController extends Controller
@@ -100,7 +101,7 @@ class IndexController extends Controller
             $user = Auth::user();
             $taskId = $request->post() ['taskid'];
             $taskDetail = MasterTask::where('task_id', '=',$taskId)
-                                    ->where('company_id','=',$user->companyuser->id)
+                                    ->where('company_id','=',$user->clientUser->id)
                                     ->get();
              // foreach($taskDetail[0]->getTaskComment as $key => $value)
              // {
@@ -160,6 +161,7 @@ class IndexController extends Controller
         {
             $result['success'] = false;
             $result['error'] = $e->getMessage();
+            $result['line'] = $e->getLine();
             return $result;
         }
     }
@@ -361,6 +363,38 @@ class IndexController extends Controller
             $invoiceItemTotal = MasInvoiceItemTotal::where('invoice_id','=',$invoiceId)->get();
 
             return view('client.print-invoice',['invoiceItemDetail'=>$invoiceItemDetail,'invoiceItemTotal'=>$invoiceItemTotal]);
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+    }
+
+    public function createTicket(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try
+        {
+            $post = $request->post();
+            // echo '<pre>'; print_r($post); echo '</pre>';
+             $user = Auth::user()->clientUser;
+            // echo '----------------------------here is description----------------------------';
+            // echo '<pre>'; print_r($user); echo '</pre>';
+            // die();
+            $clientTicket['user_id'] = $user->user_id;
+            $clientTicket['client_id'] = $user->id;
+            $clientTicket['company_id'] = $user->company_id;
+            $clientTicket['subject'] = $post['tckt-subject'];
+            $clientTicket['description'] = $post['tckt-descrption'];
+            
+            if(ClientTicket::create($clientTicket))
+            {
+                return redirect()->back()->with('message', 'Ticket Added Successfully');
+            }
+           
         }
         catch(\Exception $e)
         {

@@ -120,11 +120,11 @@ class TaskController extends Controller
         $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
      // dd($getProject);
         
-     
+
         $companyArray = array(
             '' => 'Please select Client'
         );
-        foreach($allCompany as $companyId => $company)$companyArray[$company->id] = $company->company_name;
+        foreach($allCompany as $companyId => $company)$companyArray[$company->id] = User::find($company->user_id);
         $projectArray = array(
             '' => 'Please select Project'
         );
@@ -137,7 +137,8 @@ class TaskController extends Controller
             '' => 'Please select status'
         );
         foreach($taskstatus as $taskId => $task)$taskStatusArray[$task->id] = $task->name;
-   
+        
+
      
        return view('admin/tasks/add-task',[
            // 'project' => $project,
@@ -315,10 +316,10 @@ class TaskController extends Controller
                 $getProject = MasterProject::find($taskDetail->project_id);
                     
                 $allProject = MasterProject::where('client_id','=',$taskDetail->company_id)->get();
-                echo '<pre>';
-                print_r($taskDetail);
-                echo '</pre>';
-                dd($getProject);
+                // echo '<pre>';
+                // print_r($taskDetail->due_date);
+                // echo '</pre>';
+               //  dd($getProject);
                 $allCompany = MasterCompany::all();
                 $getCompany = MasterCompany::find($getProject->company_id);
                 $resource = User::where('user_role','=',2)->get();
@@ -336,7 +337,7 @@ class TaskController extends Controller
             
                 $resourceArray = array();
                 foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = $resoucrData->name;
-
+                // echo '<pre>'; print_r($resourceArray); echo '</pre>';
                 $taskStatusArray = array(
                     '' => 'Please select status'
                 );
@@ -531,6 +532,7 @@ class TaskController extends Controller
                                             ->where('created_by','=',$user->id)
                                             ->get();
 
+             echo '<pre>'; print_r($commentData); echo '</pre>'; die();                               
             //$commentData->isEmpty();     
             //$commentData = $commentData->isEmpty() ? $commentData : $commentData[0]; 
             return view('admin.tasks.edit-comment',['commentData'=> $commentData]);

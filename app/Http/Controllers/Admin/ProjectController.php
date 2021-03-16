@@ -95,7 +95,7 @@ class ProjectController extends Controller
        
          if($project->save())
          {
-             $getClient = MasterCompany::find($project->company_id);
+             $getClient = Clients::find($project->client_id);
              $from = Auth::user()->id;
              $to = $getClient->user_id;
              $subject = $project->project_name;
@@ -105,7 +105,7 @@ class ProjectController extends Controller
              $body = view('emails.client-edit-project',['getClient'=>$getClient,'project'=>$project]);
              $this->sendMail($getClient->getUser->email,$getClient->getUser->name,$message,$body);
 
-             return redirect("/admin/manage-projects/$project->company_id")->with('success', 'Project updated successfully');       
+             return redirect("/admin/manage-projects/$project->client_id")->with('success', 'Project updated successfully');       
          }
          
          //return redirect("/admin/manage-projects/$id");
@@ -181,8 +181,10 @@ class ProjectController extends Controller
     public function editProject($id)
     {
         $projectdetail = MasterProject::find($id);
-      //  dd($projectdetail->company_id);
-        $company = MasterCompany::find($projectdetail->company_id);
+       //dd($projectdetail->client_id);
+        //echo $projectdetail->client_id;
+        $company = Clients::find($projectdetail->client_id);
+     //   dd($company);
         $clientData = array();
         $clientData['clientId'] = $company->id;
         $clientData['clientName'] = $company->company_name;

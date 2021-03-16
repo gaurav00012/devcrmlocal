@@ -38,7 +38,7 @@ Edit Task
     <?php echo Form::select('resource[]', $resource, $taskAssigneeArray, array('class' => 'form-control resource-list','multiple'=>'multiple','id'=>'resource'));?>
   </div>
   <div class="col-md-6 col-sm-6">
-  <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date">
+  <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date" value={{$taskDetail->due_date}}>
   </div>
 </div>
 <p></p>
