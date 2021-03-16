@@ -26,9 +26,16 @@ Task List
 <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
  
 </div>
+
  <main class="py-5">
+
          <section>
             <div class="container">
+              @if(session('message'))
+              <div class="alert alert-success" role="alert">
+                {{session('message')}}
+              </div>
+              @endif
                <div class="row">
                   <div class="col-md-6">
                      <div class="bg-white p-4 rounded task-box shadow-sm">
