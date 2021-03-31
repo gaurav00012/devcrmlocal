@@ -102,7 +102,7 @@
 
     $('.edit-comment').click(function(){
       let commentId = $(this).attr('data-comment-id');
-       alert("add comment task blade");
+       //alert("add comment task blade");
       $.ajax({
         url : '/admin/edit-comment/',
         method : 'POST',

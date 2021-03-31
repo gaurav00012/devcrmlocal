@@ -47,42 +47,7 @@
 
 
       <!-- Header -->
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Create Ticket</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="{{url('client/create-ticket')}}" method="post" enctype="multipart/form-data">
-         @csrf
-  <div class="form-group">
-    <label for="exampleInputEmail1">Subject</label>
-    <input type="text" class="form-control" name="tckt-subject" id="tckt-subject">
-    
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Descrpption</label>
-    <textarea type="text" class="form-control" name="tckt-descrption"></textarea>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Upload File</label>
-    <input type="file" class="form-control" name="tckt-file">
-  </div>
-  <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-</form>
-      </div>
-     <!--  <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div> -->
-    </div>
-  </div>
-</div>
+@yield('ticketmodal')
 
 
 
@@ -90,7 +55,7 @@
    <div class="container d-flex align-items-center justify-content-between">
    <div class="logo flex-grow-1">
       <a href="#">
-      <img src="images/logo.png" alt="logo" width="150">
+      <img src="{{url('images/logo.png')}}" alt="logo" width="150">
       </a>
    </div>
    <div class="notifications">
@@ -113,6 +78,13 @@
             </div>
          </li>
          <!-- Notifications -->
+
+         <li class="notify-link" style="padding-left: 10px;">
+         
+        @yield('clientProject')
+         </li>
+
+
          <!-- Profile -->
             <?php 
                   // echo '<pre>';

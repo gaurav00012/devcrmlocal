@@ -77,7 +77,8 @@ Edit Task
                               <p>
                                   @foreach($tValue->getCommentAttachment as $attachmentKey => $attachmentValue)
                                    
-                                    <a href="/admin/download-comment-file/{{$attachmentValue->attachment_name}}"><i class="fa fa-file" aria-hidden="true"></i></a>
+                                    <!-- <a href="/admin/download-comment-file/{{$attachmentValue->attachment_name}}"><i class="fa fa-file" aria-hidden="true"></i></a> -->
+                                    <a href="{{url('/files/comment_attachment/')}}/{{$attachmentValue->attachment_name}}" target="_blank"><i class="fa fa-file" aria-hidden="true"></i></a>
                                   @endforeach
                               @endif
                               </p>
@@ -217,7 +218,7 @@ let fileaddedDropzone = 0;
 
 
     $('.btn-add-task').click(function(){
-      alert("clicked");
+      //alert("clicked");
      let params = {};
      let taskId = $('#task_id').val();
      let projectId = $('#project_id').val();
@@ -253,6 +254,7 @@ let fileaddedDropzone = 0;
       success : function(resp){
         let taskId = resp.task_id;
         console.log(taskId);
+        alert("Task Updated");
        if(fileaddedDropzone == '1')
        {
         uploadFile(taskId);

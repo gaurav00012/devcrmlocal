@@ -196,9 +196,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/create-invoice/{companyId}','Admin\InvoiceController@create');
 	Route::post('admin/create-invoice/{companyId}','Admin\InvoiceController@store');
 	Route::get('admin/view-invoice/{invoiceid}','Admin\InvoiceController@viewInvoice');
-
+	Route::get('admin/manage-ticket','Admin\TicketController@index');
+	Route::get('admin/view-ticket/{id}','Admin\TicketController@show');
+	Route::post('admin/view-ticket/{id}','Admin\TicketController@saveTicketStatus');
 	//Route::get('client/home','Client\IndexController@index')->middleware('isClient');
 	Route::get('/{slug}','Client\IndexController@index')->middleware('isClient');
+	Route::get('view-ticket/{ticketId}','Client\IndexController@viewTicket')->middleware('isClient');
+	Route::post('view-ticket/{ticketId}','Client\IndexController@saveTicketStatus')->middleware('isClient');
+
 	Route::post('client/edit-task','Client\IndexController@editTask')->middleware('isClient');
 	Route::post('client/add-comment/{taskId}','Client\IndexController@addComment')->middleware('isClient');
 	Route::post('client/edit-comment/','Client\IndexController@editComment')->middleware('isClient');

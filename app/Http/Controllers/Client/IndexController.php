@@ -19,6 +19,7 @@ use App\MasInvoice;
 use App\MasInvoiceItemDetail;
 use App\MasInvoiceItemTotal;
 use App\ClientTicket;
+use App\TicketComment;
 
 
 class IndexController extends Controller
@@ -32,12 +33,18 @@ class IndexController extends Controller
             $notificationCount = $notifications->getNotificationCount();
             $allNotification = $notifications->getAllNotification();
             
-           
-              
+            $clientProject = array(
+                '' => 'All',
+            );
             $user = Auth::user();
-            //echo $user->id;
-           
+            
             $company = $user->clientUser;
+            $getClientProject = MasterProject::where('client_id','=',$company->id)->get();
+            $getCompanyTicket = ClientTicket::where('client_id','=',$company->id)->get();
+            //echo '<pre>'; print_r($getCompanyTicket); echo '</pre>';
+            foreach($getClientProject as $projecjKey => $project)$clientProject[$project->id] = $project->project_name;
+
+            //dd($clientProject);
            
             $tasks = MasterTask::where('company_id', $company->id)
                                 ->where('task_view_to_client', 1)
@@ -59,15 +66,22 @@ class IndexController extends Controller
 
             $appointmentWithClientTasks = MasterTask::where('company_id', $company->id)
                                                     ->where('task_view_to_client', 1)
-                                                    ->whereIn('task_status',array(6))
+                                                    ->where('task_status',array(6))
                                                     ->orderBy('position', 'asc')
-                                                    ->get();                    
+                                                    ->get();     
+                                                    //dd($appointmentWithClientTasks);               
 
             $marketingApprovalTasks = MasterTask::where('company_id', $company->id)
                                                     ->where('task_view_to_client', 1)
                                                     ->whereIn('task_status',array(7))
                                                     ->orderBy('position', 'asc')
                                                     ->get(); 
+
+            $dueDateApproachingTasks = MasterTask::where('company_id', $company->id)
+                                                    ->where('task_view_to_client', 1)
+                                                    ->whereIn('task_status',array(5,6,7))
+                                                    ->orderBy('position', 'asc')
+                                                    ->get();                                         
 
              $masInvoice =  MasInvoice::Where('client_id',$company->id)->get();
              
@@ -81,6 +95,9 @@ class IndexController extends Controller
                                                 'notificationCount' => $notificationCount,
                                                 'allNotification' => $allNotification,
                                                 'masInvoice' => $masInvoice,
+                                                'getCompanyTicket' => $getCompanyTicket,
+                                                'clientProject' => $clientProject,
+                                                'dueDateApproachingTasks'=>$dueDateApproachingTasks
                                                 ]);
         }
         catch(\Exception $e)
@@ -431,6 +448,56 @@ class IndexController extends Controller
             $result['success'] = false;   
             $result['exception_message'] = $e->getMessage();
             return $result;
+        }
+    }
+
+    public function viewTicket($id)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try
+        {
+            $getTicket = ClientTicket::where('id','=',$id)->get();
+            $getTicketComment = TicketComment::where('ticket_id','=',$id)->get();
+            
+            return view('client.index.view-ticket',['getTicket'=>$getTicket,'getTicketComment'=>$getTicketComment]);
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;   
+            $result['exception_message'] = $e->getMessage();
+            return $result;
+        }
+    }
+
+    public function saveTicketStatus(Request $request,$id)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try
+        {
+            //echo '<pre>'; print_r($request->post()); echo '</pre>'; die();
+            $user = Auth::user();
+            //echo $user->clientUser->id; die();
+
+            $post = $request->post();
+           
+            
+            if($post['comment'] != '')
+            {
+                $ticketComment['ticket_id'] = $id;
+                $ticketComment['comment'] = $post['comment'];
+                $ticketComment['commented_by'] = 'client';
+                $ticketComment['created_by'] = $user->id;
+                $ticketComment['updated_by'] = $user->id;
+                TicketComment::create($ticketComment);
+            }
+            return redirect("/$user->slug")->with('success', 'Ticket Updated successfully');
+        }
+        catch(\Exception $e)
+        {
+           $result['success'] = false;
+           $result['exception_message'] = $e->getMessage();
         }
     }
 

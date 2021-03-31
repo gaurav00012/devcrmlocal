@@ -17,6 +17,7 @@ use App\Clients;
 use DB;
 use App\MasterTaskComment;
 use App\MasterTaskCommentAttachment;
+use App\Team;
 use App\Traits\Notification;
 use App\Traits\Email;
 
@@ -111,15 +112,17 @@ class TaskController extends Controller
 
     public function addTaskInProject($id)
     {
+        $user = Auth::user();
+        //$user->companyuser->id;
+      
         $getProject = MasterProject::find($id);
         
         $allProject = MasterProject::where('client_id','=',$getProject->client_id)->get();
         $allCompany = Clients::all();
         $getCompany = Clients::find($getProject->client_id);
-        $resource = User::where('user_role','=',2)->get();
+        $resource = Team::where('company_id','=',$user->companyuser->id)->get();
         $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
-     // dd($getProject);
-        
+    
 
         $companyArray = array(
             '' => 'Please select Client'
@@ -131,7 +134,7 @@ class TaskController extends Controller
         foreach($allProject as $projectId => $project)$projectArray[$project->id] = $project->project_name;
       
         $resourceArray = array();
-        foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = $resoucrData->name;
+        foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = User::find($resoucrData->user_id)->name;
 
         $taskStatusArray = array(
             '' => 'Please select status'
@@ -169,8 +172,8 @@ class TaskController extends Controller
 
               $project = MasterProject::find($id);
               $company = MasterCompany::find($project->client_id);
-             // dd($project);
-             // echo $project->client_id;
+              //dd($project);
+              //echo $project->client_id;
               
               //die();  
               
@@ -191,7 +194,7 @@ class TaskController extends Controller
              $subject = $input['task_name'];
              $message = $input['task_name'].' assigned to you.';
              $from = $user->id;
-             foreach($input['task_resource'] as $key => $resource)$addNotification = $this->notification($from,$resource,$subject,$message);
+             //foreach($input['task_resource'] as $key => $resource)$addNotification = $this->notification($from,$resource,$subject,$message);
              
            //  $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
              
@@ -309,6 +312,7 @@ class TaskController extends Controller
     public function editProjectTask($id)
     {
         //try{   
+                $user = Auth::user();
                 $taskDetail = MasterTask::find($id);
                 $taskAssignee = TaskAssignee::where('task_id','=',$id)->get();
                 $taskAttachment = MasterTaskAttachments::where('task_id','=',$id)->get();
@@ -322,7 +326,10 @@ class TaskController extends Controller
                //  dd($getProject);
                 $allCompany = MasterCompany::all();
                 $getCompany = MasterCompany::find($getProject->company_id);
-                $resource = User::where('user_role','=',2)->get();
+               // $resource = User::where('user_role','=',2)->get();
+
+                $resource = Team::where('company_id','=',$user->companyuser->id)->get();
+
                 $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
                 $taskComment = $taskDetail->getTaskComment;
             
@@ -336,7 +343,7 @@ class TaskController extends Controller
                 foreach($allProject as $projectId => $project)$projectArray[$project->id] = $project->project_name;
             
                 $resourceArray = array();
-                foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = $resoucrData->name;
+                foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = User::find($resoucrData->user_id)->name;
                 // echo '<pre>'; print_r($resourceArray); echo '</pre>';
                 $taskStatusArray = array(
                     '' => 'Please select status'
@@ -447,6 +454,7 @@ class TaskController extends Controller
 
     public function saveComment(Request $request,$id)
     {     
+        //echo '<pre>'; print_r($request->file('attachment')); echo '</pre>'; die();
         $result['success'] = true;
         $result['exception_message'] = '';
         try{
@@ -454,7 +462,8 @@ class TaskController extends Controller
                           'task_comment' => 'required',
                  ]);
             $user = Auth::user();
-            $taskDetail = TaskAssignee::where('task_id', '=', $id)->where('created_by', '=', $user->id)->get();
+            //$taskDetail = TaskAssignee::where('task_id', '=', $id)->where('created_by', '=', $user->id)->get();
+            //echo '<pre>'; print_r($taskDetail); echo '</pre>'; die();
             $post = $request->post();
             $file = $request->file();
             $comment['task_id'] = $id;
@@ -462,15 +471,17 @@ class TaskController extends Controller
             $comment['created_by'] = $user->id;
             $comment = MasterTaskComment::create($comment);
            $result['comment_id'] = $comment->id;
-            $result['task_id'] = $taskDetail[0]->task_id;    
+           // $result['task_id'] = $taskDetail[0]->task_id;    
               if($request->hasFile('attachment'))
                   {
+                   // echo 'thi isdsdsd';
                      $fileDestination = 'files/comment_attachment';
                      $this->fileupload($request->file('attachment'),$fileDestination,$id,$comment->id);
                   }
         } catch(\Exception $e){
             $result['success'] = false;
             $result['exception_message'] = $e->getMessage();
+            $result['line'] = $e->line;
         }
         
         return response()->json($result);

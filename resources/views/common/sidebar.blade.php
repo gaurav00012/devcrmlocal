@@ -72,6 +72,12 @@
                 <i class="icon-people menu-icon"></i>
               </a>
             </li>
+             <li class="nav-item">
+              <a class="nav-link"  href="{{ url('admin/manage-ticket') }}" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">Manage Ticket</span>
+                <i class="icon-people menu-icon"></i>
+              </a>
+            </li>
             
             @endif
             @if(Auth::user()->user_role === 3)

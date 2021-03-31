@@ -59,7 +59,7 @@ Add Task
 <p></p>
 <div class="col-md-12">
 <div class="col-md-6">
-<?php echo Form::select('task_status',[''=>'Select Ask Suggestion from','1' => 'Client','2'=>'Client and Developer'], null, array('class' => 'form-control task-status','id'=>'task_status'));?>
+<?php echo Form::select('ask_suggesion',[''=>'Who gets notified?','1' => 'Client','2'=>'Client and Developer'], null, array('class' => 'form-control task-status','id'=>'task_status'));?>
 </div>
 </div>
 <p></p>
@@ -198,8 +198,8 @@ let fileaddedDropzone = 0;
           myDropzone.on("complete", function (file) {
              if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
                   //var idvar = '<?php $imgID; ?>';
-           // window.location.replace("/admin/manage-task/"+ resp.project_id);
-          alert("in compplere");
+            window.location.replace("/admin/manage-task/"+projectId);
+          //alert("in compplere");
     }
   });
        }
@@ -235,7 +235,7 @@ let fileaddedDropzone = 0;
 
 function uploadFile(taskId)
 {
-    alert(taskId);
+    //alert(taskId);
     
 }
 
