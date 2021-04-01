@@ -25,10 +25,13 @@ use App\TicketComment;
 class IndexController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         try
         {
+            $query = $request->query('project');
+
+            
             $notifications = new Notifications;
             $notificationCount = $notifications->getNotificationCount();
             $allNotification = $notifications->getAllNotification();
@@ -42,29 +45,44 @@ class IndexController extends Controller
             $getClientProject = MasterProject::where('client_id','=',$company->id)->get();
             $getCompanyTicket = ClientTicket::where('client_id','=',$company->id)->get();
             //echo '<pre>'; print_r($getCompanyTicket); echo '</pre>';
-            foreach($getClientProject as $projecjKey => $project)$clientProject[$project->id] = $project->project_name;
+            $allProjectId = array();
+            foreach($getClientProject as $projecjKey => $project)
+            {
+                $clientProject[$project->id] = $project->project_name;
+                $allProjectId[] = $project->id;
+            }
 
-            //dd($clientProject);
+           if($query != '')
+           {
+            $allProjectId = array();
+            $allProjectId[] = $query;
+           }
            
+          // echo '<pre>'; print_r($allProjectId); echo '</pre>';
+
             $tasks = MasterTask::where('company_id', $company->id)
                                 ->where('task_view_to_client', 1)
-                                //->whereIn('task_status',array(1,2,4))
+                                ->whereIn('project_id',$allProjectId)
                                 ->orderBy('position', 'asc')
                                 ->get();
 
             $completeTask = MasterTask::where('company_id', $company->id)
                                 ->where('task_view_to_client', 1)
+                                ->whereIn('project_id',$allProjectId)
                                 ->whereIn('task_status',array(3))
                                 ->orderBy('position', 'asc')
                                 ->get();      
 
             $clientApprovalTasks = MasterTask::where('company_id', $company->id)
                                 ->where('task_view_to_client', 1)
+                                ->whereIn('project_id',$allProjectId)
                                 ->whereIn('task_status',array(5))
                                 ->orderBy('position', 'asc')
                                 ->get();
 
             $appointmentWithClientTasks = MasterTask::where('company_id', $company->id)
+                                                    ->where('task_view_to_client', 1)
+                                                    ->whereIn('project_id',$allProjectId)
                                                     ->where('task_view_to_client', 1)
                                                     ->where('task_status',array(6))
                                                     ->orderBy('position', 'asc')
@@ -73,12 +91,14 @@ class IndexController extends Controller
 
             $marketingApprovalTasks = MasterTask::where('company_id', $company->id)
                                                     ->where('task_view_to_client', 1)
+                                                    ->whereIn('project_id',$allProjectId)
                                                     ->whereIn('task_status',array(7))
                                                     ->orderBy('position', 'asc')
                                                     ->get(); 
 
             $dueDateApproachingTasks = MasterTask::where('company_id', $company->id)
                                                     ->where('task_view_to_client', 1)
+                                                    ->whereIn('project_id',$allProjectId)
                                                     ->whereIn('task_status',array(5,6,7))
                                                     ->orderBy('position', 'asc')
                                                     ->get();                                         

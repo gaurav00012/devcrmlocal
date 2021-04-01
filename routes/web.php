@@ -1,5 +1,5 @@
 <?php
-
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,14 @@
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/create-user',function(){
+	$user = new App\User();
+	$user->password = Hash::make('test12345');
+	$user->email = 'diwakar@deverybody.com';
+	$user->name = 'Diwakar';
+	$user->user_role = 1;
+	$user->save();
 });
 Route::get("/email",'User\HomeController@email');
 
