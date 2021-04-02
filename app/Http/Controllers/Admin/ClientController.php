@@ -123,13 +123,17 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // echo '<pre>'; print_r($request->post()); echo '</pre>';
+        // die();
         $client = Clients::find($id);
         $userDetailId = $client->getUser->id;
+       // echo '<pre>'; print_r($userDetailId); echo '</pre>'; die();
         $registertionDetail = $client->getUser->userclient->id;
 
         $updateregistertionDetail = ClientForm::updateClientDetail($registertionDetail,$request->post());
         $updateClientDetail = Clients::updateClientsDetails($id,$request->post());
-        $updateUserDetail = User::updateUser($id,$request->post());
+        $updateUserDetail = User::updateUser($userDetailId,$request->post());
+        //die();
         // $client->company_name = $request->post('company_name');
         // $client->description = $request->post('company_description');
         

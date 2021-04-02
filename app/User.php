@@ -59,11 +59,14 @@ class User extends Authenticatable
 
     public static function updateUser($id,$post)
     {
+       //echo '<pre>'; print_r($post); echo '</pre>'; die();
         try{
             $getUserDetail = Self::find($id);
+          //  echo '<pre>'; print_r($getUserDetail); echo '</pre>'; die();
             $getUserDetail->name = $post['company_name'];
+            $getUserDetail->name = $post['company_email'];
 
-            if($getClientDetail->save())
+            if($getUserDetail->save())
             {
                 return true;
             }
