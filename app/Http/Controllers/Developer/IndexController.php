@@ -16,7 +16,7 @@ use App\TaskTimelog;
 use App\TeamMember;
 use App\Notifications;
 use App\Traits\Notification;
-use App\CLients;
+use App\Clients;
 use App\Team;
 use Auth;
 use DB;
