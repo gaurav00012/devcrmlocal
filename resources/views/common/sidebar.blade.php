@@ -86,7 +86,7 @@
             </li>
             @endif
              <li class="nav-item nav-category">
-                <span class="nav-link"> Setting <span class="nav-link">
+                <span class="nav-link"> Settings <span class="nav-link">
             </li>
             <!-- <li class="nav-item nav-category"><span class="nav-link">Setting</span></li> -->
             <!--  <li class="nav-item">

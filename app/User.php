@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->hasOne('App\ClientForm','id','c_id');
     }
 
+    public function getTeamMemberDetails()
+    {
+        return $this->belongsTo('App\Team','id','user_id');
+    }
+
     public static function updateUser($id,$post)
     {
         try{

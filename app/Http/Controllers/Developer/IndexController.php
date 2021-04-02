@@ -13,8 +13,11 @@ use App\MasterTaskCommentAttachment;
 use App\MasterDropDowns;
 use App\MasterTaskAttachments;
 use App\TaskTimelog;
+use App\TeamMember;
 use App\Notifications;
 use App\Traits\Notification;
+use App\CLients;
+use App\Team;
 use Auth;
 use DB;
 use Carbon\Carbon;
@@ -42,20 +45,29 @@ class IndexController extends Controller
         $timeLog = new TaskTimelog;
         $onGoingTask = $timeLog->getPauseTask();
 
+        $getTeam = $user->getTeamMemberDetails;
+        //echo '<pre>'; print_r($getTeam); echo '</pre>';
         //dd($onGoingTask);
-        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' AND mt.`task_status` != 3 ORDER BY mt.position asc');
+        //$tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' AND mt.`task_status` != 3 ORDER BY mt.position asc');
+        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$getTeam->id.' ORDER BY mt.position asc');
+        // echo '<pre>';
+        // echo 'SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' ORDER BY mt.position asc';
+        // echo '</pre>';
         $completeTask = MasterTask::getCompletedTask();
         $taskTimeLog = TaskTimelog::All();
        
         foreach($tasks as $key => $task)
         {
             
-            $assignee = User::find($task->assignee);
-            $company = MasterCompany::find($task->company_id);
-            $task->assigneename = $assignee->name;
-            $task->companyname = $company->company_name;
+            //echo '<pre>'; print_r($task); echo '</pre>';
+             $assignee = User::find(Team::find($task->assignee)->user_id);
+             $client = CLients::find($task->company_id);
+           //  echo '<pre>'; print_r($client->user_id); echo '</pre>';
+             $task->assigneename = $assignee->name;
+             $task->companyname = User::find($client->user_id)->name;
 
         }
+      //  die();
         return view('developer.index.index',[
                                               'tasks'=>$tasks,
                                               'onGoingTask'=>$onGoingTask,

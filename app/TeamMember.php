@@ -10,4 +10,9 @@ class TeamMember extends Model
     protected $fillable = [
         'id','user_id','company_id','created_by','updated_at','updated_by',
     ];
+
+    public function getTeamMember()
+    // {
+    // 	return $this->hasOne('App\User','id','user_id');
+    // }
 }
