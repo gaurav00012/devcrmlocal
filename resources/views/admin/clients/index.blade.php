@@ -35,7 +35,7 @@ Manage Clients
                 <a href="{!! url('admin/manage-invoice');!!}/{{ $client->id }}"  class="btn green-btn invoice-btn mr-1" title="Manage Invoice"><i class="fa fa-files-o"></i></a>  
                 <a href="{!! url('admin/manage-projects');!!}/{{ $client->id }}"  class="btn  green-btn view-btn mr-1" title="View Project"><i class="icon-eye"></i></a>  
                 <a href="{!! url('admin/edit-client');!!}/{{ $client->id }}"  class="btn  green-btn edit-btn mr-1" title="Edit"><i class="icon-pencil"></i></a>  
-                <a href="{!! url('admin/delete-client');!!}/{{ $client->id }}"  class="btn  green-btn delete-btn" title="Delete"><i class="icon-trash"></i></a> 
+                <a href="{!! url('admin/delete-client');!!}/{{ $client->user_id }}"  class="btn  green-btn delete-btn" title="Delete"><i class="icon-trash"></i></a> 
             </td>
             </tr>
         @endforeach
