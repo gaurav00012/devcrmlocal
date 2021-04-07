@@ -64,7 +64,7 @@
                                 </button>
               </div>
               <p class="text-center">                
-                <a href="forgot-password.html">Forgot Password?</a>
+                <a href="{{url('password/reset')}}">Forgot Password?</a>
                 <br>
                 Don't have an account yet? <a href="register.html">Sign Up!</a>
              
