@@ -156,6 +156,7 @@ class IndexController extends Controller
             $taskComment = $taskDetail->getTaskComment;
             $taskCommentAttachment = MasterTaskCommentAttachment::find($taskId);
             $assignee = User::where('user_role','=',2)->get();
+            //dd($assignee);
             $assigneeArray = array();
             foreach($assignee as $aK => $assigneValue)$assigneeArray[$assigneValue->id] = $assigneValue->name;
            
@@ -166,7 +167,7 @@ class IndexController extends Controller
             {
                 array_push($taskAssigneeArray,$tValue->assignee);
             }
-            
+          //  dd($taskAssigneeArray);
             $taskAttachmentArray = array();
             foreach($taskAttachments as $tkKey => $tkValue)
             {
