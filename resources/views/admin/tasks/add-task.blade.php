@@ -6,6 +6,7 @@ Add Task
 @section('content')
 <div id="add-task">
 {!! Form::open(['url' => ['/admin/add-task',$getProject->id],'method' => 'post']) !!}
+
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <?php echo Form::hidden('project_id', $getProject->id,['class' => 'form-control','id'=>'project_id']);?>
   <div class="col-md-6 col-sm-6">
@@ -14,11 +15,9 @@ Add Task
        <span class="err_task_name text-danger error"></span>
     </div>
   </div>
-  
-
- 
- 
 </div>
+
+
 <p></p>
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <div class="col-md-6 col-sm-6">
@@ -41,6 +40,7 @@ Add Task
     </div>
   </div>
 </div>
+
 <p></p>
 <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="display:flex">
 <div class="col-md-6 col-sm-6">
@@ -57,9 +57,10 @@ Add Task
   </div>
 </div>
 <p></p>
+
 <div class="col-md-12">
 <div class="col-md-6">
-<?php echo Form::select('ask_suggesion',[''=>'Who gets notified?','1' => 'Client','2'=>'Client and Developer'], null, array('class' => 'form-control task-status','id'=>'task_status'));?>
+<?php echo Form::select('task_suggesion',[''=>'Who gets notified?','1' => 'Client','2'=>'Client and Developer'], null, array('class' => 'form-control task-status','id'=>'task_status'));?>
 </div>
 </div>
 <p></p>
@@ -140,9 +141,9 @@ let fileaddedDropzone = 0;
       //   myDropzone.processQueue();
       // });
 
-      $('#datepicker').datepicker({
+      $('#datepicker').daterangepicker({
+        singleDatePicker: true,
         format: 'mm-dd-yyyy',
-        startDate: '-3d'
     }); 
 
 
@@ -243,5 +244,8 @@ function uploadFile(taskId)
    
 
 </script>
+
+
+
 @endsection
 

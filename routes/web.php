@@ -231,6 +231,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('developer/start-task/{taskId}','Developer\IndexController@startTask');
 	Route::post('/developer/get-time-log','Developer\IndexController@getTimeLog');
 	Route::post('/developer/update-notification','Developer\IndexController@updateNotification');
+	Route::get('/developer/add-task','Developer\IndexController@addTask');
+	Route::post('/developer/add-task','Developer\IndexController@storeTask');
 	});
 	Route::get('profile','Common\ProfileController@index');
 	Route::post('profile','Common\ProfileController@saveprofile');

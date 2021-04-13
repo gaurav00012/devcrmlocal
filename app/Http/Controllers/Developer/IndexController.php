@@ -14,6 +14,7 @@ use App\MasterDropDowns;
 use App\MasterTaskAttachments;
 use App\TaskTimelog;
 use App\TeamMember;
+use App\MasterProject;
 use App\Notifications;
 use App\Traits\Notification;
 use App\Clients;
@@ -46,28 +47,27 @@ class IndexController extends Controller
         $onGoingTask = $timeLog->getPauseTask();
 
         $getTeam = $user->getTeamMemberDetails;
+
         //echo '<pre>'; print_r($getTeam); echo '</pre>';
         //dd($onGoingTask);
         //$tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' AND mt.`task_status` != 3 ORDER BY mt.position asc');
-        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$getTeam->id.' ORDER BY mt.position asc');
-        // echo '<pre>';
-        // echo 'SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' ORDER BY mt.position asc';
-        // echo '</pre>';
+
+        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$getTeam->user_id.' ORDER BY mt.position asc');
+
         $completeTask = MasterTask::getCompletedTask();
         $taskTimeLog = TaskTimelog::All();
-       
+     
         foreach($tasks as $key => $task)
         {
-            
-            //echo '<pre>'; print_r($task); echo '</pre>';
-             $assignee = User::find(Team::find($task->assignee)->user_id);
-             $client = CLients::find($task->company_id);
-           //  echo '<pre>'; print_r($client->user_id); echo '</pre>';
-             $task->assigneename = $assignee->name;
-             $task->companyname = User::find($client->user_id)->name;
+            //echo '<pre>'; print_r(Team::find($task->assignee)); echo '</pre>';
+             $assignee = User::find($task->assignee);
+            // echo '<pre>'; print_r($assignee); echo '</pre>';
+              $client = Clients::find($task->company_id);
+              $task->assigneename = $assignee->name;
+              $task->companyname = User::find($client->user_id)->name;
 
         }
-      //  die();
+
         return view('developer.index.index',[
                                               'tasks'=>$tasks,
                                               'onGoingTask'=>$onGoingTask,
@@ -447,6 +447,105 @@ class IndexController extends Controller
             $result['exception_message'] = $e->getMessage();
             return $result;
         }
+    }
+
+    public function addTask()
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+      try{
+
+        $user = Auth::user()->id;
+
+        $notifications = new Notifications;
+        $notificationCount = $notifications->getNotificationCount();
+        $allNotification = $notifications->getAllNotification();
+
+        
+        $user = Auth::user();
+        $timeLog = new TaskTimelog;
+        $onGoingTask = $timeLog->getPauseTask();
+
+        $getTeam = $user->getTeamMemberDetails;
+
+
+        $tasks = DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$getTeam->user_id.' ORDER BY mt.position asc');
+
+        //echo '<pre>'; print_r($tasks); echo '</pre>';
+
+        $projectArray = array(''=>'Select Project');
+        foreach($tasks as $key => $task)
+        {
+          $projectArray[$task->project_id] = MasterProject::find($task->project_id)->project_name;
+            //echo '<pre>'; print_r(Team::find($task->assignee)); echo '</pre>';
+             $assignee = User::find($task->assignee);
+            // echo '<pre>'; print_r($assignee); echo '</pre>';
+              $client = Clients::find($task->company_id);
+              $task->assigneename = $assignee->name;
+              $task->companyname = User::find($client->user_id)->name;
+
+        }
+        //echo '<pre>'; print_r($projectArray); echo '</pre>';
+
+        $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
+        $taskStatusArray = array(
+            '' => 'Please select status'
+        );
+        foreach($taskstatus as $taskId => $task)$taskStatusArray[$task->id] = $task->name;
+        return view('developer.index.add-task',['taskstatus'=>$taskStatusArray,'projectArray'=>$projectArray]);
+      }
+      catch(\Exception $e)
+      {
+        $result['success'] = false;   
+        $result['exception_message'] = $e->getMessage();
+        return $result;
+      }
+    }
+
+    public function storeTask(Request $request)
+    {
+      $result['success'] = true;
+      $result['exception_message'] = '';
+
+       $this->validate($request,[
+            'task_name' => 'required',
+            'duedate' => 'required',
+            'task_description' => 'required',
+            'task_status' => 'required',
+          ]);
+
+
+      try
+      {
+        $user = Auth::user();
+        $post = $request->post();
+        
+        $project = MasterProject::find($post['project']);
+        $client = Clients::find($project->client_id);
+        
+         $task['task_name'] = $post['task_name'];
+         $task['company_id'] = $client->id;
+         $task['project_id'] = $post['project'];
+         $task['task_status'] = $post['task_status'];
+         $task['task_description'] = $post['task_description']; 
+         $task['due_date'] = date("Y-m-d", strtotime($post['duedate']));
+         $task['created_by'] = $user->id;     
+         $taskSave = MasterTask::create($task);
+         
+          $resource = array(); 
+          $resource['task_id'] = $taskSave->task_id;
+          $resource['assignee'] = $user->id;
+          $resource['created_by'] = $user->id;
+          $resourceSave = TaskAssignee::create($resource); 
+
+          return redirect('team')->with('success', 'Task Added Successfully');
+      }
+      catch(\Exception $e)
+      {
+        $result['success'] = false;   
+        $result['exception_message'] = $e->getMessage();
+        return $result;
+      }
     }
 
      private function fileupload($file,$fileDestination,$taskId,$commentId)

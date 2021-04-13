@@ -27,7 +27,10 @@
                         <div class="col-12 px-0 content">
                           <div class="contact-profile">
                           <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" style="display:none">
-                            <p style="margin-left:2em">@yield('heading')</p>                           
+                            <p style="margin-left:2em">@yield('heading')</p>    
+                            <div class="col-md-12">
+                            
+                            </div>                       
                           </div>                         
 
                           <div class="px-4 py-4  bg-white">

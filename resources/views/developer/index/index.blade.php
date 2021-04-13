@@ -1,6 +1,7 @@
 <?php
 use App\MasterCompany;
 use App\User;
+use App\Clients;
  ?>
 @extends('layouts.admin.main')
 
@@ -20,11 +21,14 @@ use App\User;
   </a>
   @endforeach
 @endsection
-
+@section('heading')
+<a href="{{url('/developer/add-task')}}" class="btn green-btn" style="margin-left: 66em;padding: 9px;">Add Task</a> 
+@endsection
 @section('content')
   <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
  
   </div>
+
   <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">All Task</a>
@@ -99,7 +103,7 @@ use App\User;
           <td>{{$key+1}}</td>
          <td hidden>{{$projectask->position}}</td>
         <td>{{$projectask->task_name}}</td>
-        <td>{{MasterCompany::find($projectask->company_id)->company_name}}</td>
+        <td>{{Clients::find($projectask->company_id)->client_id}}</td>
        
         <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
        

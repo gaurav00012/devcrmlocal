@@ -122,7 +122,8 @@ class TaskController extends Controller
         $getCompany = Clients::find($getProject->client_id);
         $resource = Team::where('company_id','=',$user->companyuser->id)->get();
         $taskstatus = MasterDropDowns::where('type','=','TASK_STATUS')->get();
-    
+            
+        //echo '<pre>'; print_r($resource); echo '</pre>';    
 
         $companyArray = array(
             '' => 'Please select Client'
@@ -134,7 +135,7 @@ class TaskController extends Controller
         foreach($allProject as $projectId => $project)$projectArray[$project->id] = $project->project_name;
       
         $resourceArray = array();
-        foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->id] = User::find($resoucrData->user_id)->name;
+        foreach($resource as $resourceId => $resoucrData)$resourceArray[$resoucrData->user_id] = User::find($resoucrData->user_id)->name;
 
         $taskStatusArray = array(
             '' => 'Please select status'
@@ -209,8 +210,6 @@ class TaskController extends Controller
                 $resource = array();
                 foreach($resourceArray as $key => $resourceVal)
                 {
-                    // echo $resourceVal;
-                    // echo '<br>';
                     $resource['task_id'] = $taskSave->task_id;
                     $resource['assignee'] = $resourceVal;
                     $resource['created_by'] = $user->id;
