@@ -9,6 +9,9 @@
 @endsection
 @section('heading')
 Add Task
+<div class="col-md-12">
+<a href="{{url('developer/home')}}" class="btn btn-info pull-right" style="margin-top: 1em;">Back</a>
+</div>
 @endsection
 @section('content')
 
