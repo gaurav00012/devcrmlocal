@@ -2,6 +2,7 @@
 use App\MasterCompany;
 use App\User;
 use App\Clients;
+use App\MasterProject;
  ?>
 @extends('layouts.admin.main')
 
@@ -48,19 +49,21 @@ use App\Clients;
       <th>#</th>
         <th>Task Name</th>
         <th>Company</th>
-        <th>Assigne</th>
+        <th>Project</th>
+        <!-- <th>Assigne</th> -->
         <th>Due Date</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody>
-       @foreach ($tasks as $key => $projectask)
+       @foreach($tasks as $key => $projectask)
       <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
           <td>{{$key+1}}</td>
          <td hidden>{{$projectask->position}}</td>
         <td>{{$projectask->task_name}}</td>
         <td>{{$projectask->companyname}}</td>
-        <td>{{$projectask->assigneename}}</td>
+        <td>{{MasterProject::find($projectask->project_id)->project_name}}</td>
+       <!--  <td>{{$projectask->assigneename}}</td> -->
         <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
        
           <td><a class="btn green-btn loader_{{$projectask->task_id}}" type="button" hidden disabled><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></a>  

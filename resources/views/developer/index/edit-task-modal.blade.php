@@ -1,3 +1,6 @@
+<?php
+use App\User;
+?>
 <div class="modal-dialog modal-lg" role="document">
    <div class="modal-content">
       <div class="modal-header">
@@ -7,10 +10,16 @@
          </button>
       </div>
       <div class="modal-body">
+        <?php
+         // $disabledVari = 'disabled'.'=>'
+          $isDisabled =  Auth::user()->id == $taskDetail->created_by ? '' : 'disabled';
+          
+          //if($taskAssignee == 1){ 'disabled'; }
+        ?>
          <div class="row">
             <div class="col-md-6 col-sm-6">
                <label for="email">Task Name:</label>
-               <?php echo Form::text('task_name', $taskDetail->task_name ,['class' => 'form-control','placeholder'=>'Enter Task Name','id'=>'task_name','disabled'=>'disabled']);?>
+               <?php echo Form::text('task_name', $taskDetail->task_name ,['class' => 'form-control','placeholder'=>'Enter Task Name','id'=>'task_name', $isDisabled]);?>
             </div>
             <div class="col-md-6 col-sm-6">
                <label for="email">Task Assignee:</label>
@@ -18,7 +27,7 @@
             </div>
             <div class="col-md-6 col-sm-6">
                <label for="email">Task Description:</label>
-               <?php echo Form::textarea('task_description', $taskDetail->task_description,['class' => 'form-control','placeholder'=>'Enter Task description','id'=>'task_description','disabled'=>'disabled']);?>
+               <?php echo Form::textarea('task_description', $taskDetail->task_description,['class' => 'form-control','placeholder'=>'Enter Task description','id'=>'task_description',$isDisabled]);?>
             </div>
             <div class="col-md-6 col-sm-6">
                <label for="email">Task Attachments:</label>
@@ -133,6 +142,7 @@
       var editorData= CKEDITOR.instances['task_comments'].getData();
       let taskId = $(this).attr('data-taskid');
       let taskStatus = $('#task_status').val();
+
     //  let commentAttachment = $('#task_attachment');
        let commentAttachment = document.getElementById('task_attachment');
        let commentFiles =  commentAttachment.files;
@@ -140,6 +150,18 @@
       
      formData.append('task_comment',editorData);
      formData.append('task_status',taskStatus);
+
+     <?php $isDisabled =  Auth::user()->id == $taskDetail->created_by ? '' : 'disabled'; ?>
+      <?php if($isDisabled == ''){ ?>
+          let taskName = $('#task_name').val();
+          let taskDescription = $('#task_description').val();
+           
+          formData.append('task_name',taskName); 
+          formData.append('task_description',taskDescription); 
+
+       <?php } ?>
+
+       
       if(commentAttachment.value.length != 0)
       {
           formData.append('attachment', commentFiles[0], commentFiles[0].name)

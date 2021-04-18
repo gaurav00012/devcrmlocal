@@ -67,7 +67,6 @@ class IndexController extends Controller
               $task->companyname = User::find($client->user_id)->name;
 
         }
-
         return view('developer.index.index',[
                                               'tasks'=>$tasks,
                                               'onGoingTask'=>$onGoingTask,
@@ -149,7 +148,7 @@ class IndexController extends Controller
         $result['success'] = true;
         $result['exception_message'] = '';
         
-         
+         //dd($request->post());
        try{
             $taskId = $request->post()['taskid'];
             $taskDetail = MasterTask::find($taskId);
@@ -252,7 +251,6 @@ class IndexController extends Controller
         $result['exception_message'] = '';
         try
         {
-
             $user = Auth::user();
             $taskDetail = TaskAssignee::where('task_id', '=', $id)->where('assignee', '=', $user->id)->get();
             $getOtherTeamMember = TaskAssignee::where('task_id','=',$id)->where('assignee','!=', $user->id)->get();
@@ -273,11 +271,16 @@ class IndexController extends Controller
 
            // dd($taskDetail[0]->getTask->company_id);
             // notification($from,$to,$subject,$message,$status = 0)
-
+            //dd($taskDetail[0]->getTask);
             if ($request->post()['task_status'] != '' || $request->post() ['task_status'] != null)
             {
+                if(Auth::user()->id == $taskDetail[0]->getTask->created_by)
+                {
+                  $taskDetail[0]->getTask->task_name = $request->post()['task_name'];
+                  $taskDetail[0]->getTask->task_description = $request->post()['task_description'];
+                }
 
-                $taskDetail[0]->getTask->task_status = $request->post() ['task_status'];
+                $taskDetail[0]->getTask->task_status = $request->post()['task_status'];
                
                 $subject = $taskName;
                 $message = $taskName.' status changed.';
