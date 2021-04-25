@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\MasterCompany;
 use App\MasterProject;
+use App\TaskTimelog;
 use App\Traits\Notification;
+use Auth;
 
 class IndexController extends Controller
 {
@@ -19,12 +21,25 @@ class IndexController extends Controller
 
     public function index()
     {
-        //
-        //$this->notification();
-        $allCompanyData = array('' => 'Select Company');
-        $allCompany = MasterCompany::All();
-        foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
-        return view('admin.index');
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try
+        {
+            $user = Auth::user();
+            $getCompanyTeam = $user->companyuser->getTeamMember;
+            $teamMemberId = array();
+            foreach($getCompanyTeam as $member)$teamMemberId[] = $member->user_id;
+
+            $allCompanyData = array('' => 'Select Company');
+            $allCompany = MasterCompany::All();
+            foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
+            return view('admin.index',['teamMemberId'=>$teamMemberId]);
+         }
+         catch(\Exception $e)
+         {
+            $result['success'] = false;
+            $result['exception_message'] = $e->getMessage();
+         }
     }
 
     public function getCompany(Request $request)

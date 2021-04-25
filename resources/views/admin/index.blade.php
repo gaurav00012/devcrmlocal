@@ -1,3 +1,10 @@
+<?php
+use App\TaskTimelog;
+use App\User;
+use App\MasterTask;
+use App\MasterProject;
+?>
+
 @extends('layouts.admin.main')
 @section('heading')
 Dashboard
@@ -37,6 +44,42 @@ Dashboard
                   <h6 class="card-text">Increased by 5%</h6>
                 </div>
               </div>
+            </div>
+
+            <div class="col-md-12">
+              <h3>Team Timelog</h3>
+              <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Task</th>
+      <th scope="col">Project</th>
+      <th scope="col">Start Time</th>
+      <th scope="col">End Time</th>
+   
+    </tr>
+  </thead>
+  <tbody>
+      <?php foreach($teamMemberId as $mkey => $member){ ?>
+      <?php $getTimeLog = TaskTimelog::where('user_id','=',$member)->get(); ?>
+      <?php foreach($getTimeLog as $taskey => $task){ ?>
+        <tr>
+          <td>{{++$taskey}}</td>
+          <td>{{User::find($member)->name}}</td>
+          <td>{{MasterTask::find($task->task_id)->task_name}}</td>
+          <td>{{MasterProject::find(MasterTask::find($task->task_id)->project_id)->project_name}}</td>
+          <td>{{$task->start_time}}</td>
+          <td>{{$task->end_time}}</td>
+        </tr>
+      <?php } ?>  
+      <?php } ?>
+
+
+
+  
+  </tbody>
+</table>
             </div>
           </div>
 

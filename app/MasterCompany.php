@@ -26,4 +26,9 @@ class MasterCompany extends Model
     {
         return $this->hasMany('App\Clients', 'company_id', 'id');
     }
+
+    public function getTeamMember()
+    {
+        return $this->hasMany('App\Team','company_id','id');
+    }
 }
