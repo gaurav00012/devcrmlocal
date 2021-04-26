@@ -9,6 +9,9 @@ use App\MasterProject;
 use App\TaskTimelog;
 use App\Traits\Notification;
 use Auth;
+use Illuminate\Support\Facades\Input;
+use DateTime;
+use App\User;
 
 class IndexController extends Controller
 {
@@ -19,7 +22,7 @@ class IndexController extends Controller
      */
     use Notification;
 
-    public function index()
+    public function index($timeLogs = 'group-by-user')
     {
         $result['success'] = true;
         $result['exception_message'] = '';
@@ -27,13 +30,44 @@ class IndexController extends Controller
         {
             $user = Auth::user();
             $getCompanyTeam = $user->companyuser->getTeamMember;
+    
             $teamMemberId = array();
             foreach($getCompanyTeam as $member)$teamMemberId[] = $member->user_id;
 
             $allCompanyData = array('' => 'Select Company');
             $allCompany = MasterCompany::All();
             foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
-            return view('admin.index',['teamMemberId'=>$teamMemberId]);
+            
+            $usersTimeLogArray = array();
+            if(Input::get('time-log-group') != '' && Input::get('time-log-group') == 'group-by-user')
+            {
+                
+               foreach($getCompanyTeam as $id => $teamMember)
+               {   
+                  $totalOfTime = 0;  
+                  $getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)->get();
+                 // echo '<pre>'; print_r($getUserTimelog); echo '</pre>';
+            
+                  foreach($getUserTimelog as $timeLogKey => $userTimeLog)
+                  {
+                     $seconds = strtotime($userTimeLog->end_time) - strtotime($userTimeLog->start_time);
+                     $days    = floor($seconds / 86400);
+                     $hours   = floor(($seconds - ($days * 86400)) / 3600);
+                     $totalOfTime += $hours;
+                  }
+                  $usersTimeLogArray[User::find($teamMember->user_id)->name] = $totalOfTime;
+               }
+               
+            }
+          
+            echo '<pre>'; print_r($usersTimeLogArray); echo '</pre>';
+
+            if(Input::get('time-log-group') || Input::get('time-log-group') != '')
+            {
+            
+            }
+
+            return view('admin.index',['teamMemberId'=>$teamMemberId,'time_log'=>$timeLogs,'usersTimeLogArray'=>$usersTimeLogArray]);
          }
          catch(\Exception $e)
          {

@@ -1,9 +1,9 @@
 <?php
-use App\MasterCompany;
-use App\User;
-use App\Clients;
-use App\MasterProject;
- ?>
+  use App\MasterCompany;
+  use App\User;
+  use App\Clients;
+  use App\MasterProject;
+?>
 @extends('layouts.admin.main')
 
 @section('notification-count')
@@ -42,6 +42,7 @@ use App\MasterProject;
   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
     <div class="col-sm-12">
       <br>
+    
     <table class="table table-striped task-table" id="task-table">
     <thead>
       <tr>
