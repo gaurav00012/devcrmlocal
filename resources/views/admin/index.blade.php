@@ -130,9 +130,6 @@ let hourSpendbyMember = [];
 
 var jsArray = JSON.parse('<?php echo json_encode($usersTimeLogArray); ?>');
 for(var i in jsArray){
-  console.log(i);
-	console.log(jsArray[i]);
- 
   teamMemberName.push(i);
   hourSpendbyMember.push(jsArray[i]);
   // criticalityColors.push(getRandomColor());
@@ -161,16 +158,16 @@ Highcharts.chart('container', {
           //  align: 'high'
         },
         labels: {
-            overflow: 'justify'
+            //overflow: 'justify'
         }
     },
     tooltip: {
-        valueSuffix: ' millions'
+    //    valueSuffix: ' millions'
     },
     plotOptions: {
         bar: {
             dataLabels: {
-                enabled: true
+               // enabled: true
             }
         }
     },
@@ -178,8 +175,8 @@ Highcharts.chart('container', {
         layout: 'vertical',
         align: 'right',
         verticalAlign: 'top',
-        x: -40,
-        y: 80,
+        // x: -40,
+        // y: 80,
         floating: true,
         borderWidth: 1,
         backgroundColor:
