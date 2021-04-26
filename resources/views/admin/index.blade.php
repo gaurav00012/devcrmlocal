@@ -187,7 +187,7 @@ Highcharts.chart('container', {
     //     enabled: false
     // },
     series: [{
-        name: 'Total time spent '+hourSpendbyMember,
+       // name: 'Total time spent '+hourSpendbyMember,
         data: hourSpendbyMember
     }]
 });
