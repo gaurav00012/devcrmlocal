@@ -164,28 +164,28 @@ Highcharts.chart('container', {
     tooltip: {
     //    valueSuffix: ' millions'
     },
-    plotOptions: {
-        bar: {
-            dataLabels: {
-               // enabled: true
-            }
-        }
-    },
+    // plotOptions: {
+    //     bar: {
+    //         dataLabels: {
+    //            // enabled: true
+    //         }
+    //     }
+    // },
     legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'top',
+        // layout: 'vertical',
+        // align: 'right',
+        // verticalAlign: 'top',
         // x: -40,
         // y: 80,
         floating: true,
         borderWidth: 1,
-        backgroundColor:
-            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        // backgroundColor:
+        //     Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
         shadow: true
     },
-    credits: {
-        enabled: false
-    },
+    // credits: {
+    //     enabled: false
+    // },
     series: [{
         name: 'Total time spent '+hourSpendbyMember,
         data: hourSpendbyMember
