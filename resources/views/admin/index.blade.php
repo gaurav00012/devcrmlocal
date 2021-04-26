@@ -3,6 +3,7 @@ use App\Task;
 use App\User;
 use App\MasterTask;
 use App\MasterProject;
+use App\TaskTimeLog;
 ?>
 
 @extends('layouts.admin.main')
