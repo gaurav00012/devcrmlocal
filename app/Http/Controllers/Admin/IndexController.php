@@ -60,7 +60,7 @@ class IndexController extends Controller
                
             }
           
-            echo '<pre>'; print_r($usersTimeLogArray); echo '</pre>';
+           // echo '<pre>'; print_r($usersTimeLogArray); echo '</pre>';
 
             if(Input::get('time-log-group') || Input::get('time-log-group') != '')
             {
