@@ -42,7 +42,14 @@
   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
     <div class="col-sm-12">
       <br>
-    
+    <form method="post" >
+    <select name="cars" id="cars">
+      <option value="volvo">Volvo</option>
+      <option value="saab">Saab</option>
+      <option value="mercedes">Mercedes</option>
+      <option value="audi">Audi</option>
+    </select>
+    </form>
     <table class="table table-striped task-table" id="task-table">
     <thead>
       <tr>

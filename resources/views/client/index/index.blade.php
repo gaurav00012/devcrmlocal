@@ -89,7 +89,7 @@ Task List
                <div class="row">
                 <div class="col-md-12 mt-4">
                      <div class="bg-white p-4 rounded task-box shadow-sm">
-                        <h4 class="mb-3 mt-n2">Upcomint Appointments:</h4>
+                        <h4 class="mb-3 mt-n2">Upcoming Appointments:</h4>
                        <table class="table table-striped" id="task-table">
     <thead>
       <tr>

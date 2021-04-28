@@ -4,6 +4,7 @@ use App\User;
 use App\MasterTask;
 use App\MasterProject;
 use App\TaskTimelog;
+use App\Clients;
 ?>
 
 @extends('layouts.admin.main')
@@ -90,8 +91,10 @@ Dashboard
       <th scope="col">Name</th>
       <th scope="col">Task</th>
       <th scope="col">Project</th>
+      <th scope="col">Company</th>
       <th scope="col">Start Time</th>
       <th scope="col">End Time</th>
+      <th scope="col">Duration Time</th>
    
     </tr>
   </thead>
@@ -104,8 +107,16 @@ Dashboard
           <td>{{User::find($member)->name}}</td>
           <td>{{MasterTask::find($task->task_id)->task_name}}</td>
           <td>{{MasterProject::find(MasterTask::find($task->task_id)->project_id)->project_name}}</td>
+          <td>{{User::find(Clients::find(MasterTask::find($task->task_id)->company_id)->user_id)->name}}</td>
           <td>{{$task->start_time}}</td>
           <td>{{$task->end_time}}</td>
+          <?php 
+          $date_a = new DateTime($task->end_time);
+         $date_b = new DateTime($task->start_time);
+
+         $interval = date_diff($date_a,$date_b);
+         ?>
+          <td>{{$interval->format('%h:%i:%s')}}</td>
         </tr>
       <?php } ?>  
       <?php } ?>
