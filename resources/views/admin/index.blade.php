@@ -54,15 +54,23 @@ Dashboard
       
     </p>
 </figure>
+
             </div>
             <div class="col-md-12">
+            <div class="col-md-6" style="display:flex">
             <form method="get">
               <select name="time-log-group" id="time-log-group" onchange="this.form.submit()">
                 <option value="">Select Timelog</option>
-                <option value="group-by-user" @if($timeLogs = 'group-by-user') selected @endif >Group By User</option>
-                <option value="group-by-project" @if($timeLogs = 'group-by-project') selected @endif>Group By Projects</option>
+                <option value="group-by-user" @if($time_log == 'group-by-user') selected @endif >Group By User</option>
+                <option value="group-by-project" @if($time_log == 'group-by-project') selected @endif>Group By Projects</option>
+              </select>
+              <select name="time-log-by-week" id="time-log-by-week" onchange="this.form.submit()">
+                <option value="">Select Days</option>
+                <option value="get-last-seven-days" @if($teamDataByWeek == 'get-last-seven-days') selected @endif>Last Seven Days</option>
+                <option value="get-last-30-days" @if($teamDataByWeek == 'get-last-30-days') selected @endif>Last 30 Days</option>
               </select>
             </form>
+            </div> 
               <h3>Team Timelog</h3>
         @if(!empty($usersTimeLogArray))  
         <table class="table table-striped">
@@ -74,13 +82,20 @@ Dashboard
     </tr>
   </thead>
   <tbody>
+  @php  
+  $count = 1;
+  @endphp
   @foreach($usersTimeLogArray as $timeLogArrayKey => $timeLogArray)
     <tr>
-      <td>1</td>
+      <td>{{$count}}</td>
       <td>{{$timeLogArrayKey}}</td>
       <td>{{$timeLogArray}}</td>
     </tr>
+    @php  
+  $count++;
+  @endphp
   @endforeach
+  
   </tbody>
   </table>
         @else    
@@ -182,18 +197,18 @@ Highcharts.chart('container', {
     //         }
     //     }
     // },
-    legend: {
-        // layout: 'vertical',
-        // align: 'right',
-        // verticalAlign: 'top',
-        // x: -40,
-        // y: 80,
-        floating: true,
-        borderWidth: 1,
-        // backgroundColor:
-        //     Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-        shadow: true
-    },
+    // legend: {
+    //     // layout: 'vertical',
+    //     // align: 'right',
+    //     // verticalAlign: 'top',
+    //     // x: -40,
+    //     // y: 80,
+    //     floating: true,
+    //     borderWidth: 1,
+    //     // backgroundColor:
+    //     //     Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+    //     shadow: true
+    // },
     // credits: {
     //     enabled: false
     // },
@@ -214,7 +229,7 @@ Highcharts.chart('container', {
     //     text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
     // },
     xAxis: {
-       // categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+        categories: ['Mobile Application Developemt in l', 'Mobile Application'],
         title: {
             text: null
         }
@@ -230,43 +245,34 @@ Highcharts.chart('container', {
         }
     },
     tooltip: {
-        valueSuffix: ' millions'
+        //valueSuffix: ' millions'
     },
     plotOptions: {
         bar: {
             dataLabels: {
-                enabled: true
+                enabled: false
             }
         }
     },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'top',
-        x: -40,
-        y: 80,
-        floating: true,
-        borderWidth: 1,
-        backgroundColor:
-            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-        shadow: true
-    },
+    // legend: {
+    //     layout: 'vertical',
+    //     align: 'right',
+    //     verticalAlign: 'top',
+    //     x: -40,
+    //     y: 80,
+    //     floating: true,
+    //     borderWidth: 1,
+    //     backgroundColor:
+    //         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+    //     shadow: true
+    // },
     credits: {
         enabled: false
     },
     series: [{
-        name: 'Year 1800',
-        data: [107, 31, 635, 203, 2]
-    }, {
-        name: 'Year 1900',
-        data: [133, 156, 947, 408, 6]
-    }, {
-        name: 'Year 2000',
-        data: [814, 841, 3714, 727, 31]
-    }, {
-        name: 'Year 2016',
-        data: [1216, 1001, 4436, 738, 40]
-    }]
+        //name: 'Year 1800',
+        data: [3, 4]
+    },]
 });
 @endif
 </script>

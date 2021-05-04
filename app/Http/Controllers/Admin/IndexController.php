@@ -12,6 +12,7 @@ use Auth;
 use Illuminate\Support\Facades\Input;
 use DateTime;
 use App\User;
+use DB;
 
 class IndexController extends Controller
 {
@@ -24,6 +25,7 @@ class IndexController extends Controller
 
     public function index($timeLogs = 'group-by-user')
     {
+        DB::enableQueryLog();
         $result['success'] = true;
         $result['exception_message'] = '';
         try
@@ -39,14 +41,48 @@ class IndexController extends Controller
             foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
             
             $usersTimeLogArray = array();
-            if(Input::get('time-log-group') != '' && Input::get('time-log-group') == 'group-by-user')
+            $userTimeLogByWeek = array();
+            $teamDataByWeek = '';
+        
+            if((Input::get('time-log-group') != '') || (Input::get('time-log-by-week') != ''))
             {
+               $teamDataByWeek = Input::get('time-log-by-week');
+               $currentDate =  \Carbon\Carbon::now()->toDateTimeString();
+              
+               $timeLogs =  Input::get('time-log-group');
+               
+               $lastDays = '';
+
+               if(Input::get('time-log-by-week') != '')
+               {
+                 $getByDays =  Input::get('time-log-by-week');
                 
+                 if($getByDays == 'get-last-30-days')
+                 {
+                   $lastDays = \Carbon\Carbon::today()->subDays(31)->toDateTimeString();  
+                 }
+                 elseif($getByDays == 'get-last-seven-days')
+                 {
+                     $lastDays = \Carbon\Carbon::today()->subDays(8)->toDateTimeString();  
+                 }
+                 else{
+                     $lastDays = '';
+                 }
+                 $lastDays = "'".$lastDays."'";
+               }
+             
                foreach($getCompanyTeam as $id => $teamMember)
                {   
                   $totalOfTime = 0;  
-                  $getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)->get();
-                 // echo '<pre>'; print_r($getUserTimelog); echo '</pre>';
+                 
+                  if($lastDays != ''){
+                    $getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)
+                                                 ->whereBetween('updated_at',[$lastDays,$currentDate])
+                                                 ->get();
+                  } 
+                  else{
+                    $getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)->get();
+                  } 
             
                   foreach($getUserTimelog as $timeLogKey => $userTimeLog)
                   {
@@ -60,20 +96,20 @@ class IndexController extends Controller
                
             }
           
-           // echo '<pre>'; print_r($usersTimeLogArray); echo '</pre>';
-
             if(Input::get('time-log-group') || Input::get('time-log-group') != '')
             {
             
             }
 
-            return view('admin.index',['teamMemberId'=>$teamMemberId,'time_log'=>$timeLogs,'usersTimeLogArray'=>$usersTimeLogArray]);
+            return view('admin.index',['teamMemberId'=>$teamMemberId,'time_log'=>$timeLogs,'usersTimeLogArray'=>$usersTimeLogArray,'teamDataByWeek'=>$teamDataByWeek]);
          }
          catch(\Exception $e)
          {
             $result['success'] = false;
             $result['exception_message'] = $e->getMessage();
+            $result['line'] = $e->getLine();
          }
+         echo '<pre>'; print_r($result); echo '</pre>';
     }
 
     public function getCompany(Request $request)
