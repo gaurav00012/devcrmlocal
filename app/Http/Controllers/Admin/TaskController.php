@@ -188,6 +188,7 @@ class TaskController extends Controller
              $task['task_status'] = $input['task_status'];
              $task['task_description'] = $input['task_description']; 
              $task['due_date'] = date("Y-m-d", strtotime($input['duedate']));
+             $task['task_view_to_client'] = 1;
              $task['created_by'] = $user->id;
              
              // $getProject = MasterProject::find($id);
