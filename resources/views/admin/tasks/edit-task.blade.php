@@ -172,7 +172,7 @@ let fileaddedDropzone = 0;
         {
           myDropzone.on("addedfile", function(file)
         			{
-        		    	$(file.previewTemplate).find(".dz-details").wrap("<a href='http://localhost:8000/files/"+fileName+"' data-original-title='Download Document' data-toggle='tooltip'></a>")
+        		    	$(file.previewTemplate).find(".dz-details").wrap("<a href='<?php echo url('/');?>/files/"+fileName+"'  data-original-title='Download Document' target='_blank' data-toggle='tooltip'></a>")
         			});
         }
         <?php 

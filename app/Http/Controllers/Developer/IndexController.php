@@ -199,6 +199,8 @@ class IndexController extends Controller
         $result['exception_message'] = '';
         try{
             $pathToFile= public_path()."/files/".$fileName;
+            $pathToFile = "files/".$fileName;
+            // die();
             return response()->download($pathToFile);   
         }
         catch(\Exception $e)

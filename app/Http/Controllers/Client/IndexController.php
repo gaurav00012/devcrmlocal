@@ -79,7 +79,7 @@ class IndexController extends Controller
                                 ->whereIn('task_status',array(5))
                                 ->orderBy('position', 'asc')
                                 ->get();
-
+            //echo '<pre>'; print_r($clientApprovalTasks); echo '</pre>';
             $appointmentWithClientTasks = MasterTask::where('company_id', $company->id)
                                                     ->where('task_view_to_client', 1)
                                                     ->whereIn('project_id',$allProjectId)

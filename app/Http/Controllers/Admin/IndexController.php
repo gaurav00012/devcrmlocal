@@ -44,7 +44,7 @@ class IndexController extends Controller
             $userTimeLogByWeek = array();
             $teamDataByWeek = '';
         
-            if((Input::get('time-log-group') != '') || (Input::get('time-log-by-week') != ''))
+            if((Input::get('time-log-group') == 'group-by-user') || (Input::get('time-log-by-week') != ''))
             {
                $teamDataByWeek = Input::get('time-log-by-week');
                $currentDate =  \Carbon\Carbon::now()->toDateTimeString();
@@ -65,6 +65,20 @@ class IndexController extends Controller
                  {
                      $lastDays = \Carbon\Carbon::today()->subDays(8)->toDateTimeString();  
                  }
+                 elseif($getByDays == 'custom-dates')
+                 {
+                     $getCustomDate = Input::get('duedate');
+                     $explodeCustomDate = explode('-',$getCustomDate);
+                    //  echo '<br><br><br><br><br><br><br>';
+               //     echo '<pre>'; print_r($explodeCustomDate); echo '</pre>';
+                     $dateOne = date('Y-m-d',strtotime($explodeCustomDate[0]));
+                     $dateTwo = date('Y-m-d',strtotime($explodeCustomDate[1]));
+                     
+            
+                      $lastDays = $dateOne;
+                      $currentDate = "'".$dateTwo."'";
+
+                 }
                  else{
                      $lastDays = '';
                  }
@@ -76,9 +90,12 @@ class IndexController extends Controller
                   $totalOfTime = 0;  
                  
                   if($lastDays != ''){
+                      //echo $lastDays.'--'.$currentDate;
+                      //echo '<br><br><br><br>';
                     $getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)
                                                  ->whereBetween('updated_at',[$lastDays,$currentDate])
                                                  ->get();
+                 //   echo '<pre>'; print_r($getUserTimelog); echo '</pre>';                             
                   } 
                   else{
                     $getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)->get();
@@ -91,14 +108,16 @@ class IndexController extends Controller
                      $hours   = floor(($seconds - ($days * 86400)) / 3600);
                      $totalOfTime += $hours;
                   }
-                  $usersTimeLogArray[User::find($teamMember->user_id)->name] = $totalOfTime;
+                  $usersTimeLogArray[User::find($teamMember->user_id)->id] = $totalOfTime;
                }
                
             }
           
-            if(Input::get('time-log-group') || Input::get('time-log-group') != '')
+            if((Input::get('time-log-group') == 'group-by-project') || (Input::get('time-log-by-week') != ''))
             {
-            
+                $timeLogs =  Input::get('time-log-group');
+                
+                //$getTaskTimeLog = 
             }
 
             return view('admin.index',['teamMemberId'=>$teamMemberId,'time_log'=>$timeLogs,'usersTimeLogArray'=>$usersTimeLogArray,'teamDataByWeek'=>$teamDataByWeek]);
@@ -110,6 +129,26 @@ class IndexController extends Controller
             $result['line'] = $e->getLine();
          }
          echo '<pre>'; print_r($result); echo '</pre>';
+    }
+
+    public function getTeamMemberProjectDetail(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try
+        {
+            $user = Auth::user();
+            $post = $request->post()['teamMemberId'];   
+            $getUserTimelog = TaskTimelog::where('user_id','=',$post)->get();
+          
+            return view('admin.team.team-member-project-detail',['memberId'=>$post,'getUserTimelog'=>$getUserTimelog]);
+        }
+        catch(\Exception $e)
+        {
+            $result['success'] = false;
+            $result['exception_message'] = $e->getMessage();
+            $result['line'] = $e->getLine(); 
+        }
     }
 
     public function getCompany(Request $request)

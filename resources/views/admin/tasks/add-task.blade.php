@@ -106,7 +106,7 @@ let fileaddedDropzone = 0;
 
 
  myDropzone = new Dropzone("#dZUpload", {
-        autoProcessQueue: false,
+        autoProcessQueue: true,
         url: "/admin/add-task-image",
         headers: {
                     'x-csrf-token': "{{ csrf_token() }}",
@@ -114,6 +114,7 @@ let fileaddedDropzone = 0;
         addRemoveLinks: true,
         autoProcessQueue: false,
         maxFiles: 10,
+        parallelUploads: 10
         // success: function (file, response) {
         //     var imgName = response;
         //     file.previewElement.classList.add("dz-success");
@@ -199,6 +200,7 @@ let fileaddedDropzone = 0;
           myDropzone.on("complete", function (file) {
              if (myDropzone.getUploadingFiles().length === 0 && myDropzone.getQueuedFiles().length === 0) {
                   //var idvar = '<?php $imgID; ?>';
+                 // return alert('in complete');
             window.location.replace("/admin/manage-task/"+projectId);
           //alert("in compplere");
     }

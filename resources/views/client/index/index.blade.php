@@ -1,3 +1,10 @@
+<style>
+  .zoom:hover {
+  -ms-transform: scale(2); /* IE 9 */
+  -webkit-transform: scale(2); /* Safari 3-8 */
+  transform: scale(2); 
+}
+</style>
 @extends('layouts.admin.frontend')
 @section('heading')
 Task List
@@ -427,29 +434,72 @@ Task List
          <section class="mt-4">
             <div class="container">
                <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                      <div class="bg-white p-4 rounded task-box shadow-sm">
                         <h4 class="mb-3 mt-n2">Marketing waiting for approval:</h4>
                         <div class="row">
                          <?php foreach($marketingApprovalTasks as $marketingApprovalTask){ ?>
-                           <div class="col-md-6">
+                           <div class="col-md-6" >
                               <div class="approval-box">
                                  <img src="{{url('files/'.$marketingApprovalTask->getTaskAttachments[0]->file_name)}}" class="d-block rounded" />
                                  <div class="mb-0 p-2 border rounded mt-2">{{$marketingApprovalTask->task_name}}</div>
                               </div>
                            </div>
                          <?php } ?>
+
+                         <table class="table table-striped" id="task-table">
+                          <thead>
+                            <tr>
+                            <th hidden>position</th>
+                            <th>#</th>
+                              <th>Task Name</th>
+                              <th>Attachment</th>
+                              <th>Due Date</th>
+                              <th>Task Progress</th>
+                              <!--<th>Priority</th> -->
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                             @foreach ($clientApprovalTasks as $key => $projectask)
+                             <?php $taskAttachment = $projectask->getTaskAttachments; ?>
+                            <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
+                          <td hidden>{{$projectask->position}}</td>
+                                <td>{{$key+1}}</td>
+                              <td>{{$projectask->task_name}}</td>
+                              <td><?php foreach($taskAttachment as $attachment){
+                                  $fileExtn = pathinfo($attachment->file_name, PATHINFO_EXTENSION);
+                                  $imageArray = array('png','jpg','jpeg');
+                                  $isImage = 0;
+                                  if(in_array($fileExtn, $imageArray)){$isImage = 1;} 
+                                ?>
+                                <?php if($isImage == 1){ ?>
+                                <img src="{{url('files')}}/{{$attachment->file_name}}" alt="{{$attachment->file_name}}" class="image zoom" style="width: 10%;object-fit: cover;">  
+                                  <?php } else{ ?>
+                                    <a href="{{url('files')}}/{{$attachment->file_name}}"><i class="fa fa-file" aria-hidden="true"></i></a>
+                                  <?php }?>
+                              <?php }?>
+                              </td>
+                              <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
+                               <td>{{$projectask->getTaskStatus->name}}</td>
+                              <!-- <td>{{$projectask->task_progress}}</td> -->
+                                <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
+                            </tr>
+                           @endforeach
+                          </tbody>
+                        </table> 
+
                         </div>
                      </div>
                   </div>
-                  <div class="col-md-6">
+                  {{-- <div class="col-md-6">
                      <div class="bg-white p-4 rounded task-box shadow-sm">
                         <h4 class="mb-3 mt-n2">Live look into your current Dev project:</h4>
                         <div class="iframe-content">
                            <iframe src="http://onelook.deverybody.com"></iframe>
                         </div>
                      </div>
-                  </div>
+                  </div> --}}
                </div>
             </div>
          </section>
@@ -478,6 +528,9 @@ Task List
 
  $('#task-table').on('click','.edit-task',function(event){
   //return alert("hello world edit task");
+  getEditTaskModel($(this).attr('data-taskid'))
+ });
+ $('.edit-task').click(function(){
   getEditTaskModel($(this).attr('data-taskid'))
  });
 

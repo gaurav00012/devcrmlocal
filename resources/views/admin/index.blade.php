@@ -13,6 +13,11 @@ Dashboard
 @endsection
 
 @section('content')
+
+<div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
+ 
+</div>
+
 <div class="row">
             <!-- <div class="col-md-4 stretch-card grid-margin">
               <div class="card bg-gradient-danger card-img-holder text-white">
@@ -58,21 +63,23 @@ Dashboard
             </div>
             <div class="col-md-12">
             <div class="col-md-6" style="display:flex">
-            <form method="get">
+            <form id="get-team-graph-data" method="get" style="display:flex;flex-direction: inherit;">
               <select name="time-log-group" id="time-log-group" onchange="this.form.submit()">
                 <option value="">Select Timelog</option>
                 <option value="group-by-user" @if($time_log == 'group-by-user') selected @endif >Group By User</option>
                 <option value="group-by-project" @if($time_log == 'group-by-project') selected @endif>Group By Projects</option>
               </select>
-              <select name="time-log-by-week" id="time-log-by-week" onchange="this.form.submit()">
+              <select name="time-log-by-week" id="time-log-by-week">
                 <option value="">Select Days</option>
                 <option value="get-last-seven-days" @if($teamDataByWeek == 'get-last-seven-days') selected @endif>Last Seven Days</option>
                 <option value="get-last-30-days" @if($teamDataByWeek == 'get-last-30-days') selected @endif>Last 30 Days</option>
+                <option value="custom-dates" @if($teamDataByWeek == 'custom-dates') selected @endif>By Date</option>
               </select>
+              <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date" <?php if($teamDataByWeek != 'custom-dates'){ ?> style="display:none"<?php } ?>>
             </form>
             </div> 
               <h3>Team Timelog</h3>
-        @if(!empty($usersTimeLogArray))  
+        @if(!empty($usersTimeLogArray) && $time_log == 'group-by-user')  
         <table class="table table-striped">
   <thead>
     <tr>
@@ -85,10 +92,11 @@ Dashboard
   @php  
   $count = 1;
   @endphp
+  
   @foreach($usersTimeLogArray as $timeLogArrayKey => $timeLogArray)
     <tr>
       <td>{{$count}}</td>
-      <td>{{$timeLogArrayKey}}</td>
+      <td><a href="javascript:void(0)" data-user-id={{$timeLogArrayKey}} class="team-member-id">{{User::find($timeLogArrayKey)->name}}</td>
       <td>{{$timeLogArray}}</td>
     </tr>
     @php  
@@ -98,8 +106,10 @@ Dashboard
   
   </tbody>
   </table>
-        @else    
-              <table class="table table-striped">
+  @elseif($time_log == 'group-by-project')
+   
+  @else    
+  <table class="table table-striped">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -148,6 +158,49 @@ Dashboard
 @endsection
 @section('customjs')
 <script>
+  var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+  $('#datepicker').daterangepicker({
+       // singleDatePicker: true,
+       
+        format: 'mm-dd-yyyy',
+  });
+  
+  $('#time-log-by-week').change(function(event){
+    let timeLogValue = $(this).val();
+    $('#datepicker').hide();
+    if(timeLogValue == 'custom-dates')
+    {
+      $('#datepicker').show();
+    }
+    else{
+      $('#get-team-graph-data').submit();
+    }  
+  });
+
+  $('.applyBtn').click(function(){
+    $('#get-team-graph-data').submit();
+  });
+
+
+$('.team-member-id').click(function(){
+  let teamMemberId = $(this).attr('data-user-id');
+  $.ajax({
+  url : '/admin/get-team-member-project-detail',
+  method : 'POST',
+  dataType : 'text',
+  data : {
+    _token: CSRF_TOKEN,
+    teamMemberId : teamMemberId 
+    },
+  success:function(resp)
+  {
+    $("#edit-task-modal").html(resp);
+    $('#edit-task-modal').modal('show');
+  },
+ });
+  $("#get-project-details").html('sdksjdsd');
+  $('#get-project-details').modal('show');
+});  
 @if(!empty($usersTimeLogArray))  
 
 let teamMemberName = [];

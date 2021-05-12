@@ -40,6 +40,7 @@ Route::get('view-invoice/{invoiceId}','Client\IndexController@viewInvoice');
 Route::group(['middleware' => 'auth'], function () {
 	
 	Route::get('/admin/home','Admin\IndexController@index');
+	Route::post('admin/get-team-member-project-detail','Admin\IndexController@getTeamMemberProjectDetail');
 	Route::post('admin/get-project','Admin\IndexController@getCompany');
 	Route::get('/admin/manage-user','Admin\UserController@index');
 	Route::get('/admin/create-user','Admin\UserController@create');
@@ -95,6 +96,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/manage-ticket','Admin\TicketController@index');
 	Route::get('admin/view-ticket/{id}','Admin\TicketController@show');
 	Route::post('admin/view-ticket/{id}','Admin\TicketController@saveTicketStatus');
+	//Route::post('admin/get-team-member-project-detail','Admin\TicketController@saveTicketStatus');
+
 	//Route::get('client/home','Client\IndexController@index')->middleware('isClient');
 	Route::get('/{slug}','Client\IndexController@index')->middleware('isClient');
 	Route::get('view-ticket/{ticketId}','Client\IndexController@viewTicket')->middleware('isClient');
@@ -109,10 +112,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('client/update-notification','Client\IndexController@updateNotification');
 	Route::get('view-invoice/{invoiceId}','Client\IndexController@viewInvoice');
 
+	Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile');
+
 	Route::group(['middleware' => 'isDeveloper'], function () {
 	Route::get('/developer/home','Developer\IndexController@index');
 	Route::post('/developer/edit-task','Developer\IndexController@editTask');
-	Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile');
+	// Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile');
 	Route::post('developer/add-comment/{taskId}','Developer\IndexController@addComment');
 	Route::post('developer/edit-comment','Developer\IndexController@editComment');
 	Route::post('developer/update-comment/{commentid}','Developer\IndexController@updateComment');
