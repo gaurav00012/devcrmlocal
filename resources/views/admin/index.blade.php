@@ -141,7 +141,7 @@ Dashboard
 
          $interval = date_diff($date_a,$date_b);
          ?>
-          <td>{{$interval->format('%h:%i:%s')}}</td>
+          <td>{{$interval->format('%H:%I:%S')}}</td>
         </tr>
       <?php } ?>  
       <?php } ?>
