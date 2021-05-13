@@ -156,6 +156,13 @@ Dashboard
           </div>
 
 @endsection
+<?php 
+$nameUserTimeLogArray = array();
+foreach($usersTimeLogArray as $userKey => $userdata)
+{
+  $nameUserTimeLogArray[User::find($userKey)->name] = $userdata;
+}
+?> 
 @section('customjs')
 <script>
   var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -201,13 +208,14 @@ $('.team-member-id').click(function(){
   $("#get-project-details").html('sdksjdsd');
   $('#get-project-details').modal('show');
 });  
-@if(!empty($usersTimeLogArray))  
+@if(!empty($usersTimeLogArray)) 
+
 
 let teamMemberName = [];
 let hourSpendbyMember = [];
 //let actualDuplicateCount = [];
 
-var jsArray = JSON.parse('<?php echo json_encode($usersTimeLogArray); ?>');
+var jsArray = JSON.parse('<?php echo json_encode($nameUserTimeLogArray); ?>');
 for(var i in jsArray){
   
   teamMemberName.push(i);
