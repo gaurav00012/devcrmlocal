@@ -209,6 +209,7 @@ let hourSpendbyMember = [];
 
 var jsArray = JSON.parse('<?php echo json_encode($usersTimeLogArray); ?>');
 for(var i in jsArray){
+  
   teamMemberName.push(i);
   hourSpendbyMember.push(jsArray[i]);
   // criticalityColors.push(getRandomColor());

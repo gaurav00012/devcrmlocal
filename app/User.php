@@ -64,7 +64,7 @@ class User extends Authenticatable
             $getUserDetail = Self::find($id);
           //  echo '<pre>'; print_r($getUserDetail); echo '</pre>'; die();
             $getUserDetail->name = $post['company_name'];
-            $getUserDetail->name = $post['company_email'];
+            $getUserDetail->email = $post['company_email'];
 
             if($getUserDetail->save())
             {
