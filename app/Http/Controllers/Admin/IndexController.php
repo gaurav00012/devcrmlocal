@@ -68,12 +68,13 @@ class IndexController extends Controller
                  elseif($getByDays == 'custom-dates')
                  {
                      $getCustomDate = Input::get('duedate');
+                     //echo '<pre>'; print_r($getCustomDate); echo '</pre>'; 
                      $explodeCustomDate = explode('-',$getCustomDate);
                     //  echo '<br><br><br><br><br><br><br>';
-               //     echo '<pre>'; print_r($explodeCustomDate); echo '</pre>';
+                    // echo '<pre>'; print_r($explodeCustomDate); echo '</pre>';
                      $dateOne = date('Y-m-d',strtotime($explodeCustomDate[0]));
                      $dateTwo = date('Y-m-d',strtotime($explodeCustomDate[1]));
-                     
+                    
             
                       $lastDays = $dateOne;
                       $currentDate = "'".$dateTwo."'";

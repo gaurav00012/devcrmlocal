@@ -75,7 +75,10 @@ Dashboard
                 <option value="get-last-30-days" @if($teamDataByWeek == 'get-last-30-days') selected @endif>Last 30 Days</option>
                 <option value="custom-dates" @if($teamDataByWeek == 'custom-dates') selected @endif>By Date</option>
               </select>
-              <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date" <?php if($teamDataByWeek != 'custom-dates'){ ?> style="display:none"<?php } ?>>
+              <div id="datepicketdiv" <?php if($teamDataByWeek != 'custom-dates'){ ?> style="display:none"<?php }else {?>style="display:flex" <?php } ?>>
+              <input type="text" class="form-control" name="duedate" id="datepicker" placeholder="select Due Date" style="width:15em">
+              <button type="submit" class="btn btn-info">Apply</button>
+              </div>
             </form>
             </div> 
               <h3>Team Timelog</h3>
@@ -174,19 +177,20 @@ foreach($usersTimeLogArray as $userKey => $userdata)
   
   $('#time-log-by-week').change(function(event){
     let timeLogValue = $(this).val();
-    $('#datepicker').hide();
+    $('#datepicketdiv').hide();
     if(timeLogValue == 'custom-dates')
     {
-      $('#datepicker').show();
+      //$('#datepicker').show();
+      $("#datepicketdiv").css("display", "flex");
     }
     else{
       $('#get-team-graph-data').submit();
     }  
   });
 
-  $('.applyBtn').click(function(){
-    $('#get-team-graph-data').submit();
-  });
+  // $('.applyBtn').click(function(){
+  //   $('#get-team-graph-data').submit();
+  // });
 
 
 $('.team-member-id').click(function(){
