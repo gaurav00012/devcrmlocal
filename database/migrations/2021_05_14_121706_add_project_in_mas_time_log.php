@@ -13,7 +13,7 @@ class AddProjectInMasTimeLog extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `devcrm`.`mas_task_time_log`   
+        DB::statement("ALTER TABLE `mas_task_time_log`   
                             ADD COLUMN `project_id` INT(25) NULL AFTER `company_id`,
                         ADD FOREIGN KEY (`project_id`) REFERENCES `mas_projects`(`id`);
                         ");
