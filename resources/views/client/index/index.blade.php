@@ -461,7 +461,7 @@ Task List
                             </tr>
                           </thead>
                           <tbody>
-                             @foreach ($clientApprovalTasks as $key => $projectask)
+                             @foreach ($marketingApprovalTasks as $key => $projectask)
                              <?php $taskAttachment = $projectask->getTaskAttachments; ?>
                             <tr data-index="{{$projectask->task_id}}" data-position="{{$projectask->position}}">
                           <td hidden>{{$projectask->position}}</td>
