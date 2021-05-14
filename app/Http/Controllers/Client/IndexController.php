@@ -135,8 +135,9 @@ class IndexController extends Controller
 
         try
         {
+            //echo '<pre>'; print_r($request->post()); echo '</pre>'; die();
             $user = Auth::user();
-            $taskId = $request->post() ['taskid'];
+            $taskId = $request->post()['taskid'];
             $taskDetail = MasterTask::where('task_id', '=',$taskId)
                                     ->where('company_id','=',$user->clientUser->id)
                                     ->get();
@@ -211,8 +212,10 @@ class IndexController extends Controller
         {
             
             $user = Auth::user();
-            $taskDetail = MasterTask::where('task_id', '=', $id)->where('company_id', '=', $user->companyuser->id)->get();
-
+            //echo $id;
+           // echo $user->companyuser->id; die();
+           // $taskDetail = MasterTask::where('task_id', '=', $id)->where('company_id', '=', $user->companyuser->id)->get();
+            $taskDetail = MasterTask::where('task_id', '=', $id)->get();
            
             if ($request->post()['task_status'] != '' || $request->post() ['task_status'] != null)
             {
@@ -244,6 +247,7 @@ class IndexController extends Controller
         {
             $result['success'] = false;
             $result['exception_message'] = $e->getMessage();
+            $result['line'] = $e->getLine();
             // return $result;
             
         }

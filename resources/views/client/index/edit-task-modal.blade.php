@@ -109,19 +109,22 @@
     CKEDITOR.replace('task_comments',{
         //filebrowserUploadUrl : 'abc.php',
     });
-    $('.resource-list').select2({
-      placeholder: 'Select Assignee'
-    });
+   //  $('.resource-list').select2({
+   //    placeholder: 'Select Assignee'
+   //  });
    
     $('#save-comment').click(function(){
+      // alert("hello world");
       var editorData= CKEDITOR.instances['task_comments'].getData();
       let taskId = $(this).attr('data-taskid');
+      //return alert(taskId);
       let taskStatus = $('#task_status').val();
     //  let commentAttachment = $('#task_attachment');
     let commentAttachment = document.getElementById('task_attachment');
     let commentFiles =  commentAttachment.files;
     let formData = new FormData();
-   
+      
+     formData.append('taskid',taskId);
      formData.append('task_comment',editorData);
      formData.append('task_status',taskStatus);
       if(commentAttachment.value.length != 0)

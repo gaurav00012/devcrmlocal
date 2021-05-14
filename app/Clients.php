@@ -40,4 +40,9 @@ class Clients extends Model
             return $result;
         }
     }
+
+    public function getClientProject()
+    {
+        return $this->hasMany('App\MasterProject','client_id','id');
+    }
 }

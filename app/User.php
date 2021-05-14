@@ -59,10 +59,8 @@ class User extends Authenticatable
 
     public static function updateUser($id,$post)
     {
-       //echo '<pre>'; print_r($post); echo '</pre>'; die();
         try{
             $getUserDetail = Self::find($id);
-          //  echo '<pre>'; print_r($getUserDetail); echo '</pre>'; die();
             $getUserDetail->name = $post['company_name'];
             $getUserDetail->email = $post['company_email'];
 
@@ -78,5 +76,12 @@ class User extends Authenticatable
             return $result;
         }
     }
+
+    public function getCompanyClient()
+    {
+        return $this->hasMany('App\Clients','created_by','id');
+    }
+
+   
    
 }

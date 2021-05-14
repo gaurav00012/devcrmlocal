@@ -371,20 +371,22 @@ class IndexController extends Controller
         $result['exception_message'] = '';
 
         try{
+
           $user = Auth::user();
           $post = $request->post();
           $taskId = $post['taskid'];
           $taskStatus = $post['task_status'];
 
           $timeLog = new TaskTimelog;
-
+          $getTaskDetail = MasterTask::find($post['taskid']);
+        
           $taskAssignee = TaskAssignee::where('task_id','=',$taskId)
                                       ->where('assignee','=',$user->id)
                                       ->get();
 
         //  $getPauseTask = $timeLog->getPauseTask();
         //  dd($getPauseTask);
-          $saveStartTime = $timeLog->saveStartTime($taskId,$taskStatus); 
+          $saveStartTime = $timeLog->saveStartTime($taskId,$taskStatus,$getTaskDetail); 
        //   $getTaskTimeLog = $timeLog->getTaskTimeLog($id);
           if($saveStartTime)
           {

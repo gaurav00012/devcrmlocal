@@ -23,7 +23,7 @@ class IndexController extends Controller
      */
     use Notification;
 
-    public function index($timeLogs = 'group-by-user')
+    public function index($timeLogs = '')
     {
         DB::enableQueryLog();
         $result['success'] = true;
@@ -36,16 +36,17 @@ class IndexController extends Controller
             $teamMemberId = array();
             foreach($getCompanyTeam as $member)$teamMemberId[] = $member->user_id;
 
-            $allCompanyData = array('' => 'Select Company');
-            $allCompany = MasterCompany::All();
-            foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
+            // $allCompanyData = array('' => 'Select Company');
+            // $allCompany = MasterCompany::All();
+            // foreach($allCompany as $companyKey => $companyData) $allCompanyData[$companyData->id] = $companyData->company_name;
             
             $usersTimeLogArray = array();
             $userTimeLogByWeek = array();
             $teamDataByWeek = '';
         
-            if((Input::get('time-log-group') == 'group-by-user') || (Input::get('time-log-by-week') != ''))
+            if((Input::get('time-log-group') == 'group-by-user'))
             {
+                //echo 'i_am_in_user'; echo '<br><br><br><br><br><br>';
                $teamDataByWeek = Input::get('time-log-by-week');
                $currentDate =  \Carbon\Carbon::now()->toDateTimeString();
               
@@ -101,6 +102,7 @@ class IndexController extends Controller
                   else{
                     $getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)->get();
                   } 
+                 
             
                   foreach($getUserTimelog as $timeLogKey => $userTimeLog)
                   {
@@ -114,13 +116,91 @@ class IndexController extends Controller
                
             }
           
-            if((Input::get('time-log-group') == 'group-by-project') || (Input::get('time-log-by-week') != ''))
+            if((Input::get('time-log-group') == 'group-by-project'))
             {
+                echo 'hellow_orld';
                 $timeLogs =  Input::get('time-log-group');
-                
-                //$getTaskTimeLog = 
-            }
+                $lastDays = '';
+                $getClient = $user->getCompanyClient;
+                $currentDate =  \Carbon\Carbon::now()->toDateTimeString();
 
+                if(Input::get('time-log-by-week') != '')
+               {
+                 $getByDays =  Input::get('time-log-by-week');
+                
+                 if($getByDays == 'get-last-30-days')
+                 {
+                   $lastDays = \Carbon\Carbon::today()->subDays(31)->toDateTimeString();  
+                 }
+                 elseif($getByDays == 'get-last-seven-days')
+                 {
+                     $lastDays = \Carbon\Carbon::today()->subDays(8)->toDateTimeString();  
+                 }
+                 elseif($getByDays == 'custom-dates')
+                 {
+                     $getCustomDate = Input::get('duedate');
+                     //echo '<pre>'; print_r($getCustomDate); echo '</pre>'; 
+                     $explodeCustomDate = explode('-',$getCustomDate);
+                    //  echo '<br><br><br><br><br><br><br>';
+                    // echo '<pre>'; print_r($explodeCustomDate); echo '</pre>';
+                     $dateOne = date('Y-m-d',strtotime($explodeCustomDate[0]));
+                     $dateTwo = date('Y-m-d',strtotime($explodeCustomDate[1]));
+                    
+            
+                      $lastDays = $dateOne;
+                      $currentDate = $dateTwo;
+
+                 }
+                 else{
+                     $lastDays = '';
+                 }
+                 //$lastDays = "'".$lastDays."'";
+               }
+
+                $clientProjectArray = array();
+                $projectArray = array();
+                $projectTimeCalculate = array();
+                foreach($getClient as $key => $clientDetail)
+                {
+                    $getClientProject = $clientDetail->getClientProject;
+                    foreach($getClientProject as $key => $projectDetail)$projectArray[] = $projectDetail->id;
+                    
+                }
+                $projectTotalOfTime = 0;
+                foreach($projectArray as $projectId)
+                {
+                    if($lastDays != ''){
+                        echo '<br><br><br><br><br><br><br>';
+                        echo $lastDays.'--'.$currentDate;
+                    //   $getProjectTimelog = TaskTimelog::where('project_id','=',$projectId)
+                    //                                ->whereBetween('updated_at',[$lastDays,$currentDate])
+                    //                                ->get();
+                      $getProjectTimelog = DB::select("SELECT * FROM `mas_task_time_log` WHERE `project_id` = $projectId  AND `updated_at` BETWEEN '".$lastDays."' AND '".$currentDate."'");                             
+                    //  echo '<pre>'; print_r($getProjectTimelog); echo '</pre>';                             
+                    } 
+                    else{
+                      //$getUserTimelog = TaskTimelog::where('user_id','=',$teamMember->user_id)->get();
+                       $getProjectTimelog = DB::select("SELECT * FROM `mas_task_time_log` WHERE `project_id` = $projectId");                             
+                     // $getProjectTimelog = TaskTimelog::where('project_id','=',$projectId)->get(); 
+                    } 
+                  //  echo '<pre>'; print_r(DB::getQueryLog()); echo '</pre>';
+                   // echo '<pre>'; print_r($getProjectTimelog); echo '</pre>';
+                    
+                    foreach($getProjectTimelog as $timeLogKey => $timeLog)
+                    {
+                        //echo '<pre>'; print_r($timeLog->project_id.'<---->'.$timeLog->end_time);echo '</pre>';
+                        $seconds = strtotime($timeLog->end_time) - strtotime($timeLog->start_time);
+                
+                        $days    = floor($seconds / 86400);
+                        $hours   = floor(($seconds - ($days * 86400)) / 3600);
+                        $projectTotalOfTime += $hours;
+                    }  
+                    $projectTimeCalculate[$projectId] = $projectTotalOfTime;
+
+                }
+                $usersTimeLogArray = $projectTimeCalculate;
+            }
+           
             return view('admin.index',['teamMemberId'=>$teamMemberId,'time_log'=>$timeLogs,'usersTimeLogArray'=>$usersTimeLogArray,'teamDataByWeek'=>$teamDataByWeek]);
          }
          catch(\Exception $e)

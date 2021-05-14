@@ -110,7 +110,32 @@ Dashboard
   </tbody>
   </table>
   @elseif($time_log == 'group-by-project')
-   
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Project</th>
+        <th scope="col">Total Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+    @php  
+    $count = 1;
+    @endphp
+    
+    @foreach($usersTimeLogArray as $timeLogArrayKey => $timeLogArray)
+      <tr>
+        <td>{{$count}}</td>
+        <td>{{MasterProject::find($timeLogArrayKey)->project_name}}</td>
+        <td>{{$timeLogArray}}</td>
+      </tr>
+      @php  
+    $count++;
+    @endphp
+    @endforeach
+    
+    </tbody>
+    </table>
   @else    
   <table class="table table-striped">
   <thead>
@@ -160,10 +185,12 @@ Dashboard
 
 @endsection
 <?php 
+if(!empty($usersTimeLogArray) && $time_log == 'group-by-user'){  
 $nameUserTimeLogArray = array();
 foreach($usersTimeLogArray as $userKey => $userdata)
 {
   $nameUserTimeLogArray[User::find($userKey)->name] = $userdata;
+}
 }
 ?> 
 @section('customjs')
@@ -212,9 +239,9 @@ $('.team-member-id').click(function(){
   $("#get-project-details").html('sdksjdsd');
   $('#get-project-details').modal('show');
 });  
-@if(!empty($usersTimeLogArray)) 
+@if(!empty($usersTimeLogArray) && $time_log == 'group-by-user')  
 
-
+//alert('hellow owlr');
 let teamMemberName = [];
 let hourSpendbyMember = [];
 //let actualDuplicateCount = [];
@@ -283,7 +310,31 @@ Highcharts.chart('container', {
         data: hourSpendbyMember
     }]
 });
-@else
+@elseif(!empty($usersTimeLogArray) && $time_log == 'group-by-project')
+<?php 
+
+if(!empty($usersTimeLogArray) && $time_log == 'group-by-project'){  
+$nameUserTimeLogArray = array();
+foreach($usersTimeLogArray as $userKey => $userdata)
+{
+  $nameUserTimeLogArray[MasterProject::find($userKey)->project_name] = $userdata;
+}
+}
+?> 
+
+let teamMemberName = [];
+let hourSpendbyMember = [];
+//let actualDuplicateCount = [];
+
+var jsArray = JSON.parse('<?php echo json_encode($nameUserTimeLogArray); ?>');
+for(var i in jsArray){
+  
+  teamMemberName.push(i);
+  hourSpendbyMember.push(jsArray[i]);
+  // criticalityColors.push(getRandomColor());
+}
+console.log(jsArray);
+
 Highcharts.chart('container', {
     chart: {
         type: 'column'
@@ -295,7 +346,7 @@ Highcharts.chart('container', {
     //     text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
     // },
     xAxis: {
-        categories: ['Mobile Application Developemt in l', 'Mobile Application'],
+        categories: teamMemberName,
         title: {
             text: null
         }
@@ -337,9 +388,83 @@ Highcharts.chart('container', {
     },
     series: [{
         //name: 'Year 1800',
-        data: [3, 4]
+        data: hourSpendbyMember
     },]
 });
+@else
+return;
+
+let teamMemberName = [];
+let hourSpendbyMember = [];
+//let actualDuplicateCount = [];
+
+var jsArray = JSON.parse('<?php echo json_encode($teamMemberId); ?>');
+console.log(jsArray);
+for(var i in jsArray){
+  
+  teamMemberName.push(i);
+  hourSpendbyMember.push(jsArray[i]);
+  // criticalityColors.push(getRandomColor());
+}
+console.log(jsArray);
+
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Time Logs'
+    },
+    // subtitle: {
+    //     text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+    // },
+    xAxis: {
+        categories: teamMemberName,
+        title: {
+            text: null
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+          //  text: 'Population (millions)',
+          //  align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        //valueSuffix: ' millions'
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: false
+            }
+        }
+    },
+    // legend: {
+    //     layout: 'vertical',
+    //     align: 'right',
+    //     verticalAlign: 'top',
+    //     x: -40,
+    //     y: 80,
+    //     floating: true,
+    //     borderWidth: 1,
+    //     backgroundColor:
+    //         Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+    //     shadow: true
+    // },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        //name: 'Year 1800',
+        data: hourSpendbyMember
+    },]
+});
+
 @endif
 </script>
 @endsection

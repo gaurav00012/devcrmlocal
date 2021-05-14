@@ -41,4 +41,9 @@ class MasterTask extends Model
         return DB::select('SELECT mt.*,mtas.* FROM `master_tasks` mt INNER JOIN mas_task_assignee mtas ON mt.task_id = mtas.`task_id` WHERE mtas.assignee = '.$user->id.' AND mt.`task_status` = 3 ORDER BY mt.position ASC');
 
     }
+
+    public function getTaskClient()
+    {
+        return $this->belongsTo('App\Clients','company_id','id');
+    }
 }

@@ -11,7 +11,7 @@ class TaskTimelog extends Model
 {
      protected $table = 'mas_task_time_log';
       protected $fillable = [
-        'task_id', 'user_id','start_time','end_time','total_time','created_at','created_by','updated_at','updated_by',
+        'task_id', 'user_id','start_time','end_time','total_time','company_id','project_id','created_at','created_by','updated_at','updated_by',
     ];
 
 
@@ -45,7 +45,7 @@ class TaskTimelog extends Model
 
      }
 
-     public function saveStartTime($taskId,$taskStatus)
+     public function saveStartTime($taskId,$taskStatus,$getTaskDetail)
      {
           $user = Auth::user();
           if($taskStatus == 'Start')
@@ -53,10 +53,16 @@ class TaskTimelog extends Model
                if($this->checkTask() === false)
                     throw new \ErrorException('Please pause current task before start new task');
 
+               
+               $companyId = $getTaskDetail->getTaskClient->company_id;
+               $taskProjectId = $getTaskDetail->project_id;     
+                
           	$user = Auth::user();
           	$startTime = new Self;
           	$startTime->task_id = $taskId;
           	$startTime->user_id = $user->id;
+               $startTime->company_id = $companyId;
+               $startTime->project_id = $taskProjectId;
           	$startTime->start_time = Carbon::now();
           	$startTime->created_at = Carbon::now();
           	$startTime->created_by = $user->id;
