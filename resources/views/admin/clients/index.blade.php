@@ -27,7 +27,7 @@ Manage Clients
         @foreach (Auth::user()->companyuser->getClients as $key => $client)
             <tr>
             <th scope="row">{{$key+1}}</th>
-            <td><a href="{{url('#')}}">{{ User::find($client->user_id)->name }}</a></td>
+            <td><a href="{{url(User::find($client->user_id)->slug)}}">{{ User::find($client->user_id)->name }}</a></td>
             <td>{{ User::find($client->user_id)->email }}</td>
              <td>{{ substr($client->client_description,0,40).'...' }}</td>
             

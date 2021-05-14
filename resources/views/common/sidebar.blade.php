@@ -53,6 +53,12 @@
             @endif
             @if(Auth::user()->user_role === 1)
             <div class="py-3"></div>
+            <li class="nav-item">
+              <a class="nav-link"  href="{{ url('admin/home')}}" aria-expanded="false" aria-controls="auth">
+                <span class="menu-title">Dashboard</span>
+                <i class="icon-mustache menu-icon"></i>
+              </a>
+            </li>
              <li class="nav-item">
               <a class="nav-link"  style="border-top:0px;"  href="{{ url('admin/new-registerations') }}" aria-expanded="false" aria-controls="auth">
                 <span class="menu-title">Manage New Registrations</span>
