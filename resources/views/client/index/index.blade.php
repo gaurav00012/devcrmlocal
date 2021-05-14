@@ -439,12 +439,12 @@ Task List
                         <h4 class="mb-3 mt-n2">Marketing waiting for approval:</h4>
                         <div class="row">
                          <?php foreach($marketingApprovalTasks as $marketingApprovalTask){ ?>
-                           <div class="col-md-6" >
+                           <!--<div class="col-md-6" >
                               <div class="approval-box">
                                  <img src="{{url('files/'.$marketingApprovalTask->getTaskAttachments[0]->file_name)}}" class="d-block rounded" />
                                  <div class="mb-0 p-2 border rounded mt-2">{{$marketingApprovalTask->task_name}}</div>
                               </div>
-                           </div>
+                           </div>-->
                          <?php } ?>
 
                          <table class="table table-striped" id="task-table">
