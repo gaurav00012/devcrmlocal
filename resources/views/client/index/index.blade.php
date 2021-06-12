@@ -355,7 +355,9 @@ Task List
 <section class="mt-4">
             <div class="container">
                <div class="projects-overview bg-white p-4 rounded task-box shadow-sm">
-                  <h4 class="mb-3 mt-n2">Tickets:</h4>
+                  <h4 class="mb-3 mt-n2">Tickets:
+                  <button class="btn btn-primary pull-right" onclick="$('#exampleModal').modal('show')">Create Ticket</button>
+                </h4>
                   <div class="">
                      <div class="modal" tabindex="-1" id="edit-task-modal" role="dialog">
                      </div>
