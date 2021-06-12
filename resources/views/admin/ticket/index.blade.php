@@ -26,13 +26,16 @@ Tickets
                 <td>{{$key+1}}</td>
                 <td>{{User::find(Clients::find($ticket->client_id)->user_id)->name}}</td>
                 <td>{{$ticket->subject}}</td>
-                <td>{{date('d-m-Y',strtotime($ticket->created_at))}}</td>
+                <td>{{date('d-M-Y',strtotime($ticket->created_at))}}</td>
                 <td><a href="{{url('admin/view-ticket')}}/{{$ticket->id}}" class="btn btn-info green-btn delete-btn">View</a></td>
             </tr>
         @endforeach
            
         </tbody>
 </table>
+<div class="text-center" style="display:flex;justify-content: center;">
+    {{ $getCompanyTicket->links() }}
+    </div>
 @endsection
 @section('vuejs')
 <script  src="{{URL::asset('js/admin/user.js')}}"></script>

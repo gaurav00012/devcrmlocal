@@ -30,21 +30,23 @@ Manage Projects
            
         </tbody>
 </table>
+<div class="text-center" style="display:flex;justify-content: center;">
+  {{ $companyprojects->links() }}
+  </div>
 @endsection
 @section('vuejs')
 <script  src="{{URL::asset('js/admin/user.js')}}"></script>
 <script>
-var view_table = $("#project-list").DataTable({
-    pagingType: "full_numbers",
-    //columns: columns_operation,
-  });
+// var view_table = $("#project-list").DataTable({
+//     pagingType: "full_numbers",
+//   });
 
-  $(".dataTables_length").addClass("bs-select");
+//   $(".dataTables_length").addClass("bs-select");
 
-  //To remove unwanted class from pagination drop-down
-  if ($("#project-list_length > label > select")[0])
-    $("#project-list_length > label > select").removeClass(
-      "custom-select-sm form-control form-control-sm"
-    );
+ 
+//   if ($("#project-list_length > label > select")[0])
+//     $("#project-list_length > label > select").removeClass(
+//       "custom-select-sm form-control form-control-sm"
+//     );
 </script>
 @endsection

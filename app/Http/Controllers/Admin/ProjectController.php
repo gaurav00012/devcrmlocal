@@ -125,7 +125,7 @@ class ProjectController extends Controller
 
     public function getCompanyProject($companyId)
     {
-       $companyprojects = MasterProject::where('client_id',$companyId)->get();
+       $companyprojects = MasterProject::where('client_id',$companyId)->paginate(10);
        
        return view('admin.projects.manage-company-project',['companyprojects'=>$companyprojects,'companyId'=>$companyId]);
     }
@@ -163,16 +163,15 @@ class ProjectController extends Controller
         
           if(MasterProject::create($project))
           {
-             //$getClient = MasterCompany::find($id);
-             //$from = Auth::user()->id;
-           //  $to = $getClient->user_id;
-             //$subject = $input['project_name'];
-             //$message = $input['project_name'].' added successfully.';
-             //$addNotification = $this->notification($from,$getClient->user_id,$subject,$message);
+             $getClient = Clients::find($id);
+             $from = Auth::user()->id;
+             $to = $getClient->user_id;
+             $subject = $input['project_name'];
+             $message = $input['project_name'].' added successfully.';
+             $addNotification = $this->notification($from,$getClient->user_id,$subject,$message);
 
-            // $body = view('emails.client-new-project',['getClient'=>$getClient,'project'=>$project]);
-             //$this->sendMail($getClient->getUser->email,$getClient->getUser->name,$message,$body);
-
+             $body = view('emails.client-new-project',['getClient'=>$getClient,'project'=>$project]);
+             $this->sendMail($getClient->getUser->email,$getClient->getUser->name,$message,$body);
              return redirect("/admin/manage-projects/$id")->with('success', 'Project added successfully');
           }
 

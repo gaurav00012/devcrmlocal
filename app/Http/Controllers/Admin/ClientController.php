@@ -24,6 +24,10 @@ class ClientController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $getCompanyId = $user->companyuser->id;
+        $getClient = Clients::where('company_id','=',$getCompanyId)->paginate(10);
+        //$getCompanyClient = Clients::where('co')
+        // echo '<pre>'; print_r($getCompany); echo '</pre>';
        // dd($user->companyuser);
          //$companyId = $user->companyuser->id;
        //  $clients =  $user->companyuser->getClients;
@@ -33,7 +37,7 @@ class ClientController extends Controller
        
        //return view('admin/clients/index',['allCompanies'=> $allCompanies]);
         
-        return view('admin/clients/index');
+        return view('admin/clients/index',['getClient'=>$getClient]);
     }
 
     /**
@@ -164,7 +168,7 @@ class ClientController extends Controller
         $result['exception_message'] = '';
 
         try{
-            $newRegisterations = ClientForm::where('is_approved','=',0)->get();
+            $newRegisterations = ClientForm::where('is_approved','=',0)->simplePaginate(10);
             return view('admin.clients.new-registeration',['newRegisterations'=>$newRegisterations]);
 
         }

@@ -44,6 +44,7 @@ Manage Tasks
      @endforeach
     </tbody>
   </table>
+  
 
 </div>
 @endsection

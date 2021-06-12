@@ -29,13 +29,14 @@ class TicketController extends Controller
         {
             $user = Auth::user();
             $user->companyuser->id;
-            $getCompanyTicket = ClientTicket::where('company_id','=',$user->companyuser->id)->get();
+            $getCompanyTicket = ClientTicket::where('company_id','=',$user->companyuser->id)->paginate(10);
 
             return view('admin.ticket.index',['getCompanyTicket'=>$getCompanyTicket]);
         }
         catch(\Exception $e){
            $result['success'] = false;
            $result['exception_message'] = $e->getMessage();
+           return $result;
         }
     }
 

@@ -34,8 +34,7 @@ class Notifications extends Model
     public function getAllNotification()
     {
     	$user = Auth::user();
-    	$getUserNotifications = self::where('to','=',Auth::user()->id)
-                                          ->get();	
+    	$getUserNotifications = self::where('to','=',Auth::user()->id)->orderBy('created_at','DESC')->get();	
         return $getUserNotifications;                                  
     }
 

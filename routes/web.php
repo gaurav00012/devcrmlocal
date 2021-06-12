@@ -14,14 +14,14 @@ use App\User;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/create-user',function(){
-	$user = new App\User();
-	$user->password = Hash::make('test12345');
-	$user->email = 'diwakar@deverybody.com';
-	$user->name = 'Diwakar';
-	$user->user_role = 1;
-	$user->save();
-});
+// Route::get('/create-user',function(){
+// 	$user = new App\User();
+// 	$user->password = Hash::make('test12345');
+// 	$user->email = 'diwakar@deverybody.com';
+// 	$user->name = 'Diwakar';
+// 	$user->user_role = 1;
+// 	$user->save();
+//});
 Route::get("/email",'User\HomeController@email');
 
 Auth::routes(['register' => false]);
@@ -110,6 +110,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('client/download-file/{filename}','Client\IndexController@downloadfile')->middleware('isClient');	
 	Route::post('client/create-ticket','Client\IndexController@createTicket')->middleware('isClient');	
 	Route::post('client/update-notification','Client\IndexController@updateNotification');
+	Route::post('client/approve-disapove-task','Client\IndexController@approveDisapoveTask');
 	Route::get('view-invoice/{invoiceId}','Client\IndexController@viewInvoice');
 
 	Route::get('/developer/download-file/{filename}','Developer\IndexController@downloadfile');

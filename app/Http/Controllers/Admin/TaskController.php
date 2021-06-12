@@ -158,7 +158,7 @@ class TaskController extends Controller
 
     public function saveProjectTask(Request $request,$id)
     {
-       // dd($request->post());
+       
         $result['success'] = true;
         $result['exception_message'] = '';
 
@@ -172,11 +172,11 @@ class TaskController extends Controller
           try{
 
               $project = MasterProject::find($id);
-              $company = MasterCompany::find($project->client_id);
-              //dd($project);
-              //echo $project->client_id;
+              $company = Clients::find($project->client_id);
+            //   dd($project);
+            //   echo $project->client_id;
               
-              //die();  
+            //   die();  
               
              $input = $request->post();
              
@@ -194,15 +194,12 @@ class TaskController extends Controller
              // $getProject = MasterProject::find($id);
              // $getClient = MasterCompany::find($getProject->company_id);
              $subject = $input['task_name'];
-             $message = $input['task_name'].' assigned to you.';
+             $message = $input['task_name'].' task added to '.$project->project_name;
              $from = $user->id;
              //foreach($input['task_resource'] as $key => $resource)$addNotification = $this->notification($from,$resource,$subject,$message);
              
-           //  $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
-             
+          $addClientNotification = $this->notification($user->id,$company->user_id,$subject,$message);
              $taskSave = MasterTask::create($task);
-
-             //dd($taskSave->task_id);
             // Session::flash('success', 'Task Created Successfully');
              $request->session()->flash('success', 'Task Created Successfully');
              if(!empty($input['task_resource']))
@@ -214,7 +211,10 @@ class TaskController extends Controller
                     $resource['task_id'] = $taskSave->task_id;
                     $resource['assignee'] = $resourceVal;
                     $resource['created_by'] = $user->id;
-                    $resourceSave = TaskAssignee::create($resource);    
+                    $resourceSave = TaskAssignee::create($resource); 
+                    $subject = $input['task_name'];
+                    $message = 'New task assigne to you in '.$project->project_name;
+                    $addResourceNotification = $this->notification($user->id,$resourceVal,$subject,$message);
                 }
              }
 

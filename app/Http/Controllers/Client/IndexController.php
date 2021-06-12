@@ -34,6 +34,7 @@ class IndexController extends Controller
             
             $notifications = new Notifications;
             $notificationCount = $notifications->getNotificationCount();
+            //dd($notificationCount);
             $allNotification = $notifications->getAllNotification();
             
             $clientProject = array(
@@ -517,6 +518,31 @@ class IndexController extends Controller
                 TicketComment::create($ticketComment);
             }
             return redirect("/$user->slug")->with('success', 'Ticket Updated successfully');
+        }
+        catch(\Exception $e)
+        {
+           $result['success'] = false;
+           $result['exception_message'] = $e->getMessage();
+        }
+    }
+
+    public function approveDisapoveTask(Request $request)
+    {
+        $result['success'] = true;
+        $result['exception_message'] = '';
+        try
+        {
+            $post = $request->post();
+            $getTask = MasterTask::find($post['task-id']);
+            if($request->has('approve'))
+            {
+                $getTask->task_status = 8;
+            }
+            elseif($request->has('reject'))
+            {
+                $getTask->task_status = 9;
+            }
+            $getTask->save();
         }
         catch(\Exception $e)
         {

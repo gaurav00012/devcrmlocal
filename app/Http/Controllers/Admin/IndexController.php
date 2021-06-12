@@ -118,7 +118,7 @@ class IndexController extends Controller
           
             if((Input::get('time-log-group') == 'group-by-project'))
             {
-                echo 'hellow_orld';
+                //echo 'hellow_orld';
                 $timeLogs =  Input::get('time-log-group');
                 $lastDays = '';
                 $getClient = $user->getCompanyClient;

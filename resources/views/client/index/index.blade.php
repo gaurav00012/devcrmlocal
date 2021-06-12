@@ -115,7 +115,7 @@ Task List
     <td hidden>{{$projectask->position}}</td>
           <td>{{$key+1}}</td>
         <td>{{$projectask->task_name}}</td>
-        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
+        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('d-M-Y H:i:s') }}</td>
          <td>{{$projectask->getTaskStatus->name}}</td>
         <!-- <td>{{$projectask->task_progress}}</td> -->
           <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
@@ -151,7 +151,7 @@ Task List
     <td hidden>{{$projectask->position}}</td>
           <td>{{$key+1}}</td>
         <td>{{$projectask->task_name}}</td>
-        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
+        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('d-M-Y') }}</td>
          <td>{{$projectask->getTaskStatus->name}}</td>
         <!-- <td>{{$projectask->task_progress}}</td> -->
           <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
@@ -183,7 +183,7 @@ Task List
     <td hidden>{{$projectask->position}}</td>
           <td>{{$key+1}}</td>
         <td>{{$projectask->task_name}}</td>
-        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
+        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('d-M-Y') }}</td>
          <td>{{$projectask->getTaskStatus->name}}</td>
         <!-- <td>{{$projectask->task_progress}}</td> -->
           <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
@@ -286,7 +286,7 @@ Task List
     <td hidden>{{$projectask->position}}</td>
           <td>{{$key+1}}</td>
         <td>{{$projectask->task_name}}</td>
-        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
+        <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('d-M-Y') }}</td>
          <td>{{$projectask->getTaskStatus->name}}</td>
         <!-- <td>{{$projectask->task_progress}}</td> -->
           <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
@@ -364,6 +364,7 @@ Task List
             <tr>
             <th>#</th>
             <th>Subject</th> 
+            <th>Status</th> 
             <th>Created at</th> 
             <th>Action</th>
             </tr>
@@ -373,6 +374,7 @@ Task List
                 <tr>
                   <td>{{$ticketKey+1}}</td>
                   <td>{{$getCompanyTicket->subject}}</td>
+                  <th>{{$getCompanyTicket->status}}</th> 
                   <td>{{date('d-M-Y',strtotime($getCompanyTicket->created_at))}}</td>
                   <td><a href="{{'view-ticket'}}/{{$getCompanyTicket->id}}" class="btn btn-info">View</a></td>
                 </tr>
@@ -436,7 +438,7 @@ Task List
                <div class="row">
                   <div class="col-md-12">
                      <div class="bg-white p-4 rounded task-box shadow-sm">
-                        <h4 class="mb-3 mt-n2">Marketing waiting for approval:</h4>
+                        <h4 class="mb-3 mt-n2">Marketing waiting for approval</h4>
                         <div class="row">
                          <?php foreach($marketingApprovalTasks as $marketingApprovalTask){ ?>
                            <!--<div class="col-md-6" >
@@ -483,7 +485,19 @@ Task List
                               <td>{{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $projectask->due_date)->format('Y-m-d') }}</td>
                                <td>{{$projectask->getTaskStatus->name}}</td>
                               <!-- <td>{{$projectask->task_progress}}</td> -->
-                                <td><a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
+                                <td style="display:flex">
+                                  
+                                  <form method="post" action="{{url('client/approve-disapove-task')}}">
+                                    @csrf
+                                    <input name="task-id" value="{{$projectask->task_id}}" hidden>
+                                  <button name="approve" value="approve"  class="btn btn-primary edit-task">Approve</button>
+                                  </form>
+                                  &nbsp;&nbsp;
+                                 
+                                  <input  name="task-id" value="{{$projectask->task_id}}" hidden>
+                                  <a href="javascript:void(0)" data-taskid="{{$projectask->task_id}}"  class="btn btn-primary edit-task">Edit</a> </td>
+                                
+                             
                             </tr>
                            @endforeach
                           </tbody>
